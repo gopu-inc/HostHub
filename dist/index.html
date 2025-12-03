@@ -2,721 +2,149 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HostHub - Plateforme Sociale</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#4361ee">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --success: #4cc9f0;
-            --warning: #f8961e;
-            --danger: #e63946;
-            --safe-area-top: env(safe-area-inset-top, 0px);
-            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 8px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 0;
-            padding-top: var(--safe-area-top);
-            padding-bottom: var(--safe-area-bottom);
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 100%;
-            height: 100vh;
-            background: white;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         /* Header */
-        .header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            padding-top: calc(15px + var(--safe-area-top));
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            height: 70px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
         }
 
         .logo i {
-            color: var(--accent);
-            font-size: 24px;
+            margin-right: 10px;
+            color: var(--secondary);
         }
 
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .nav {
+        .nav-links {
             display: flex;
+            gap: 25px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
             gap: 15px;
         }
 
-        .nav-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .nav-btn:hover, .nav-btn:active {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-1px);
-        }
-
-        .nav-btn i {
-            margin-right: 5px;
-        }
-
-        .auth-section {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .auth-btn {
-            padding: 8px 20px;
-            border-radius: 50px;
-            border: none;
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius);
             font-weight: 600;
             cursor: pointer;
+            border: none;
             transition: all 0.3s ease;
             font-size: 14px;
         }
 
-        .login-btn {
-            background: transparent;
-            border: 2px solid white;
+        .btn-primary {
+            background-color: var(--primary);
             color: white;
         }
 
-        .login-btn:hover, .login-btn:active {
-            background: white;
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
             color: var(--primary);
+            border: 1px solid var(--primary);
         }
 
-        .register-btn {
-            background: var(--accent);
+        .btn-secondary:hover {
+            background-color: var(--primary);
             color: white;
-        }
-
-        .register-btn:hover, .register-btn:active {
-            background: #d63384;
-            transform: translateY(-1px);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Sidebar Mobile */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-
-        .sidebar {
-            background: var(--light);
-            width: 280px;
-            height: 100%;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 1001;
-            transform: translateX(-100%);
-        }
-
-        .sidebar.active {
-            transform: translateX(0);
-        }
-
-        .user-profile {
-            text-align: center;
-            padding: 30px 20px 20px;
-            border-bottom: 1px solid #eee;
-            background: white;
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--primary);
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: white;
-            overflow: hidden;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .username {
-            font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 18px;
-        }
-
-        .user-email {
-            color: var(--gray);
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-weight: bold;
-            font-size: 20px;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .menu {
-            list-style: none;
-            margin-top: 10px;
-            padding: 15px;
-        }
-
-        .menu-item {
-            padding: 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 16px;
-        }
-
-        .menu-item:hover, .menu-item:active {
-            background: #e9ecef;
-        }
-
-        .menu-item.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .menu-item i {
-            width: 24px;
-            text-align: center;
-        }
-
-        /* Feed */
-        .feed {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            max-height: calc(100vh - 70px);
-        }
-
-        .create-post {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-        }
-
-        .post-input {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            resize: none;
-            min-height: 100px;
-            font-family: inherit;
-        }
-
-        .post-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .media-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .media-btn {
-            background: var(--light);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--gray);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        .media-btn:hover, .media-btn:active {
-            background: #e9ecef;
-            color: var(--primary);
-        }
-
-        .post-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .post-btn:hover, .post-btn:active {
-            background: var(--secondary);
-            transform: translateY(-1px);
-        }
-
-        .post-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        /* Posts */
-        .posts {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .post {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 1px solid #eee;
-            transition: transform 0.2s ease;
-        }
-
-        .post:active {
-            transform: scale(0.99);
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .post-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .post-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .post-user-info {
-            flex-grow: 1;
-            min-width: 0;
-        }
-
-        .post-username {
-            font-weight: 600;
-            margin-bottom: 3px;
-            font-size: 16px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .post-time {
-            font-size: 12px;
-            color: var(--gray);
-        }
-
-        .post-content {
-            margin-bottom: 15px;
-            line-height: 1.5;
-            font-size: 15px;
-            word-break: break-word;
-        }
-
-        .post-image {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            max-height: 300px;
-            object-fit: cover;
-        }
-
-        .post-actions-bar {
-            display: flex;
-            gap: 15px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-
-        .post-action {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            color: var(--gray);
-            transition: all 0.3s ease;
-            padding: 8px 12px;
-            border-radius: 8px;
-            flex: 1;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .post-action:hover, .post-action:active {
-            background: var(--light);
-            color: var(--primary);
-        }
-
-        .post-action.liked {
-            color: var(--accent);
-        }
-
-        /* Bottom Navigation - Mobile */
-        .bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #eee;
-            padding: 10px 20px;
-            padding-bottom: calc(10px + var(--safe-area-bottom));
-            z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-
-        .bottom-nav-buttons {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .bottom-nav-btn {
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 20px;
-            padding: 10px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .bottom-nav-btn.active {
-            color: var(--primary);
-        }
-
-        .bottom-nav-btn i {
-            font-size: 22px;
-        }
-
-        .bottom-nav-label {
-            font-size: 10px;
-            font-weight: 500;
-        }
-
-        /* Modals */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            padding-top: calc(20px + var(--safe-area-top));
-            padding-bottom: calc(20px + var(--safe-area-bottom));
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--gray);
             width: 40px;
             height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .close-btn:hover, .close-btn:active {
-            background: var(--light);
-        }
-
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-title {
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-
-        .form-input {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            font-family: inherit;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 600;
+            object-fit: cover;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            margin-top: 10px;
         }
 
-        .form-btn:hover, .form-btn:active {
-            background: var(--secondary);
-        }
-
-        .form-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .switch-auth {
-            text-align: center;
-            color: var(--gray);
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .switch-auth span {
-            color: var(--primary);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .alert-success {
-            background: #d1e7dd;
-            color: #0f5132;
-            border: 1px solid #badbcc;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #842029;
-            border: 1px solid #f5c2c7;
-        }
-
-        .alert-info {
-            background: #cff4fc;
-            color: #055160;
-            border: 1px solid #b6effb;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--gray);
-        }
-
-        .loading i {
-            animation: spin 1s linear infinite;
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Empty States */
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--gray);
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #ccc;
-        }
-
-        /* Notification Badge */
         .notification-badge {
-            background: var(--accent);
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
             color: white;
             border-radius: 50%;
             width: 18px;
@@ -725,624 +153,958 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            font-weight: bold;
         }
 
-        /* Swipe Actions */
-        .post-swipe-actions {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            background: var(--primary);
-            border-radius: 0 15px 15px 0;
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 25px;
+            padding: 25px 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--gray-light);
+        }
+
+        .sidebar-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .hashtag {
+            display: inline-block;
+            background-color: var(--gray-light);
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            margin-right: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hashtag:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Feed */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Create Post */
+        .create-post {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .post-input {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-textarea {
+            flex: 1;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius);
+            padding: 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            resize: none;
+            min-height: 100px;
+        }
+
+        .post-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .media-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background-color: var(--light);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .media-btn:hover {
+            background-color: var(--gray-light);
+        }
+
+        /* Post Card */
+        .post-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-user-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .post-user-info span {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .post-content {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .post-media {
+            margin-bottom: 20px;
+            border-radius: var(--radius);
             overflow: hidden;
         }
 
-        .swipe-action {
-            height: 100%;
+        .post-media img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .post-tag {
+            color: var(--primary);
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .post-tag:hover {
+            text-decoration: underline;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .post-actions-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .post-action-btn {
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            color: white;
+            gap: 8px;
+            padding: 8px 15px;
+            background: none;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .post-action-btn:hover {
+            background-color: var(--gray-light);
+        }
+
+        .post-action-btn.liked {
+            color: var(--danger);
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 90px;
+        }
+
+        /* Stories */
+        .stories {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             cursor: pointer;
         }
 
-        .swipe-action.like {
-            background: var(--accent);
+        .story-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            padding: 3px;
+            margin-bottom: 8px;
         }
 
-        .swipe-action.save {
-            background: var(--success);
+        .story-username {
+            font-size: 13px;
+            max-width: 70px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Trending */
+        .trending {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .trending-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+
+        .trending-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .trending-info span {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .trending-count {
+            background-color: var(--gray-light);
+            color: var(--dark);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Code Snippets */
+        .code-snippet {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .code-language {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                padding: 12px 15px;
-                padding-top: calc(12px + var(--safe-area-top));
-                height: 60px;
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 250px 1fr 280px;
             }
+        }
 
+        @media (max-width: 992px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar, .right-sidebar {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .navbar {
+                padding: 10px 0;
+            }
+            
             .logo span {
                 display: none;
             }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .nav, .auth-section {
-                display: none;
-            }
-
-            .main-content {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 85%;
-                max-width: 300px;
-            }
-
-            .feed {
-                padding: 15px;
-                padding-bottom: 70px;
-            }
-
-            .create-post {
-                padding: 15px;
-            }
-
-            .post-input {
-                font-size: 15px;
-                min-height: 80px;
-            }
-
-            .media-buttons {
-                flex: 1;
-                justify-content: space-around;
-            }
-
-            .media-btn span {
-                display: none;
-            }
-
-            .media-btn {
-                padding: 10px;
-                width: 40px;
-                height: 40px;
-                justify-content: center;
-            }
-
-            .post-btn {
-                padding: 10px 20px;
-            }
-
-            .post {
-                padding: 15px;
-            }
-
-            .bottom-nav {
-                display: block;
-            }
-
-            .modal-content {
-                padding: 25px;
-                border-radius: 15px;
-            }
-
-            .form-title {
-                font-size: 20px;
-            }
-
-            .post-swipe-actions {
-                display: flex;
-            }
         }
 
-        @media (max-width: 480px) {
-            .header {
-                padding: 10px;
-                padding-top: calc(10px + var(--safe-area-top));
-            }
-
-            .feed {
-                padding: 10px;
-                padding-bottom: 70px;
-            }
-
-            .create-post {
-                padding: 12px;
-            }
-
-            .post {
-                padding: 12px;
-            }
-
-            .post-avatar {
-                width: 40px;
-                height: 40px;
-            }
-
-            .post-username {
-                font-size: 15px;
-            }
-
-            .post-content {
-                font-size: 14px;
-            }
-
-            .post-actions-bar {
-                gap: 8px;
-            }
-
-            .post-action {
-                padding: 6px 8px;
-                font-size: 13px;
-            }
-        }
-
-        /* Dark Mode Support */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: #121212;
-            }
-
-            .container {
-                background: #1e1e1e;
-                color: #ffffff;
-            }
-
-            .sidebar, .create-post, .post {
-                background: #2d2d2d;
-                border-color: #404040;
-            }
-
-            .post-input, .form-input {
-                background: #2d2d2d;
-                border-color: #404040;
-                color: #ffffff;
-            }
-
-            .modal-content {
-                background: #2d2d2d;
-                color: #ffffff;
-            }
-
-            .light {
-                background: #f8f9fa;
-            }
-
-            .alert-success, .alert-error, .alert-info {
-                color: #ffffff;
-            }
-        }
-
-        /* Touch Optimizations */
-        button, .post-action, .media-btn {
-            touch-action: manipulation;
-        }
-
-        /* Pull to Refresh */
-        .pull-to-refresh {
-            text-align: center;
-            padding: 20px;
-            color: var(--gray);
+        /* Mobile Menu */
+        .mobile-menu {
             display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
         }
 
-        .refresh-spinner {
+        .mobile-nav {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 3px solid var(--gray-light);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <button class="mobile-menu-btn" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">
-                <i class="fas fa-code"></i>
-                <span>HostHub</span>
-            </div>
-            <nav class="nav">
-                <button class="nav-btn" onclick="showSection('feed')">
-                    <i class="fas fa-home"></i> Accueil
-                </button>
-                <button class="nav-btn" onclick="showSection('notifications')">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge" id="notification-count">0</span>
-                </button>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-code-branch"></i>
+                    <span>HostHub</span>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" id="nav-home">
+                        <i class="fas fa-home"></i>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="#" class="nav-link" id="nav-explore">
+                        <i class="fas fa-compass"></i>
+                        <span>Explorer</span>
+                    </a>
+                    <a href="#" class="nav-link" id="nav-code">
+                        <i class="fas fa-code"></i>
+                        <span>Code</span>
+                    </a>
+                    <a href="#" class="nav-link" id="nav-messages">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages</span>
+                    </a>
+                    <a href="#" class="nav-link notification-badge" id="nav-notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                        <span class="badge">3</span>
+                    </a>
+                </div>
+                
+                <div class="user-actions" id="user-actions">
+                    <!-- Login/Register buttons shown when not logged in -->
+                    <button class="btn btn-secondary" id="login-btn">Connexion</button>
+                    <button class="btn btn-primary" id="register-btn">Inscription</button>
+                    
+                    <!-- User menu shown when logged in -->
+                    <div id="user-menu" style="display: none;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="notification-badge">
+                                <i class="fas fa-bell" style="font-size: 20px; color: var(--gray); cursor: pointer;"></i>
+                                <span class="badge">3</span>
+                            </div>
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=3b82f6&color=fff" alt="Avatar" class="avatar" id="user-avatar">
+                        </div>
+                    </div>
+                </div>
             </nav>
-            <div class="auth-section" id="auth-section">
-                <button class="auth-btn login-btn" onclick="showLoginModal()">
-                    <i class="fas fa-sign-in-alt"></i> Connexion
-                </button>
-                <button class="auth-btn register-btn" onclick="showRegisterModal()">
-                    <i class="fas fa-user-plus"></i> Inscription
-                </button>
-            </div>
-            <div class="user-menu" id="user-menu" style="display: none;">
-                <button class="nav-btn" onclick="showUserProfile()">
-                    <i class="fas fa-user"></i>
-                </button>
-                <button class="nav-btn" onclick="showNotifications()">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge" id="header-notification-count">0</span>
-                </button>
-            </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- Sidebar Overlay -->
-        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="user-profile">
-                <div class="avatar" id="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="username" id="user-name">Utilisateur</div>
-                <div class="user-email" id="user-email">email@example.com</div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-number" id="followers-count">0</div>
-                        <div class="stat-label">Abonnés</div>
+    <!-- Main Content -->
+    <main class="container">
+        <div class="main-layout">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-user-friends"></i>
+                        <span>Abonnements</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-number" id="following-count">0</div>
-                        <div class="stat-label">Abonnements</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number" id="posts-count">0</div>
-                        <div class="stat-label">Posts</div>
+                    <div id="following-list">
+                        <!-- Filled dynamically -->
                     </div>
                 </div>
-            </div>
-            <ul class="menu">
-                <li class="menu-item active" onclick="showSection('feed'); toggleSidebar();">
-                    <i class="fas fa-home"></i> Fil d'actualité
-                </li>
-                <li class="menu-item" onclick="showSection('profile'); toggleSidebar();">
-                    <i class="fas fa-user"></i> Mon profil
-                </li>
-                <li class="menu-item" onclick="showSection('explore'); toggleSidebar();">
-                    <i class="fas fa-compass"></i> Explorer
-                </li>
-                <li class="menu-item" onclick="showSection('messages'); toggleSidebar();">
-                    <i class="fas fa-envelope"></i> Messages
-                </li>
-                <li class="menu-item" onclick="showSection('code'); toggleSidebar();">
-                    <i class="fas fa-code"></i> Code snippets
-                </li>
-                <li class="menu-item" onclick="showSection('stories'); toggleSidebar();">
-                    <i class="fas fa-history"></i> Stories
-                </li>
-                <li class="menu-item" onclick="showSection('groups'); toggleSidebar();">
-                    <i class="fas fa-users"></i> Groupes
-                </li>
-                <li class="menu-item" onclick="showSection('marketplace'); toggleSidebar();">
-                    <i class="fas fa-store"></i> Marketplace
-                </li>
-                <li class="menu-item" onclick="showSection('settings'); toggleSidebar();">
-                    <i class="fas fa-cog"></i> Paramètres
-                </li>
-                <li class="menu-item" onclick="logout(); toggleSidebar();">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </li>
-            </ul>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Pull to Refresh -->
-            <div class="pull-to-refresh" id="pull-to-refresh">
-                <i class="fas fa-sync refresh-spinner"></i>
-                <p>Rechargement...</p>
-            </div>
-
-            <!-- Feed -->
-            <section class="feed" id="feed">
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Tendances</span>
+                    </div>
+                    <div id="trending-hashtags">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-code"></i>
+                        <span>Langages</span>
+                    </div>
+                    <div id="programming-languages">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Main Feed -->
+            <section class="feed" id="main-content">
                 <!-- Create Post -->
-                <div class="create-post" id="create-post" style="display: none;">
-                    <textarea class="post-input" id="post-content" placeholder="Quoi de neuf ?" maxlength="500"></textarea>
+                <div class="create-post" id="create-post-section">
+                    <div class="post-input">
+                        <img src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" alt="Avatar" class="avatar" id="current-user-avatar">
+                        <textarea class="post-textarea" id="post-content" placeholder="Partagez quelque chose avec la communauté..."></textarea>
+                    </div>
                     <div class="post-actions">
                         <div class="media-buttons">
-                            <button type="button" class="media-btn" onclick="addImageToPost()">
+                            <button class="media-btn" id="add-photo">
                                 <i class="fas fa-image"></i>
                                 <span>Photo</span>
                             </button>
-                            <button type="button" class="media-btn" onclick="addVideoToPost()">
+                            <button class="media-btn" id="add-video">
                                 <i class="fas fa-video"></i>
                                 <span>Vidéo</span>
                             </button>
-                            <button type="button" class="media-btn" onclick="addCodeToPost()">
+                            <button class="media-btn" id="add-code">
                                 <i class="fas fa-code"></i>
                                 <span>Code</span>
                             </button>
                         </div>
-                        <button type="button" class="post-btn" onclick="createPost()" id="post-submit-btn">
-                            <i class="fas fa-paper-plane"></i> Publier
-                        </button>
+                        <button class="btn btn-primary" id="publish-post">Publier</button>
                     </div>
-                    <input type="file" id="media-upload" style="display: none;" accept="image/*,video/*" capture="environment">
+                    <div id="media-preview" style="margin-top: 15px; display: none;"></div>
                 </div>
-
-                <!-- Posts Container -->
-                <div class="posts" id="posts-container">
-                    <div class="loading" id="loading-posts">
-                        <i class="fas fa-spinner"></i>
-                        <p>Chargement des posts...</p>
+                
+                <!-- Feed Content -->
+                <div id="feed-content">
+                    <!-- Posts will be loaded here -->
+                    <div class="loading">
+                        <div class="spinner"></div>
                     </div>
-                </div>
-
-                <!-- Load More -->
-                <div class="load-more" id="load-more" style="display: none; text-align: center; padding: 20px;">
-                    <button onclick="loadMorePosts()" style="background: var(--light); border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer;">
-                        <i class="fas fa-sync"></i> Charger plus
-                    </button>
                 </div>
             </section>
-        </main>
-
-        <!-- Bottom Navigation - Mobile -->
-        <nav class="bottom-nav">
-            <div class="bottom-nav-buttons">
-                <button class="bottom-nav-btn active" onclick="showSection('feed')">
-                    <i class="fas fa-home"></i>
-                    <span class="bottom-nav-label">Accueil</span>
-                </button>
-                <button class="bottom-nav-btn" onclick="showSection('explore')">
-                    <i class="fas fa-compass"></i>
-                    <span class="bottom-nav-label">Explorer</span>
-                </button>
-                <button class="bottom-nav-btn" onclick="showCreatePost()">
-                    <i class="fas fa-plus-circle"></i>
-                    <span class="bottom-nav-label">Créer</span>
-                </button>
-                <button class="bottom-nav-btn" onclick="showNotifications()">
-                    <i class="fas fa-bell"></i>
-                    <span class="bottom-nav-label">Notifs</span>
-                    <span class="notification-badge" id="mobile-notification-count">0</span>
-                </button>
-                <button class="bottom-nav-btn" onclick="toggleSidebar()">
-                    <i class="fas fa-user"></i>
-                    <span class="bottom-nav-label">Profil</span>
-                </button>
-            </div>
-        </nav>
+            
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <!-- Stories -->
+                <div class="stories">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-history"></i>
+                        <span>Stories</span>
+                    </h3>
+                    <div class="stories-container" id="stories-container">
+                        <!-- Stories will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Trending Code -->
+                <div class="trending">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-fire"></i>
+                        <span>Code Populaire</span>
+                    </h3>
+                    <div id="trending-code">
+                        <!-- Trending code snippets will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Suggestions -->
+                <div class="stories">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Suggestions</span>
+                    </h3>
+                    <div id="suggested-users">
+                        <!-- Suggested users will be loaded here -->
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-nav">
+            <a href="#" class="mobile-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-compass"></i>
+                <span>Explorer</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-code"></i>
+                <span>Code</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Messages</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Notifs</span>
+            </a>
+        </div>
     </div>
-
-    <!-- Modals -->
-    <div class="modal" id="login-modal">
+    
+    <!-- Auth Modal -->
+    <div class="modal" id="auth-modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
-            <h2 class="form-title">Connexion</h2>
-            <div class="alert" id="login-alert"></div>
-            <form class="auth-form" onsubmit="event.preventDefault(); login();">
-                <input type="email" class="form-input" id="login-email" placeholder="Email" required>
-                <input type="password" class="form-input" id="login-password" placeholder="Mot de passe" required>
-                <button type="submit" class="form-btn" id="login-btn">
-                    <i class="fas fa-sign-in-alt"></i> Se connecter
-                </button>
+            <div class="tabs">
+                <div class="tab active" id="login-tab">Connexion</div>
+                <div class="tab" id="register-tab">Inscription</div>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" style="display: block;">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="votre@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Mot de passe</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Votre mot de passe" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Se connecter</button>
+                
+                <div class="form-footer">
+                    <p>Pas de compte ? <a href="#" id="switch-to-register">S'inscrire</a></p>
+                </div>
             </form>
-            <div class="switch-auth">
-                Pas encore de compte ? <span onclick="showRegisterModal()">S'inscrire</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="register-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('register-modal')">&times;</span>
-            <h2 class="form-title">Inscription</h2>
-            <div class="alert" id="register-alert"></div>
-            <form class="auth-form" onsubmit="event.preventDefault(); register();">
-                <input type="text" class="form-input" id="register-username" placeholder="Nom d'utilisateur" required>
-                <input type="email" class="form-input" id="register-email" placeholder="Email" required>
-                <input type="password" class="form-input" id="register-password" placeholder="Mot de passe (min 8 caractères)" required>
-                <input type="text" class="form-input" id="register-fullname" placeholder="Nom complet (optionnel)">
-                <textarea class="form-input" id="register-bio" placeholder="Bio (optionnel)" rows="3"></textarea>
-                <button type="submit" class="form-btn" id="register-btn">
-                    <i class="fas fa-user-plus"></i> S'inscrire
-                </button>
+            
+            <!-- Register Form -->
+            <form id="register-form" style="display: none;">
+                <div class="form-group">
+                    <label for="register-username">Nom d'utilisateur</label>
+                    <input type="text" id="register-username" class="form-control" placeholder="john_doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" class="form-control" placeholder="votre@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-password">Mot de passe</label>
+                    <input type="password" id="register-password" class="form-control" placeholder="Minimum 8 caractères" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-fullname">Nom complet (optionnel)</label>
+                    <input type="text" id="register-fullname" class="form-control" placeholder="John Doe">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">S'inscrire</button>
+                
+                <div class="form-footer">
+                    <p>Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a></p>
+                </div>
             </form>
-            <div class="switch-auth">
-                Déjà un compte ? <span onclick="showLoginModal()">Se connecter</span>
-            </div>
         </div>
     </div>
 
-    <!-- Notifications Modal -->
-    <div class="modal" id="notifications-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('notifications-modal')">&times;</span>
-            <h2 class="form-title">Notifications</h2>
-            <div id="notifications-list" style="max-height: 400px; overflow-y: auto;">
-                <!-- Notifications will be loaded here -->
-            </div>
-        </div>
-    </div>
-
+    <!-- JavaScript -->
     <script>
-        const API_BASE_URL = 'https://serv-ynsd.onrender.com/api';
+        // Configuration
+        const API_BASE_URL = 'https://serv-ynsd.onrender.com';
         let currentUser = null;
         let authToken = localStorage.getItem('hosthub_token');
-        let currentPage = 1;
-        let isLoading = false;
-        let startY = 0;
-        let currentPostId = null;
-
-        // Initialisation
+        
+        // DOM Elements
+        const authModal = document.getElementById('auth-modal');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const userMenu = document.getElementById('user-menu');
+        const userActions = document.getElementById('user-actions');
+        const createPostSection = document.getElementById('create-post-section');
+        const publishPostBtn = document.getElementById('publish-post');
+        const postContent = document.getElementById('post-content');
+        const feedContent = document.getElementById('feed-content');
+        
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            initApp();
-            setupSwipeGestures();
-            setupPullToRefresh();
-        });
-
-        // Initialiser l'application
-        async function initApp() {
-            checkAuthStatus();
-            loadPosts();
-            setupOfflineSupport();
-            
-            // Vérifier la connexion
-            checkConnection();
-            
-            // Écouter les changements de connexion
-            window.addEventListener('online', handleOnline);
-            window.addEventListener('offline', handleOffline);
-        }
-
-        // Vérifier l'état d'authentification
-        async function checkAuthStatus() {
+            // Check if user is already logged in
             if (authToken) {
-                try {
-                    const response = await fetchWithTimeout(`${API_BASE_URL}/auth/me`, {
-                        headers: {
-                            'Authorization': `Bearer ${authToken}`
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        const userData = await response.json();
-                        currentUser = userData;
-                        showUserInterface();
-                        updateUserInfo(userData);
-                        loadNotifications();
-                    } else {
-                        localStorage.removeItem('hosthub_token');
-                        authToken = null;
-                        showAuthInterface();
-                    }
-                } catch (error) {
-                    console.error('Erreur de vérification auth:', error);
-                    showAuthInterface();
-                }
+                fetchCurrentUser();
             } else {
-                showAuthInterface();
-            }
-        }
-
-        // Afficher interface utilisateur
-        function showUserInterface() {
-            document.getElementById('auth-section').style.display = 'none';
-            document.getElementById('user-menu').style.display = 'flex';
-            document.getElementById('create-post').style.display = 'block';
-            document.getElementById('bottom-nav').style.display = 'flex';
-            updateBottomNav('feed');
-        }
-
-        // Afficher interface auth
-        function showAuthInterface() {
-            document.getElementById('auth-section').style.display = 'flex';
-            document.getElementById('user-menu').style.display = 'none';
-            document.getElementById('create-post').style.display = 'none';
-            document.getElementById('bottom-nav').style.display = 'flex';
-        }
-
-        // Mettre à jour les infos utilisateur
-        function updateUserInfo(userData) {
-            const userName = document.getElementById('user-name');
-            const userEmail = document.getElementById('user-email');
-            const userAvatar = document.getElementById('user-avatar');
-            
-            if (userName) userName.textContent = userData.full_name || userData.username;
-            if (userEmail) userEmail.textContent = userData.email;
-            
-            if (userAvatar && userData.avatar_url) {
-                userAvatar.innerHTML = `<img src="${userData.avatar_url}" alt="${userData.username}">`;
+                showAuthButtons();
             }
             
-            // Mettre à jour les statistiques
-            ['followers_count', 'following_count', 'posts_count'].forEach(stat => {
-                const element = document.getElementById(stat);
-                if (element && userData[stat] !== undefined) {
-                    element.textContent = userData[stat];
+            // Load initial content
+            loadPosts();
+            loadStories();
+            loadTrendingHashtags();
+            loadProgrammingLanguages();
+            loadTrendingCode();
+            loadSuggestedUsers();
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+        
+        // Event Listeners
+        function setupEventListeners() {
+            // Auth buttons
+            loginBtn.addEventListener('click', () => openAuthModal('login'));
+            registerBtn.addEventListener('click', () => openAuthModal('register'));
+            
+            // Auth modal tabs
+            loginTab.addEventListener('click', () => switchAuthTab('login'));
+            registerTab.addEventListener('click', () => switchAuthTab('register'));
+            switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchAuthTab('register');
+            });
+            switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchAuthTab('login');
+            });
+            
+            // Auth forms
+            loginForm.addEventListener('submit', handleLogin);
+            registerForm.addEventListener('submit', handleRegister);
+            
+            // Post creation
+            publishPostBtn.addEventListener('click', createPost);
+            
+            // Navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Handle navigation
+                    const id = this.id;
+                    if (id === 'nav-home') loadPosts();
+                    else if (id === 'nav-explore') loadExploreContent();
+                    else if (id === 'nav-code') loadCodeSnippets();
+                    else if (id === 'nav-messages') loadMessages();
+                    else if (id === 'nav-notifications') loadNotifications();
+                });
+            });
+            
+            // Close modal when clicking outside
+            authModal.addEventListener('click', function(e) {
+                if (e.target === authModal) {
+                    closeAuthModal();
                 }
             });
         }
-
-        // Connexion
-        async function login() {
+        
+        // Auth Functions
+        function openAuthModal(tab = 'login') {
+            authModal.classList.add('active');
+            switchAuthTab(tab);
+        }
+        
+        function closeAuthModal() {
+            authModal.classList.remove('active');
+        }
+        
+        function switchAuthTab(tab) {
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.style.display = 'block';
+                loginForm.style.display = 'none';
+            }
+        }
+        
+        async function handleLogin(e) {
+            e.preventDefault();
+            
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-            const loginBtn = document.getElementById('login-btn');
-            const alertDiv = document.getElementById('login-alert');
-
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
-            loginBtn.disabled = true;
-
+            
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ email, password })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (response.ok) {
                     authToken = data.access_token;
                     localStorage.setItem('hosthub_token', authToken);
+                    currentUser = data.user;
                     
-                    showAlert('success', 'Connexion réussie !');
-                    
-                    setTimeout(async () => {
-                        closeModal('login-modal');
-                        await checkAuthStatus();
-                        loadPosts();
-                        resetLoginForm();
-                    }, 1500);
+                    closeAuthModal();
+                    showUserMenu();
+                    loadPosts();
+                    showToast('Connexion réussie !', 'success');
                 } else {
-                    throw new Error(data.detail || 'Erreur de connexion');
+                    showToast(data.detail || 'Erreur de connexion', 'error');
                 }
             } catch (error) {
-                alertDiv.className = 'alert alert-error';
-                alertDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
-                alertDiv.style.display = 'block';
-            } finally {
-                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
-                loginBtn.disabled = false;
+                showToast('Erreur réseau', 'error');
+                console.error('Login error:', error);
             }
         }
-
-        // Réinitialiser le formulaire de connexion
-        function resetLoginForm() {
-            document.getElementById('login-email').value = '';
-            document.getElementById('login-password').value = '';
-            document.getElementById('login-alert').style.display = 'none';
-        }
-
-        // Inscription
-        async function register() {
+        
+        async function handleRegister(e) {
+            e.preventDefault();
+            
             const username = document.getElementById('register-username').value;
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             const fullName = document.getElementById('register-fullname').value;
-            const bio = document.getElementById('register-bio').value;
-            const registerBtn = document.getElementById('register-btn');
-            const alertDiv = document.getElementById('register-alert');
-
-            if (password.length < 8) {
-                showAlert('error', 'Le mot de passe doit contenir au moins 8 caractères');
-                return;
-            }
-
-            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inscription...';
-            registerBtn.disabled = true;
-
+            
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1351,898 +1113,662 @@
                         username,
                         email,
                         password,
-                        full_name: fullName || null,
-                        bio: bio || null
+                        full_name: fullName || null
                     })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (response.ok) {
                     authToken = data.access_token;
                     localStorage.setItem('hosthub_token', authToken);
+                    currentUser = {
+                        id: data.id,
+                        username: data.username,
+                        email: data.email,
+                        full_name: data.full_name,
+                        avatar_url: data.avatar_url
+                    };
                     
-                    showAlert('success', 'Inscription réussie !');
-                    
-                    setTimeout(async () => {
-                        closeModal('register-modal');
-                        await checkAuthStatus();
-                        loadPosts();
-                        resetRegisterForm();
-                    }, 1500);
+                    closeAuthModal();
+                    showUserMenu();
+                    loadPosts();
+                    showToast('Inscription réussie !', 'success');
                 } else {
-                    throw new Error(data.detail || 'Erreur d\'inscription');
+                    showToast(data.detail || "Erreur d'inscription", 'error');
                 }
             } catch (error) {
-                alertDiv.className = 'alert alert-error';
-                alertDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
-                alertDiv.style.display = 'block';
-            } finally {
-                registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> S\'inscrire';
-                registerBtn.disabled = false;
+                showToast('Erreur réseau', 'error');
+                console.error('Register error:', error);
             }
         }
-
-        // Réinitialiser le formulaire d'inscription
-        function resetRegisterForm() {
-            document.getElementById('register-username').value = '';
-            document.getElementById('register-email').value = '';
-            document.getElementById('register-password').value = '';
-            document.getElementById('register-fullname').value = '';
-            document.getElementById('register-bio').value = '';
-            document.getElementById('register-alert').style.display = 'none';
-        }
-
-        // Déconnexion
+        
         function logout() {
-            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-                localStorage.removeItem('hosthub_token');
-                authToken = null;
-                currentUser = null;
-                showAuthInterface();
-                clearPosts();
-                showAlert('info', 'Déconnexion réussie');
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('hosthub_token');
+            showAuthButtons();
+            showToast('Déconnexion réussie', 'info');
+            loadPosts(); // Reload posts to show only public ones
+        }
+        
+        function showAuthButtons() {
+            document.getElementById('login-btn').style.display = 'block';
+            document.getElementById('register-btn').style.display = 'block';
+            userMenu.style.display = 'none';
+            createPostSection.style.display = 'none';
+        }
+        
+        function showUserMenu() {
+            document.getElementById('login-btn').style.display = 'none';
+            document.getElementById('register-btn').style.display = 'none';
+            userMenu.style.display = 'block';
+            createPostSection.style.display = 'block';
+            
+            // Update user avatar
+            if (currentUser && currentUser.avatar_url) {
+                document.getElementById('user-avatar').src = currentUser.avatar_url;
+                document.getElementById('current-user-avatar').src = currentUser.avatar_url;
             }
         }
-
-        // Charger les posts avec pagination
-        async function loadPosts() {
-            if (isLoading) return;
-            
-            isLoading = true;
-            const postsContainer = document.getElementById('posts-container');
-            const loadingDiv = document.getElementById('loading-posts');
-            
-            if (currentPage === 1) {
-                postsContainer.innerHTML = '<div class="loading" id="loading-posts"><i class="fas fa-spinner"></i><p>Chargement des posts...</p></div>';
-            }
-
+        
+        // API Functions
+        async function fetchCurrentUser() {
             try {
-                const response = await fetch(`${API_BASE_URL}/posts?limit=10&offset=${(currentPage - 1) * 10}`);
+                const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
                 
-                if (!response.ok) {
-                    throw new Error('Erreur de chargement des posts');
-                }
-                
-                const posts = await response.json();
-                
-                if (currentPage === 1) {
-                    displayPosts(posts);
+                if (response.ok) {
+                    currentUser = await response.json();
+                    showUserMenu();
                 } else {
-                    appendPosts(posts);
+                    // Token might be invalid
+                    localStorage.removeItem('hosthub_token');
+                    authToken = null;
+                    showAuthButtons();
                 }
-                
-                if (posts.length === 10) {
-                    document.getElementById('load-more').style.display = 'block';
-                } else {
-                    document.getElementById('load-more').style.display = 'none';
-                }
-                
-                currentPage++;
             } catch (error) {
-                console.error('Erreur:', error);
-                if (currentPage === 1) {
-                    postsContainer.innerHTML = `
-                        <div class="alert alert-error">
-                            <i class="fas fa-exclamation-circle"></i> ${error.message}
-                            <br><br>
-                            <button onclick="loadPosts()" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
-                                Réessayer
-                            </button>
-                        </div>
-                    `;
-                }
-            } finally {
-                isLoading = false;
-                if (loadingDiv) loadingDiv.remove();
-                hidePullToRefresh();
+                console.error('Error fetching current user:', error);
             }
         }
-
-        // Charger plus de posts
-        async function loadMorePosts() {
-            await loadPosts();
-        }
-
-        // Afficher les posts
-        function displayPosts(posts) {
-            const postsContainer = document.getElementById('posts-container');
+        
+        // Load Posts
+        async function loadPosts() {
+            feedContent.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
             
-            if (!posts || posts.length === 0) {
-                postsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-newspaper"></i>
-                        <h3>Aucun post pour le moment</h3>
-                        <p>Soyez le premier à publier quelque chose !</p>
-                        <button onclick="showCreatePost()" style="background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 50px; margin-top: 15px; cursor: pointer;">
-                            <i class="fas fa-plus"></i> Créer un post
+            try {
+                const url = authToken 
+                    ? `${API_BASE_URL}/api/posts?limit=10`
+                    : `${API_BASE_URL}/api/posts?limit=10`;
+                
+                const headers = authToken 
+                    ? { 'Authorization': `Bearer ${authToken}` }
+                    : {};
+                
+                const response = await fetch(url, { headers });
+                
+                if (response.ok) {
+                    const posts = await response.json();
+                    renderPosts(posts);
+                } else {
+                    feedContent.innerHTML = '<div class="post-card"><p>Erreur lors du chargement des posts</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                feedContent.innerHTML = '<div class="post-card"><p>Erreur de connexion au serveur</p></div>';
+            }
+        }
+        
+        function renderPosts(posts) {
+            if (posts.length === 0) {
+                feedContent.innerHTML = '<div class="post-card"><p>Aucun post à afficher. Soyez le premier à publier !</p></div>';
+                return;
+            }
+            
+            feedContent.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card';
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-user">
+                            <img src="${post.avatar_url || `https://ui-avatars.com/api/?name=${post.username}&background=3b82f6&color=fff`}" alt="Avatar" class="avatar">
+                            <div class="post-user-info">
+                                <h4>${post.full_name || post.username}</h4>
+                                <span>@${post.username} • ${formatDate(post.created_at)}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <i class="fas fa-ellipsis-h" style="color: var(--gray); cursor: pointer;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="post-content">
+                        ${escapeHtml(post.content)}
+                    </div>
+                    
+                    ${post.media_urls && JSON.parse(post.media_urls).length > 0 ? 
+                        `<div class="post-media">
+                            <img src="${JSON.parse(post.media_urls)[0]}" alt="Post media">
+                        </div>` : ''
+                    }
+                    
+                    ${post.hashtags && JSON.parse(post.hashtags).length > 0 ? 
+                        `<div class="post-tags">
+                            ${JSON.parse(post.hashtags).map(tag => 
+                                `<a href="#" class="post-tag">#${tag}</a>`
+                            ).join('')}
+                        </div>` : ''
+                    }
+                    
+                    <div class="post-stats">
+                        <span>${post.likes_count} likes</span>
+                        <span>${post.comments_count} commentaires</span>
+                        <span>${post.views_count} vues</span>
+                    </div>
+                    
+                    <div class="post-actions-buttons">
+                        <button class="post-action-btn" onclick="likePost('${post.id}')">
+                            <i class="fas fa-heart"></i>
+                            <span>J'aime</span>
+                        </button>
+                        <button class="post-action-btn" onclick="commentOnPost('${post.id}')">
+                            <i class="fas fa-comment"></i>
+                            <span>Commenter</span>
+                        </button>
+                        <button class="post-action-btn" onclick="sharePost('${post.id}')">
+                            <i class="fas fa-share"></i>
+                            <span>Partager</span>
                         </button>
                     </div>
                 `;
-                return;
-            }
-
-            postsContainer.innerHTML = '';
-            posts.forEach(post => createPostElement(post));
+                
+                feedContent.appendChild(postElement);
+            });
         }
-
-        // Ajouter des posts
-        function appendPosts(posts) {
-            const postsContainer = document.getElementById('posts-container');
-            posts.forEach(post => createPostElement(post));
-        }
-
-        // Créer un élément post
-        function createPostElement(post) {
-            const postsContainer = document.getElementById('posts-container');
-            const postDate = new Date(post.created_at);
-            const timeAgo = getTimeAgo(postDate);
-            
-            const mediaHtml = post.media_urls && post.media_urls.length > 0 ? 
-                `<img src="${post.media_urls[0]}" class="post-image" alt="Media" loading="lazy" onerror="this.style.display='none'">` : '';
-            
-            const hashtagsHtml = post.hashtags && post.hashtags.length > 0 ?
-                `<div style="margin-top: 10px;">${post.hashtags.map(tag => 
-                    `<span class="hashtag" onclick="searchByHashtag('${tag}')" style="font-size: 12px; padding: 3px 8px; margin: 2px;">#${tag}</span>`
-                ).join(' ')}</div>` : '';
-            
-            const postElement = document.createElement('div');
-            postElement.className = 'post';
-            postElement.dataset.postId = post.id;
-            postElement.innerHTML = `
-                <div class="post-swipe-actions">
-                    <div class="swipe-action like" onclick="likePost('${post.id}')">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                </div>
-                <div class="post-header">
-                    <div class="post-avatar">
-                        ${post.user && post.user.avatar_url ? 
-                            `<img src="${post.user.avatar_url}" alt="${post.user.username}" loading="lazy">` : 
-                            `<i class="fas fa-user"></i>`}
-                    </div>
-                    <div class="post-user-info">
-                        <div class="post-username">
-                            ${post.user ? post.user.username : 'Utilisateur'}
-                        </div>
-                        <div class="post-time">${timeAgo}</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    ${formatPostContent(post.content)}
-                    ${hashtagsHtml}
-                </div>
-                ${mediaHtml}
-                <div class="post-actions-bar">
-                    <div class="post-action ${post.liked ? 'liked' : ''}" onclick="likePost('${post.id}')">
-                        <i class="fas fa-heart"></i>
-                        <span>${post.likes_count || 0}</span>
-                    </div>
-                    <div class="post-action" onclick="commentOnPost('${post.id}')">
-                        <i class="fas fa-comment"></i>
-                        <span>${post.comments_count || 0}</span>
-                    </div>
-                    <div class="post-action" onclick="sharePost('${post.id}')">
-                        <i class="fas fa-share"></i>
-                        <span>Partager</span>
-                    </div>
-                </div>
-            `;
-            
-            setupPostSwipe(postElement);
-            postsContainer.appendChild(postElement);
-        }
-
-        // Formater le contenu du post
-        function formatPostContent(content) {
-            if (!content) return '';
-            
-            // Convertir les URLs en liens cliquables
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-            content = content.replace(urlRegex, url => 
-                `<a href="${url}" target="_blank" style="color: var(--primary); text-decoration: none;">${url}</a>`
-            );
-            
-            // Convertir les mentions
-            const mentionRegex = /@(\w+)/g;
-            content = content.replace(mentionRegex, (match, username) =>
-                `<span style="color: var(--primary); font-weight: 500;">@${username}</span>`
-            );
-            
-            return content;
-        }
-
-        // Créer un post
+        
+        // Create Post
         async function createPost() {
             if (!authToken) {
-                showLoginModal();
+                openAuthModal('login');
                 return;
             }
-
-            const content = document.getElementById('post-content').value.trim();
-            const postBtn = document.getElementById('post-submit-btn');
-
+            
+            const content = postContent.value.trim();
             if (!content) {
-                showAlert('error', 'Veuillez écrire quelque chose !');
+                showToast('Le contenu ne peut pas être vide', 'warning');
                 return;
             }
-
-            postBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publication...';
-            postBtn.disabled = true;
-
+            
             try {
-                const formData = new FormData();
-                formData.append('content', content);
-                formData.append('is_public', 'true');
-
-                // Ajouter les médias si présents
-                const fileInput = document.getElementById('media-upload');
-                if (fileInput.files.length > 0) {
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        formData.append('media', fileInput.files[i]);
-                    }
-                }
-
-                const response = await fetch(`${API_BASE_URL}/posts`, {
+                const response = await fetch(`${API_BASE_URL}/api/posts`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${authToken}`
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
                     },
-                    body: formData
+                    body: JSON.stringify({
+                        content: content,
+                        media_urls: [],
+                        hashtags: extractHashtags(content),
+                        is_public: true
+                    })
                 });
-
+                
                 if (response.ok) {
-                    document.getElementById('post-content').value = '';
-                    fileInput.value = '';
-                    showAlert('success', 'Post publié avec succès !');
-                    currentPage = 1;
-                    loadPosts();
+                    const newPost = await response.json();
+                    showToast('Post publié avec succès !', 'success');
+                    postContent.value = '';
+                    loadPosts(); // Reload posts to show the new one
                 } else {
-                    const error = await response.json();
-                    throw new Error(error.detail || 'Erreur de publication');
+                    showToast('Erreur lors de la publication', 'error');
                 }
             } catch (error) {
-                console.error('Erreur:', error);
-                showAlert('error', error.message);
-            } finally {
-                postBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publier';
-                postBtn.disabled = false;
+                console.error('Error creating post:', error);
+                showToast('Erreur réseau', 'error');
             }
         }
-
-        // Aimer un post
+        
+        // Like Post
         async function likePost(postId) {
             if (!authToken) {
-                showLoginModal();
+                openAuthModal('login');
                 return;
             }
-
+            
             try {
-                const response = await fetch(`${API_BASE_URL}/posts/${postId}/like`, {
+                const response = await fetch(`${API_BASE_URL}/api/posts/${postId}/like`, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    
-                    // Mettre à jour l'interface
-                    const postElement = document.querySelector(`[data-post-id="${postId}"]`);
-                    if (postElement) {
-                        const likeBtn = postElement.querySelector('.post-action:first-child');
-                        const likeCount = postElement.querySelector('.post-action:first-child span');
-                        
-                        if (result.liked) {
-                            likeBtn.classList.add('liked');
-                            likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                        } else {
-                            likeBtn.classList.remove('liked');
-                            likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        }
-
-        // Charger les notifications
-        async function loadNotifications() {
-            if (!authToken) return;
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/notifications`, {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-
-                if (response.ok) {
-                    const notifications = await response.json();
-                    const unreadCount = notifications.filter(n => !n.is_read).length;
-                    
-                    updateNotificationBadges(unreadCount);
-                }
-            } catch (error) {
-                console.error('Erreur notifications:', error);
-            }
-        }
-
-        // Mettre à jour les badges de notification
-        function updateNotificationBadges(count) {
-            const badges = document.querySelectorAll('.notification-badge');
-            badges.forEach(badge => {
-                if (count > 0) {
-                    badge.textContent = count > 9 ? '9+' : count;
-                    badge.style.display = 'flex';
-                } else {
-                    badge.style.display = 'none';
-                }
-            });
-        }
-
-        // Basculer la sidebar
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            sidebar.classList.toggle('active');
-            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-            
-            // Empêcher le défilement du body quand la sidebar est ouverte
-            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-        }
-
-        // Afficher une section
-        function showSection(section) {
-            // Mettre à jour la navigation active
-            updateBottomNav(section);
-            
-            // Pour l'instant, on garde juste le feed visible
-            if (section === 'feed') {
-                currentPage = 1;
-                loadPosts();
-            } else if (section === 'notifications') {
-                showNotifications();
-            } else if (section === 'explore') {
-                showExplore();
-            }
-            
-            // Fermer la sidebar sur mobile
-            if (window.innerWidth <= 768) {
-                toggleSidebar();
-            }
-        }
-
-        // Mettre à jour la navigation du bas
-        function updateBottomNav(activeSection) {
-            document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const activeBtn = document.querySelector(`.bottom-nav-btn[onclick*="${activeSection}"]`);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-            }
-        }
-
-        // Afficher la création de post
-        function showCreatePost() {
-            if (!authToken) {
-                showLoginModal();
-                return;
-            }
-            
-            document.getElementById('post-content').focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Afficher les notifications
-        function showNotifications() {
-            if (!authToken) {
-                showLoginModal();
-                return;
-            }
-            
-            showModal('notifications-modal');
-            loadNotificationsList();
-        }
-
-        // Charger la liste des notifications
-        async function loadNotificationsList() {
-            const container = document.getElementById('notifications-list');
-            container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement...</p></div>';
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/notifications`, {
                     headers: {
                         'Authorization': `Bearer ${authToken}`
                     }
                 });
                 
                 if (response.ok) {
-                    const notifications = await response.json();
-                    displayNotifications(notifications);
+                    const result = await response.json();
+                    showToast(result.liked ? 'Post aimé !' : 'Like retiré', 'info');
+                    loadPosts(); // Refresh posts to update like count
                 }
             } catch (error) {
-                container.innerHTML = `<div class="alert alert-error">Erreur de chargement</div>`;
+                console.error('Error liking post:', error);
             }
         }
-
-        // Afficher les notifications
-        function displayNotifications(notifications) {
-            const container = document.getElementById('notifications-list');
+        
+        // Load Stories
+        async function loadStories() {
+            const storiesContainer = document.getElementById('stories-container');
             
-            if (!notifications || notifications.length === 0) {
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>Aucune notification</p></div>';
-                return;
+            try {
+                const url = authToken 
+                    ? `${API_BASE_URL}/api/stories`
+                    : `${API_BASE_URL}/api/stories`;
+                
+                const headers = authToken 
+                    ? { 'Authorization': `Bearer ${authToken}` }
+                    : {};
+                
+                const response = await fetch(url, { headers });
+                
+                if (response.ok) {
+                    const stories = await response.json();
+                    
+                    if (stories.length === 0) {
+                        storiesContainer.innerHTML = '<p style="text-align: center; color: var(--gray);">Aucune story pour le moment</p>';
+                        return;
+                    }
+                    
+                    storiesContainer.innerHTML = stories.map(story => `
+                        <div class="story">
+                            <img src="${story.media_url}" alt="Story" class="story-avatar">
+                            <span class="story-username">${story.username}</span>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading stories:', error);
             }
+        }
+        
+        // Load Trending Hashtags
+        async function loadTrendingHashtags() {
+            const trendingHashtags = document.getElementById('trending-hashtags');
             
-            container.innerHTML = notifications.map(notif => `
-                <div class="notification-item" style="padding: 15px; border-bottom: 1px solid #eee; ${!notif.is_read ? 'background: #f0f8ff;' : ''}">
-                    <div style="font-weight: 500;">${notif.content}</div>
-                    <div style="font-size: 12px; color: var(--gray); margin-top: 5px;">
-                        ${new Date(notif.created_at).toLocaleDateString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-                    </div>
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/explore/hashtags?limit=10`);
+                
+                if (response.ok) {
+                    const hashtags = await response.json();
+                    
+                    if (hashtags.length === 0) {
+                        trendingHashtags.innerHTML = '<p style="color: var(--gray); font-size: 14px;">Aucun hashtag tendance</p>';
+                        return;
+                    }
+                    
+                    trendingHashtags.innerHTML = hashtags.map(tag => `
+                        <div class="hashtag">#${tag.hashtag}</div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading trending hashtags:', error);
+                trendingHashtags.innerHTML = '<p style="color: var(--gray); font-size: 14px;">Erreur de chargement</p>';
+            }
+        }
+        
+        // Load Programming Languages
+        function loadProgrammingLanguages() {
+            const languagesContainer = document.getElementById('programming-languages');
+            const languages = ['JavaScript', 'Python', 'Java', 'C++', 'PHP', 'TypeScript', 'Go', 'Rust', 'Swift', 'Kotlin'];
+            
+            languagesContainer.innerHTML = languages.map(lang => `
+                <div class="sidebar-item">
+                    <i class="fas fa-code"></i>
+                    <span>${lang}</span>
                 </div>
             `).join('');
         }
-
-        // Afficher l'exploration
-        function showExplore() {
-            const feed = document.getElementById('feed');
-            feed.innerHTML = `
-                <div style="padding: 20px;">
-                    <h2 style="margin-bottom: 20px;">Explorer</h2>
-                    <div id="explore-content">
-                        <div class="loading"><i class="fas fa-spinner"></i><p>Chargement...</p></div>
-                    </div>
-                </div>
-            `;
-            
-            loadExploreContent();
-        }
-
-        // Charger le contenu d'exploration
-        async function loadExploreContent() {
-            const container = document.getElementById('explore-content');
+        
+        // Load Trending Code
+        async function loadTrendingCode() {
+            const trendingCode = document.getElementById('trending-code');
             
             try {
-                // Charger les hashtags tendance
-                const hashtagsResponse = await fetch(`${API_BASE_URL}/explore/hashtags?limit=20`);
-                const hashtags = hashtagsResponse.ok ? await hashtagsResponse.json() : [];
+                const response = await fetch(`${API_BASE_URL}/api/code?limit=5`);
                 
-                // Charger les utilisateurs tendance
-                const usersResponse = await fetch(`${API_BASE_URL}/explore/users?limit=10`);
-                const users = usersResponse.ok ? await usersResponse.json() : [];
-                
-                // Charger les posts tendance
-                const postsResponse = await fetch(`${API_BASE_URL}/explore/trending?timeframe=day&limit=10`);
-                const trendingPosts = postsResponse.ok ? await postsResponse.json() : [];
-                
-                container.innerHTML = `
-                    <div style="margin-bottom: 30px;">
-                        <h3 style="margin-bottom: 15px; color: var(--primary);">
-                            <i class="fas fa-fire"></i> Hashtags tendance
-                        </h3>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                            ${hashtags.map(h => 
-                                `<span class="hashtag" onclick="searchByHashtag('${h.hashtag}')" style="font-size: 14px; padding: 8px 15px;">#${h.hashtag}</span>`
-                            ).join('')}
-                        </div>
-                    </div>
+                if (response.ok) {
+                    const snippets = await response.json();
                     
-                    <div style="margin-bottom: 30px;">
-                        <h3 style="margin-bottom: 15px; color: var(--primary);">
-                            <i class="fas fa-user-plus"></i> Découvrir des créateurs
-                        </h3>
-                        <div>
-                            ${users.map(user => `
-                                <div class="user-suggestion" style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--light); border-radius: 12px; margin-bottom: 10px;">
-                                    <div class="avatar" style="width: 45px; height: 45px;">
-                                        ${user.avatar_url ? 
-                                            `<img src="${user.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : 
-                                            `<i class="fas fa-user"></i>`}
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600;">${user.username}</div>
-                                        <div style="font-size: 12px; color: var(--gray);">${user.bio || 'Aucune bio'}</div>
-                                    </div>
-                                    <button onclick="followUser('${user.id}')" style="background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 12px; cursor: pointer;">
-                                        Suivre
-                                    </button>
-                                </div>
-                            `).join('')}
+                    if (snippets.length === 0) {
+                        trendingCode.innerHTML = '<p style="color: var(--gray); font-size: 14px;">Aucun code populaire</p>';
+                        return;
+                    }
+                    
+                    trendingCode.innerHTML = snippets.map(snippet => `
+                        <div class="trending-item">
+                            <div class="trending-info">
+                                <h4>${snippet.title}</h4>
+                                <span>${snippet.language} • ${snippet.username}</span>
+                            </div>
+                            <div class="trending-count">${snippet.stars_count}</div>
                         </div>
-                    </div>
-                `;
+                    `).join('');
+                }
             } catch (error) {
-                container.innerHTML = `<div class="alert alert-error">Erreur de chargement</div>`;
+                console.error('Error loading trending code:', error);
+                trendingCode.innerHTML = '<p style="color: var(--gray); font-size: 14px;">Erreur de chargement</p>';
             }
         }
-
-        // Rechercher par hashtag
-        function searchByHashtag(hashtag) {
-            showAlert('info', `Recherche pour #${hashtag}`);
-            // Implémenter la recherche réelle ici
-        }
-
-        // Commenter un post
-        function commentOnPost(postId) {
-            if (!authToken) {
-                showLoginModal();
-                return;
-            }
+        
+        // Load Suggested Users
+        async function loadSuggestedUsers() {
+            const suggestedUsers = document.getElementById('suggested-users');
             
-            showAlert('info', 'Fonctionnalité de commentaire à venir');
-        }
-
-        // Partager un post
-        function sharePost(postId) {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Post HostHub',
-                    text: 'Regardez ce post sur HostHub!',
-                    url: window.location.href
-                });
-            } else {
-                showAlert('info', 'Lien copié dans le presse-papier');
-                navigator.clipboard.writeText(window.location.href);
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users?limit=5`);
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    
+                    if (users.length === 0) {
+                        suggestedUsers.innerHTML = '<p style="color: var(--gray); font-size: 14px;">Aucune suggestion</p>';
+                        return;
+                    }
+                    
+                    suggestedUsers.innerHTML = users.map(user => `
+                        <div class="sidebar-item" style="justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${user.avatar_url || `https://ui-avatars.com/api/?name=${user.username}&background=3b82f6&color=fff`}" alt="Avatar" class="avatar" style="width: 35px; height: 35px;">
+                                <div>
+                                    <div style="font-weight: 500;">${user.username}</div>
+                                    <div style="font-size: 12px; color: var(--gray);">${user.followers_count} abonnés</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="followUser('${user.id}')">Suivre</button>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading suggested users:', error);
             }
         }
-
-        // Suivre un utilisateur
+        
+        // Follow User
         async function followUser(userId) {
             if (!authToken) {
-                showLoginModal();
+                openAuthModal('login');
                 return;
             }
-
+            
             try {
-                const response = await fetch(`${API_BASE_URL}/users/${userId}/follow`, {
+                const response = await fetch(`${API_BASE_URL}/api/users/${userId}/follow`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${authToken}`
                     }
                 });
-
+                
                 if (response.ok) {
-                    showAlert('success', 'Utilisateur suivi avec succès !');
-                    loadExploreContent();
+                    const result = await response.json();
+                    showToast(result.following ? 'Vous suivez maintenant cet utilisateur' : 'Vous ne suivez plus cet utilisateur', 'info');
+                    loadSuggestedUsers();
                 }
             } catch (error) {
-                showAlert('error', error.message);
+                console.error('Error following user:', error);
             }
         }
-
-        // Ajouter une image au post
-        function addImageToPost() {
-            const fileInput = document.getElementById('media-upload');
-            fileInput.accept = 'image/*';
-            fileInput.capture = 'environment';
-            fileInput.onchange = handleMediaSelection;
-            fileInput.click();
-        }
-
-        // Ajouter une vidéo au post
-        function addVideoToPost() {
-            const fileInput = document.getElementById('media-upload');
-            fileInput.accept = 'video/*';
-            fileInput.capture = 'environment';
-            fileInput.onchange = handleMediaSelection;
-            fileInput.click();
-        }
-
-        // Ajouter du code au post
-        function addCodeToPost() {
-            const content = document.getElementById('post-content');
-            const code = prompt('Collez votre code :');
-            if (code) {
-                content.value += '\n```\n' + code + '\n```\n';
-                content.focus();
-            }
-        }
-
-        // Gérer la sélection de média
-        function handleMediaSelection(event) {
-            const files = event.target.files;
-            if (files.length > 0) {
-                showAlert('info', `${files.length} fichier(s) sélectionné(s)`);
-            }
-        }
-
-        // Configurer le swipe pour les posts
-        function setupPostSwipe(postElement) {
-            let startX = 0;
-            let currentX = 0;
-            let isSwiping = false;
-
-            postElement.addEventListener('touchstart', e => {
-                startX = e.touches[0].clientX;
-                isSwiping = true;
-            });
-
-            postElement.addEventListener('touchmove', e => {
-                if (!isSwiping) return;
-                currentX = e.touches[0].clientX;
-                const diff = startX - currentX;
-                
-                if (diff > 0) { // Swipe vers la gauche
-                    const swipeActions = postElement.querySelector('.post-swipe-actions');
-                    swipeActions.style.display = 'flex';
-                    swipeActions.style.transform = `translateX(${Math.min(diff, 80)}px)`;
-                }
-            });
-
-            postElement.addEventListener('touchend', () => {
-                isSwiping = false;
-                const swipeActions = postElement.querySelector('.post-swipe-actions');
-                if (Math.abs(startX - currentX) > 50) {
-                    swipeActions.style.transform = 'translateX(80px)';
-                } else {
-                    swipeActions.style.transform = 'translateX(0)';
-                    setTimeout(() => {
-                        swipeActions.style.display = 'none';
-                    }, 300);
-                }
-            });
-        }
-
-        // Configurer le swipe global
-        function setupSwipeGestures() {
-            let startX = 0;
-            let startY = 0;
-
-            document.addEventListener('touchstart', e => {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-            });
-
-            document.addEventListener('touchend', e => {
-                const endX = e.changedTouches[0].clientX;
-                const endY = e.changedTouches[0].clientY;
-                const diffX = startX - endX;
-                const diffY = startY - endY;
-
-                // Swipe horizontal pour changer de section
-                if (Math.abs(diffX) > 50 && Math.abs(diffY) < 30) {
-                    if (diffX > 0) {
-                        // Swipe gauche -> droite
-                        if (!document.getElementById('sidebar').classList.contains('active')) {
-                            toggleSidebar();
-                        }
-                    }
-                }
-            });
-        }
-
-        // Configurer le pull to refresh
-        function setupPullToRefresh() {
-            const feed = document.getElementById('feed');
-            let startY = 0;
-            let isRefreshing = false;
-
-            feed.addEventListener('touchstart', e => {
-                if (feed.scrollTop === 0) {
-                    startY = e.touches[0].pageY;
-                }
-            });
-
-            feed.addEventListener('touchmove', e => {
-                if (feed.scrollTop === 0 && !isRefreshing) {
-                    const currentY = e.touches[0].pageY;
-                    const diff = currentY - startY;
-                    
-                    if (diff > 0) {
-                        e.preventDefault();
-                        showPullToRefresh(diff);
-                    }
-                }
-            });
-
-            feed.addEventListener('touchend', () => {
-                if (isRefreshing) return;
-                
-                const refreshDiv = document.getElementById('pull-to-refresh');
-                if (parseInt(refreshDiv.style.height) > 60) {
-                    isRefreshing = true;
-                    refreshDiv.style.height = '80px';
-                    
-                    // Recharger les posts
-                    currentPage = 1;
-                    loadPosts();
-                    
-                    setTimeout(() => {
-                        isRefreshing = false;
-                        hidePullToRefresh();
-                    }, 2000);
-                } else {
-                    hidePullToRefresh();
-                }
-            });
-        }
-
-        // Afficher pull to refresh
-        function showPullToRefresh(diff) {
-            const refreshDiv = document.getElementById('pull-to-refresh');
-            const height = Math.min(diff, 150);
-            refreshDiv.style.display = 'block';
-            refreshDiv.style.height = height + 'px';
-            refreshDiv.style.opacity = Math.min(height / 100, 1);
-        }
-
-        // Cacher pull to refresh
-        function hidePullToRefresh() {
-            const refreshDiv = document.getElementById('pull-to-refresh');
-            refreshDiv.style.display = 'none';
-            refreshDiv.style.height = '0';
-        }
-
-        // Vider les posts
-        function clearPosts() {
-            document.getElementById('posts-container').innerHTML = '';
-            currentPage = 1;
-        }
-
-        // Afficher une alerte
-        function showAlert(type, message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i> ${message}`;
-            alertDiv.style.position = 'fixed';
-            alertDiv.style.top = '80px';
-            alertDiv.style.left = '20px';
-            alertDiv.style.right = '20px';
-            alertDiv.style.zIndex = '1000';
-            alertDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        
+        // Navigation Functions
+        async function loadExploreContent() {
+            feedContent.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
             
-            document.body.appendChild(alertDiv);
-            
-            setTimeout(() => {
-                alertDiv.style.opacity = '0';
-                alertDiv.style.transform = 'translateY(-20px)';
-                setTimeout(() => alertDiv.remove(), 300);
-            }, 3000);
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/explore/trending?timeframe=week&limit=10`);
+                
+                if (response.ok) {
+                    const trendingPosts = await response.json();
+                    renderPosts(trendingPosts);
+                }
+            } catch (error) {
+                console.error('Error loading explore content:', error);
+                feedContent.innerHTML = '<div class="post-card"><p>Erreur lors du chargement</p></div>';
+            }
         }
-
-        // Obtenir le temps écoulé
-        function getTimeAgo(date) {
+        
+        async function loadCodeSnippets() {
+            feedContent.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/code?limit=10`);
+                
+                if (response.ok) {
+                    const snippets = await response.json();
+                    
+                    if (snippets.length === 0) {
+                        feedContent.innerHTML = '<div class="post-card"><p>Aucun snippet de code à afficher</p></div>';
+                        return;
+                    }
+                    
+                    feedContent.innerHTML = '';
+                    
+                    snippets.forEach(snippet => {
+                        const snippetElement = document.createElement('div');
+                        snippetElement.className = 'post-card';
+                        snippetElement.innerHTML = `
+                            <div class="post-header">
+                                <div class="post-user">
+                                    <img src="${snippet.avatar_url || `https://ui-avatars.com/api/?name=${snippet.username}&background=3b82f6&color=fff`}" alt="Avatar" class="avatar">
+                                    <div class="post-user-info">
+                                        <h4>${snippet.username}</h4>
+                                        <span>${formatDate(snippet.created_at)}</span>
+                                    </div>
+                                </div>
+                                <div class="code-language">${snippet.language}</div>
+                            </div>
+                            
+                            <h3 style="margin-bottom: 10px;">${snippet.title}</h3>
+                            
+                            ${snippet.description ? `<p style="margin-bottom: 15px; color: var(--gray);">${snippet.description}</p>` : ''}
+                            
+                            <div class="code-snippet">
+                                <pre><code>${escapeHtml(snippet.code)}</code></pre>
+                            </div>
+                            
+                            ${snippet.tags && JSON.parse(snippet.tags).length > 0 ? 
+                                `<div class="post-tags" style="margin-top: 15px;">
+                                    ${JSON.parse(snippet.tags).map(tag => 
+                                        `<span class="hashtag">${tag}</span>`
+                                    ).join('')}
+                                </div>` : ''
+                            }
+                            
+                            <div class="post-stats">
+                                <span>${snippet.stars_count} étoiles</span>
+                            </div>
+                            
+                            <div class="post-actions-buttons">
+                                <button class="post-action-btn" onclick="starCodeSnippet('${snippet.id}')">
+                                    <i class="fas fa-star"></i>
+                                    <span>Étoile</span>
+                                </button>
+                                <button class="post-action-btn">
+                                    <i class="fas fa-code-branch"></i>
+                                    <span>Fork</span>
+                                </button>
+                                <button class="post-action-btn">
+                                    <i class="fas fa-share"></i>
+                                    <span>Partager</span>
+                                </button>
+                            </div>
+                        `;
+                        
+                        feedContent.appendChild(snippetElement);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading code snippets:', error);
+                feedContent.innerHTML = '<div class="post-card"><p>Erreur lors du chargement</p></div>';
+            }
+        }
+        
+        function loadMessages() {
+            feedContent.innerHTML = `
+                <div class="post-card" style="text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-comments" style="font-size: 48px; color: var(--gray-light); margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 10px;">Messagerie</h3>
+                    <p style="color: var(--gray); margin-bottom: 20px;">Connectez-vous pour accéder à la messagerie</p>
+                    ${!authToken ? '<button class="btn btn-primary" onclick="openAuthModal(\'login\')">Se connecter</button>' : ''}
+                </div>
+            `;
+        }
+        
+        function loadNotifications() {
+            feedContent.innerHTML = `
+                <div class="post-card" style="text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-bell" style="font-size: 48px; color: var(--gray-light); margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 10px;">Notifications</h3>
+                    <p style="color: var(--gray); margin-bottom: 20px;">Connectez-vous pour voir vos notifications</p>
+                    ${!authToken ? '<button class="btn btn-primary" onclick="openAuthModal(\'login\')">Se connecter</button>' : ''}
+                </div>
+            `;
+        }
+        
+        // Star Code Snippet
+        async function starCodeSnippet(snippetId) {
+            if (!authToken) {
+                openAuthModal('login');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/code/${snippetId}/star`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showToast('Snippet ajouté aux favoris !', 'success');
+                    loadCodeSnippets(); // Refresh to update star count
+                }
+            } catch (error) {
+                console.error('Error starring code snippet:', error);
+            }
+        }
+        
+        // Comment on Post (simplified)
+        function commentOnPost(postId) {
+            if (!authToken) {
+                openAuthModal('login');
+                return;
+            }
+            
+            const comment = prompt('Entrez votre commentaire :');
+            if (comment) {
+                showToast('Commentaire publié (simulation)', 'info');
+            }
+        }
+        
+        // Share Post
+        function sharePost(postId) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'HostHub Post',
+                    text: 'Regardez ce post sur HostHub!',
+                    url: window.location.href,
+                })
+                .then(() => showToast('Post partagé !', 'success'))
+                .catch(error => console.error('Error sharing:', error));
+            } else {
+                navigator.clipboard.writeText(`${window.location.origin}/post/${postId}`);
+                showToast('Lien copié dans le presse-papier', 'info');
+            }
+        }
+        
+        // Utility Functions
+        function extractHashtags(text) {
+            const hashtags = text.match(/#\w+/g) || [];
+            return hashtags.map(tag => tag.substring(1).toLowerCase());
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
             const now = new Date();
             const diffMs = now - date;
             const diffMins = Math.floor(diffMs / 60000);
             const diffHours = Math.floor(diffMs / 3600000);
             const diffDays = Math.floor(diffMs / 86400000);
-
+            
             if (diffMins < 1) return 'À l\'instant';
-            if (diffMins < 60) return `il y a ${diffMins} min`;
-            if (diffHours < 24) return `il y a ${diffHours} h`;
-            if (diffDays < 7) return `il y a ${diffDays} j`;
+            if (diffMins < 60) return `Il y a ${diffMins} min`;
+            if (diffHours < 24) return `Il y a ${diffHours} h`;
+            if (diffDays < 7) return `Il y a ${diffDays} j`;
+            
             return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
         }
-
-        // Afficher un modal
-        function showModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
-
-        // Fermer un modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.body.style.overflow = '';
-        }
-
-        // Vérifier la connexion
-        function checkConnection() {
-            if (!navigator.onLine) {
-                showAlert('error', 'Vous êtes hors ligne');
-            }
-        }
-
-        // Gérer la reconnexion
-        function handleOnline() {
-            showAlert('success', 'Connexion rétablie');
-            loadPosts();
-            loadNotifications();
-        }
-
-        // Gérer la déconnexion
-        function handleOffline() {
-            showAlert('error', 'Vous êtes hors ligne');
-        }
-
-        // Support hors ligne
-        function setupOfflineSupport() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').catch(console.error);
-            }
-        }
-
-        // Fetch avec timeout
-        async function fetchWithTimeout(url, options = {}, timeout = 10000) {
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), timeout);
+        
+        function showToast(message, type = 'info') {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
             
-            try {
-                const response = await fetch(url, {
-                    ...options,
-                    signal: controller.signal
-                });
-                clearTimeout(id);
-                return response;
-            } catch (error) {
-                clearTimeout(id);
-                throw error;
-            }
-        }
-
-        // Gestion des touches
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal('login-modal');
-                closeModal('register-modal');
-                closeModal('notifications-modal');
-                toggleSidebar();
-            }
-        });
-
-        // Fermer les modales en cliquant en dehors
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        };
-
-        // Prévenir les zooms sur mobile
-        document.addEventListener('touchmove', function(e) {
-            if (e.scale !== 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // Gestion de la rotation
-        window.addEventListener('orientationchange', function() {
+            // Create toast
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Style toast
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.padding = '12px 20px';
+            toast.style.background = type === 'success' ? 'var(--success)' : 
+                                   type === 'error' ? 'var(--danger)' : 
+                                   type === 'warning' ? 'var(--warning)' : 'var(--primary)';
+            toast.style.color = 'white';
+            toast.style.borderRadius = 'var(--radius)';
+            toast.style.boxShadow = 'var(--shadow)';
+            toast.style.zIndex = '1000';
+            toast.style.fontWeight = '500';
+            toast.style.fontSize = '14px';
+            toast.style.minWidth = '250px';
+            
+            // Add to page
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
             setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 100);
-        });
-
-        // Précharger les ressources
-        window.addEventListener('load', function() {
-            // Précharger les icônes
-            const icons = [
-                'fa-home', 'fa-user', 'fa-bell', 'fa-compass',
-                'fa-plus-circle', 'fa-heart', 'fa-comment', 'fa-share'
-            ];
-            
-            icons.forEach(icon => {
-                const img = new Image();
-                img.src = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/${icon}.svg`;
-            });
-        });
+                if (toast.parentNode) {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    }, 300);
+                }
+            }, 3000);
+        }
+        
+        // Make functions available globally
+        window.likePost = likePost;
+        window.commentOnPost = commentOnPost;
+        window.sharePost = sharePost;
+        window.followUser = followUser;
+        window.starCodeSnippet = starCodeSnippet;
+        window.openAuthModal = openAuthModal;
     </script>
 </body>
 </html>
