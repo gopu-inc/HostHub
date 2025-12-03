@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HostHub - Réseau Social pour Développeurs</title>
+    <title>HostHub - Plateforme Sociale</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/lib/common.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/monokai.min.css">
     <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #e63946;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,391 +25,296 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --dark: #1f2937;
-            --light: #f9fafb;
-            --gray: #6b7280;
-            --gray-light: #e5e7eb;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius: 12px;
-            --transition: all 0.3s ease;
-        }
-
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: var(--dark);
+            padding: 20px;
         }
 
-        /* Loading Screen */
-        #loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader {
-            width: 80px;
-            height: 80px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Application Container */
-        .app-container {
-            max-width: 1400px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
-            min-height: 100vh;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow-x: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            min-height: 90vh;
         }
 
-        /* Navigation */
-        .navbar {
-            background: white;
-            padding: 1rem 2rem;
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
             font-weight: bold;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .auth-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .auth-btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .register-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .register-btn:hover {
+            background: #d63384;
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            min-height: calc(100vh - 120px);
+        }
+
+        .sidebar {
+            background: var(--light);
+            padding: 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .user-profile {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .username {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: bold;
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
+        .menu-item:hover {
+            background: #e9ecef;
         }
 
-        .nav-link {
-            text-decoration: none;
-            color: var(--gray);
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-        }
-
-        .nav-link:hover {
-            color: var(--primary);
-            background: var(--light);
-        }
-
-        .nav-link.active {
-            color: var(--primary);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: var(--light);
-            padding: 2rem;
-            position: fixed;
-            left: 0;
-            top: 80px;
-            height: calc(100vh - 80px);
-            overflow-y: auto;
-            transition: var(--transition);
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .sidebar-section {
-            margin-bottom: 2rem;
-        }
-
-        .sidebar-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
-        }
-
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            color: var(--dark);
-        }
-
-        .sidebar-item:hover {
-            background: white;
-            transform: translateX(5px);
-        }
-
-        .sidebar-item.active {
+        .menu-item.active {
             background: var(--primary);
             color: white;
         }
 
-        .sidebar-item i {
-            width: 20px;
-            text-align: center;
+        .feed {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 120px);
         }
 
-        /* Main Content */
-        .main-content {
-            margin-left: 280px;
-            padding: 2rem;
-            min-height: calc(100vh - 80px);
-            transition: var(--transition);
-        }
-
-        .main-content.full {
-            margin-left: 0;
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Auth Pages */
-        .auth-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .auth-left {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 4rem;
-            color: white;
-        }
-
-        .auth-right {
-            flex: 1;
+        .create-post {
             background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
 
-        .auth-card {
+        .post-input {
             width: 100%;
-            max-width: 400px;
-        }
-
-        .auth-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .auth-subtitle {
-            color: var(--gray);
-            margin-bottom: 2rem;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
             font-size: 16px;
-            transition: var(--transition);
+            margin-bottom: 15px;
+            resize: vertical;
+            min-height: 100px;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-block {
-            width: 100%;
-        }
-
-        /* Dashboard */
-        .dashboard-header {
+        .post-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
         }
 
-        .dashboard-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--dark);
+        .media-buttons {
+            display: flex;
+            gap: 10px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--primary);
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
+        .media-btn {
+            background: var(--light);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
             color: var(--gray);
-            font-size: 14px;
+            transition: all 0.3s ease;
         }
 
-        /* Post Card */
-        .post-card {
+        .media-btn:hover {
+            background: #e9ecef;
+        }
+
+        .post-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .post-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post {
             background: white;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
         }
 
         .post-header {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .post-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-right: 1rem;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
         }
 
-        .post-user {
-            flex: 1;
+        .post-user-info {
+            flex-grow: 1;
         }
 
         .post-username {
             font-weight: 600;
-            color: var(--dark);
+            margin-bottom: 5px;
         }
 
         .post-time {
@@ -409,26 +323,34 @@
         }
 
         .post-content {
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
             line-height: 1.6;
         }
 
-        .post-actions {
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-actions-bar {
             display: flex;
-            gap: 1rem;
-            border-top: 1px solid var(--gray-light);
-            padding-top: 1rem;
+            gap: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
         }
 
         .post-action {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--gray);
             cursor: pointer;
-            transition: var(--transition);
-            padding: 0.5rem;
-            border-radius: var(--radius);
+            color: var(--gray);
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 8px;
         }
 
         .post-action:hover {
@@ -436,1360 +358,515 @@
             color: var(--primary);
         }
 
-        .post-action.liked {
-            color: var(--danger);
-        }
-
-        /* Create Post */
-        .create-post {
-            background: white;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-
-        .post-textarea {
-            width: 100%;
-            min-height: 100px;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            padding: 1rem;
-            font-size: 16px;
-            resize: vertical;
-            margin-bottom: 1rem;
-            transition: var(--transition);
-        }
-
-        .post-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .post-actions-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .media-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .media-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
+        .right-sidebar {
             background: var(--light);
-            color: var(--gray);
-            cursor: pointer;
-            transition: var(--transition);
+            padding: 20px;
+            border-left: 1px solid #eee;
         }
 
-        .media-btn:hover {
+        .trending {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .trending-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+        }
+
+        .hashtag {
+            display: inline-block;
+            background: var(--light);
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hashtag:hover {
             background: var(--primary);
             color: white;
         }
 
-        /* Profile Page */
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: var(--radius);
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .profile-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            border-radius: var(--radius);
-            opacity: 0.2;
-        }
-
-        .profile-info {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid white;
-            object-fit: cover;
-        }
-
-        .profile-details {
-            flex: 1;
-        }
-
-        .profile-name {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-bio {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
-
-        .profile-stats {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .profile-stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 24px;
-            font-weight: bold;
-            display: block;
-        }
-
-        .stat-text {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        /* Messages */
-        .messages-container {
-            display: flex;
-            height: calc(100vh - 180px);
+        .suggested-users {
             background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
+            border-radius: 15px;
+            padding: 20px;
         }
 
-        .conversations-sidebar {
-            width: 350px;
-            border-right: 1px solid var(--gray-light);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .conversations-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .conversations-search {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            font-size: 14px;
-        }
-
-        .conversations-list {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .conversation-item {
+        .user-suggestion {
             display: flex;
             align-items: center;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--gray-light);
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
         }
 
-        .conversation-item:hover, .conversation-item.active {
+        .user-suggestion:hover {
             background: var(--light);
         }
 
-        .conversation-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 1rem;
-        }
-
-        .conversation-info {
-            flex: 1;
-        }
-
-        .conversation-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .conversation-preview {
-            font-size: 12px;
-            color: var(--gray);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .conversation-time {
-            font-size: 11px;
-            color: var(--gray);
-        }
-
-        .chat-window {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--gray-light);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 1rem;
-            border-radius: var(--radius);
-            position: relative;
-        }
-
-        .message.sent {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .follow-btn {
+            background: var(--primary);
             color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message.received {
-            background: var(--light);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message-time {
-            font-size: 11px;
-            opacity: 0.7;
-            margin-top: 0.5rem;
-            text-align: right;
-        }
-
-        .chat-input-container {
-            padding: 1.5rem;
-            border-top: 1px solid var(--gray-light);
-            display: flex;
-            gap: 1rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            font-size: 14px;
-            resize: none;
-        }
-
-        /* Code Editor */
-        .code-editor-container {
-            background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .editor-header {
-            background: #2d2d2d;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .editor-title {
-            color: white;
-            font-size: 14px;
-            font-family: monospace;
-        }
-
-        .editor-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .editor-body {
-            position: relative;
-        }
-
-        .code-input {
-            width: 100%;
-            min-height: 300px;
-            padding: 1.5rem;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.6;
             border: none;
-            background: #1e1e1e;
-            color: #d4d4d4;
-            resize: vertical;
-        }
-
-        .language-selector {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            border: 2px solid var(--gray-light);
-            background: white;
-            font-size: 14px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
             cursor: pointer;
+            margin-left: auto;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .navbar {
-                padding: 1rem;
-            }
-            .messages-container {
-                flex-direction: column;
-                height: auto;
-            }
-            .conversations-sidebar {
-                width: 100%;
-                height: 400px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .auth-container {
-                flex-direction: column;
-            }
-            .auth-left, .auth-right {
-                padding: 2rem;
-            }
-            .profile-info {
-                flex-direction: column;
-                text-align: center;
-            }
-            .profile-stats {
-                justify-content: center;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Utilities */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-1 { margin-top: 0.5rem; }
-        .mt-2 { margin-top: 1rem; }
-        .mt-3 { margin-top: 1.5rem; }
-        .mt-4 { margin-top: 2rem; }
-        .mb-1 { margin-bottom: 0.5rem; }
-        .mb-2 { margin-bottom: 1rem; }
-        .mb-3 { margin-bottom: 1.5rem; }
-        .mb-4 { margin-bottom: 2rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-
-        .text-primary { color: var(--primary); }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
-        .text-gray { color: var(--gray); }
-
-        .bg-light { background: var(--light); }
-        .bg-primary { background: var(--primary); }
-        .bg-success { background: var(--success); }
-        .bg-danger { background: var(--danger); }
-
-        .rounded { border-radius: var(--radius); }
-        .rounded-full { border-radius: 50%; }
-
-        .shadow { box-shadow: var(--shadow); }
-
-        .w-full { width: 100%; }
-        .h-full { height: 100%; }
-
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-1 { gap: 0.5rem; }
-        .gap-2 { gap: 1rem; }
-        .gap-3 { gap: 1.5rem; }
-        .gap-4 { gap: 2rem; }
-
-        .cursor-pointer { cursor: pointer; }
-
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .sticky { position: sticky; }
-
-        .overflow-hidden { overflow: hidden; }
-        .overflow-auto { overflow: auto; }
-
-        .transition { transition: var(--transition); }
-
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: slideIn 0.3s ease;
-            box-shadow: var(--shadow);
-            min-width: 300px;
-        }
-
-        .toast.success { background: var(--success); }
-        .toast.error { background: var(--danger); }
-        .toast.warning { background: var(--warning); }
-        .toast.info { background: var(--primary); }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Modal */
         .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
             align-items: center;
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
+            justify-content: center;
         }
 
         .modal-content {
             background: white;
-            border-radius: var(--radius);
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: translateY(20px);
-            transition: var(--transition);
+            padding: 40px;
+            border-radius: 20px;
+            width: 400px;
+            max-width: 90%;
+            position: relative;
         }
 
-        .modal.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             font-size: 24px;
             cursor: pointer;
             color: var(--gray);
         }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-title {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .form-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-btn:hover {
+            background: var(--secondary);
+        }
+
+        .switch-auth {
+            text-align: center;
+            color: var(--gray);
+            margin-top: 20px;
+        }
+
+        .switch-auth span {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification-badge {
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .sidebar, .right-sidebar {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading">
-        <div class="loader"></div>
-        <h2 style="color: white; margin-top: 20px;">Chargement de HostHub...</h2>
-    </div>
-
-    <!-- Application Container -->
-    <div class="app-container" id="app" style="display: none;">
-        <!-- Navigation -->
-        <nav class="navbar">
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
             <div class="logo">
                 <i class="fas fa-code"></i>
-                HostHub
+                <span>HostHub</span>
             </div>
-            <div class="nav-links" id="navLinks">
-                <!-- Links will be populated by JavaScript -->
+            <nav class="nav">
+                <button class="nav-btn" onclick="showSection('feed')">
+                    <i class="fas fa-home"></i> Accueil
+                </button>
+                <button class="nav-btn" onclick="showSection('explore')">
+                    <i class="fas fa-compass"></i> Explorer
+                </button>
+                <button class="nav-btn" onclick="showSection('notifications')">
+                    <i class="fas fa-bell"></i> Notifications
+                    <span class="notification-badge" id="notification-count">0</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('messages')">
+                    <i class="fas fa-envelope"></i> Messages
+                </button>
+            </nav>
+            <div class="auth-section" id="auth-section">
+                <button class="auth-btn login-btn" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> Connexion
+                </button>
+                <button class="auth-btn register-btn" onclick="showRegisterModal()">
+                    <i class="fas fa-user-plus"></i> Inscription
+                </button>
             </div>
-            <div class="user-menu" id="userMenu">
-                <!-- User menu will be populated by JavaScript -->
+            <div class="user-menu" id="user-menu" style="display: none;">
+                <button class="nav-btn" onclick="showUserProfile()">
+                    <i class="fas fa-user"></i> Profil
+                </button>
+                <button class="nav-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
             </div>
-        </nav>
-
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <!-- Sidebar content will be populated by JavaScript -->
-        </div>
+        </header>
 
         <!-- Main Content -->
-        <div class="main-content" id="mainContent">
-            <!-- Pages will be loaded here -->
+        <div class="main-content">
+            <!-- Left Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="user-profile">
+                    <div class="avatar" id="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="username" id="user-name">Utilisateur</div>
+                    <div class="user-email" id="user-email">email@example.com</div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number" id="followers-count">0</div>
+                            <div class="stat-label">Abonnés</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="following-count">0</div>
+                            <div class="stat-label">Abonnements</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="posts-count">0</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="menu">
+                    <li class="menu-item active" onclick="showSection('feed')">
+                        <i class="fas fa-home"></i> Fil d'actualité
+                    </li>
+                    <li class="menu-item" onclick="showSection('profile')">
+                        <i class="fas fa-user"></i> Mon profil
+                    </li>
+                    <li class="menu-item" onclick="showSection('code')">
+                        <i class="fas fa-code"></i> Code snippets
+                    </li>
+                    <li class="menu-item" onclick="showSection('stories')">
+                        <i class="fas fa-history"></i> Stories
+                    </li>
+                    <li class="menu-item" onclick="showSection('groups')">
+                        <i class="fas fa-users"></i> Groupes
+                    </li>
+                    <li class="menu-item" onclick="showSection('marketplace')">
+                        <i class="fas fa-store"></i> Marketplace
+                    </li>
+                    <li class="menu-item" onclick="showSection('servers')">
+                        <i class="fas fa-server"></i> Serveurs
+                    </li>
+                    <li class="menu-item" onclick="showSection('settings')">
+                        <i class="fas fa-cog"></i> Paramètres
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Feed -->
+            <main class="feed" id="feed">
+                <!-- Create Post -->
+                <div class="create-post" id="create-post" style="display: none;">
+                    <textarea class="post-input" id="post-content" placeholder="Quoi de neuf ?"></textarea>
+                    <div class="post-actions">
+                        <div class="media-buttons">
+                            <button class="media-btn" onclick="addImageToPost()">
+                                <i class="fas fa-image"></i> Photo
+                            </button>
+                            <button class="media-btn" onclick="addVideoToPost()">
+                                <i class="fas fa-video"></i> Vidéo
+                            </button>
+                            <button class="media-btn" onclick="addCodeToPost()">
+                                <i class="fas fa-code"></i> Code
+                            </button>
+                        </div>
+                        <button class="post-btn" onclick="createPost()">
+                            <i class="fas fa-paper-plane"></i> Publier
+                        </button>
+                    </div>
+                    <input type="file" id="media-upload" style="display: none;" accept="image/*,video/*">
+                </div>
+
+                <!-- Posts -->
+                <div class="posts" id="posts-container">
+                    <div class="loading" id="loading-posts">
+                        <i class="fas fa-spinner"></i>
+                        <p>Chargement des posts...</p>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar" id="right-sidebar">
+                <div class="trending">
+                    <div class="trending-title">
+                        <i class="fas fa-fire"></i> Tendances
+                    </div>
+                    <div id="trending-hashtags">
+                        <span class="hashtag">#programming</span>
+                        <span class="hashtag">#webdev</span>
+                        <span class="hashtag">#javascript</span>
+                        <span class="hashtag">#python</span>
+                        <span class="hashtag">#hosthub</span>
+                    </div>
+                </div>
+                <div class="suggested-users">
+                    <div class="trending-title">
+                        <i class="fas fa-user-plus"></i> À suivre
+                    </div>
+                    <div id="suggested-users">
+                        <div class="user-suggestion">
+                            <div class="avatar" style="width: 40px; height: 40px; font-size: 14px;">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <div class="username">John Doe</div>
+                                <div class="user-email">@johndoe</div>
+                            </div>
+                            <button class="follow-btn">Suivre</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Modals -->
-    <div class="modal" id="profileModal">
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Modifier le profil</h3>
-                <button class="modal-close" onclick="closeModal('profileModal')">×</button>
-            </div>
-            <form id="editProfileForm">
-                <div class="form-group">
-                    <label class="form-label">Nom complet</label>
-                    <input type="text" class="form-control" id="editFullName">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Bio</label>
-                    <textarea class="form-control" id="editBio" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Photo de profil</label>
-                    <input type="file" class="form-control" id="editAvatar" accept="image/*">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+            <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
+            <h2 class="form-title">Connexion</h2>
+            <div class="alert" id="login-alert"></div>
+            <form class="auth-form" onsubmit="event.preventDefault(); login();">
+                <input type="email" class="form-input" id="login-email" placeholder="Email" required>
+                <input type="password" class="form-input" id="login-password" placeholder="Mot de passe" required>
+                <button type="submit" class="form-btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
             </form>
+            <div class="switch-auth">
+                Pas encore de compte ? <span onclick="showRegisterModal()">S'inscrire</span>
+            </div>
         </div>
     </div>
 
-    <!-- Script -->
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('register-modal')">&times;</span>
+            <h2 class="form-title">Inscription</h2>
+            <div class="alert" id="register-alert"></div>
+            <form class="auth-form" onsubmit="event.preventDefault(); register();">
+                <input type="text" class="form-input" id="register-username" placeholder="Nom d'utilisateur" required>
+                <input type="email" class="form-input" id="register-email" placeholder="Email" required>
+                <input type="password" class="form-input" id="register-password" placeholder="Mot de passe (min 8 caractères)" required>
+                <input type="text" class="form-input" id="register-fullname" placeholder="Nom complet (optionnel)">
+                <textarea class="form-input" id="register-bio" placeholder="Bio (optionnel)" rows="3"></textarea>
+                <button type="submit" class="form-btn" id="register-btn">
+                    <i class="fas fa-user-plus"></i> S'inscrire
+                </button>
+            </form>
+            <div class="switch-auth">
+                Déjà un compte ? <span onclick="showLoginModal()">Se connecter</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Configuration -->
     <script>
-        // Configuration
-        const API_URL = 'https://serv-ynsd.onrender.com';
+        const API_BASE_URL = 'https://serv-ynsd.onrender.com/api';
         let currentUser = null;
-        let token = localStorage.getItem('hosthub_token');
-        let currentPage = 'login';
-        let posts = [];
-        let conversations = [];
-        let currentChat = null;
+        let authToken = localStorage.getItem('hosthub_token');
 
-        // Initialize application
-        window.addEventListener('DOMContentLoaded', async () => {
-            // Simulate loading
-            setTimeout(() => {
-                document.getElementById('loading').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('app').style.display = 'block';
-                    checkAuth();
-                }, 500);
-            }, 1500);
-
-            // Setup event listeners
-            setupEventListeners();
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            loadPosts();
+            loadTrendingHashtags();
+            loadSuggestedUsers();
         });
 
-        // Check authentication
-        async function checkAuth() {
-            if (token) {
+        // Vérifier l'état d'authentification
+        async function checkAuthStatus() {
+            if (authToken) {
                 try {
-                    const response = await fetch(`${API_URL}/api/auth/me`, {
+                    const response = await fetch(`${API_BASE_URL}/auth/me`, {
                         headers: {
-                            'Authorization': `Bearer ${token}`
+                            'Authorization': `Bearer ${authToken}`
                         }
                     });
                     
                     if (response.ok) {
-                        currentUser = await response.json();
-                        showPage('dashboard');
+                        const userData = await response.json();
+                        currentUser = userData;
+                        showUserInterface();
+                        updateUserInfo(userData);
+                        loadNotifications();
                     } else {
                         localStorage.removeItem('hosthub_token');
-                        showPage('login');
+                        authToken = null;
+                        showAuthInterface();
                     }
                 } catch (error) {
-                    showPage('login');
+                    console.error('Erreur de vérification auth:', error);
+                    showAuthInterface();
                 }
             } else {
-                showPage('login');
+                showAuthInterface();
             }
         }
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Global click handler
-            document.addEventListener('click', (e) => {
-                // Handle nav links
-                if (e.target.classList.contains('nav-link')) {
-                    e.preventDefault();
-                    const page = e.target.dataset.page;
-                    showPage(page);
-                }
-
-                // Handle sidebar items
-                if (e.target.classList.contains('sidebar-item') || e.target.closest('.sidebar-item')) {
-                    const item = e.target.classList.contains('sidebar-item') ? e.target : e.target.closest('.sidebar-item');
-                    const page = item.dataset.page;
-                    if (page) {
-                        showPage(page);
-                    }
-                }
-
-                // Handle like buttons
-                if (e.target.classList.contains('like-btn') || e.target.closest('.like-btn')) {
-                    const btn = e.target.classList.contains('like-btn') ? e.target : e.target.closest('.like-btn');
-                    const postId = btn.dataset.postId;
-                    toggleLike(postId, btn);
-                }
-            });
-
-            // Handle form submissions
-            document.addEventListener('submit', (e) => {
-                if (e.target.id === 'loginForm') {
-                    e.preventDefault();
-                    handleLogin();
-                }
-                if (e.target.id === 'registerForm') {
-                    e.preventDefault();
-                    handleRegister();
-                }
-                if (e.target.id === 'createPostForm') {
-                    e.preventDefault();
-                    handleCreatePost();
-                }
-                if (e.target.id === 'sendMessageForm') {
-                    e.preventDefault();
-                    handleSendMessage();
-                }
-                if (e.target.id === 'editProfileForm') {
-                    e.preventDefault();
-                    handleEditProfile();
-                }
-            });
+        // Afficher interface utilisateur
+        function showUserInterface() {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('user-menu').style.display = 'flex';
+            document.getElementById('sidebar').style.display = 'block';
+            document.getElementById('create-post').style.display = 'block';
+            document.getElementById('right-sidebar').style.display = 'block';
         }
 
-        // Show toast notification
-        function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
-                <span>${message}</span>
-            `;
-            toastContainer.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 5000);
+        // Afficher interface auth
+        function showAuthInterface() {
+            document.getElementById('auth-section').style.display = 'flex';
+            document.getElementById('user-menu').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'none';
+            document.getElementById('create-post').style.display = 'none';
+            document.getElementById('right-sidebar').style.display = 'block';
         }
 
-        // Show modal
-        function showModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        // Close modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Show page
-        async function showPage(page) {
-            currentPage = page;
+        // Mettre à jour les infos utilisateur
+        function updateUserInfo(userData) {
+            document.getElementById('user-name').textContent = userData.username;
+            document.getElementById('user-email').textContent = userData.email;
+            document.getElementById('user-avatar').innerHTML = userData.avatar_url ? 
+                `<img src="${userData.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : 
+                `<i class="fas fa-user"></i>`;
             
-            // Update navigation
-            updateNavigation();
-            
-            // Update sidebar
-            updateSidebar();
-            
-            // Load page content
-            const mainContent = document.getElementById('mainContent');
-            
-            switch(page) {
-                case 'login':
-                    mainContent.innerHTML = getLoginPage();
-                    break;
-                case 'register':
-                    mainContent.innerHTML = getRegisterPage();
-                    break;
-                case 'dashboard':
-                    await loadPosts();
-                    mainContent.innerHTML = getDashboardPage();
-                    break;
-                case 'profile':
-                    mainContent.innerHTML = getProfilePage();
-                    break;
-                case 'explore':
-                    mainContent.innerHTML = getExplorePage();
-                    break;
-                case 'messages':
-                    await loadConversations();
-                    mainContent.innerHTML = getMessagesPage();
-                    break;
-                case 'code':
-                    mainContent.innerHTML = getCodePage();
-                    break;
+            if (userData.full_name) {
+                document.getElementById('user-name').textContent = userData.full_name;
             }
             
-            // Show/hide sidebar
-            const sidebar = document.getElementById('sidebar');
-            const shouldShowSidebar = !['login', 'register'].includes(page);
-            if (shouldShowSidebar) {
-                sidebar.classList.remove('hidden');
-                mainContent.classList.remove('full');
-            } else {
-                sidebar.classList.add('hidden');
-                mainContent.classList.add('full');
+            // Mettre à jour les statistiques
+            if (userData.followers_count !== undefined) {
+                document.getElementById('followers-count').textContent = userData.followers_count;
+            }
+            if (userData.following_count !== undefined) {
+                document.getElementById('following-count').textContent = userData.following_count;
+            }
+            if (userData.posts_count !== undefined) {
+                document.getElementById('posts-count').textContent = userData.posts_count;
             }
         }
 
-        // Update navigation
-        function updateNavigation() {
-            const navLinks = document.getElementById('navLinks');
-            const userMenu = document.getElementById('userMenu');
-            
-            if (currentUser) {
-                navLinks.innerHTML = `
-                    <a href="#" class="nav-link ${currentPage === 'dashboard' ? 'active' : ''}" data-page="dashboard">
-                        <i class="fas fa-home"></i> Accueil
-                    </a>
-                    <a href="#" class="nav-link ${currentPage === 'explore' ? 'active' : ''}" data-page="explore">
-                        <i class="fas fa-compass"></i> Explorer
-                    </a>
-                    <a href="#" class="nav-link ${currentPage === 'code' ? 'active' : ''}" data-page="code">
-                        <i class="fas fa-code"></i> Code
-                    </a>
-                    <a href="#" class="nav-link ${currentPage === 'messages' ? 'active' : ''}" data-page="messages">
-                        <i class="fas fa-envelope"></i> Messages
-                    </a>
-                `;
-                
-                userMenu.innerHTML = `
-                    <img src="${currentUser.avatar_url || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=6366f1&color=fff'}" 
-                         alt="${currentUser.username}" class="user-avatar">
-                    <span>${currentUser.username}</span>
-                    <button class="btn btn-primary" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                `;
-            } else {
-                navLinks.innerHTML = `
-                    <a href="#" class="nav-link ${currentPage === 'login' ? 'active' : ''}" data-page="login">
-                        Connexion
-                    </a>
-                    <a href="#" class="nav-link ${currentPage === 'register' ? 'active' : ''}" data-page="register">
-                        Inscription
-                    </a>
-                `;
-                userMenu.innerHTML = '';
-            }
-        }
+        // Connexion
+        async function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const loginBtn = document.getElementById('login-btn');
+            const alertDiv = document.getElementById('login-alert');
 
-        // Update sidebar
-        function updateSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            
-            if (currentUser) {
-                sidebar.innerHTML = `
-                    <div class="sidebar-section">
-                        <div class="sidebar-title">Navigation</div>
-                        <a href="#" class="sidebar-item ${currentPage === 'dashboard' ? 'active' : ''}" data-page="dashboard">
-                            <i class="fas fa-home"></i> Tableau de bord
-                        </a>
-                        <a href="#" class="sidebar-item ${currentPage === 'profile' ? 'active' : ''}" data-page="profile">
-                            <i class="fas fa-user"></i> Mon profil
-                        </a>
-                        <a href="#" class="sidebar-item ${currentPage === 'explore' ? 'active' : ''}" data-page="explore">
-                            <i class="fas fa-compass"></i> Explorer
-                        </a>
-                        <a href="#" class="sidebar-item ${currentPage === 'messages' ? 'active' : ''}" data-page="messages">
-                            <i class="fas fa-envelope"></i> Messages
-                        </a>
-                        <a href="#" class="sidebar-item ${currentPage === 'code' ? 'active' : ''}" data-page="code">
-                            <i class="fas fa-code"></i> Code Snippets
-                        </a>
-                    </div>
-                    
-                    <div class="sidebar-section">
-                        <div class="sidebar-title">Communautés</div>
-                        <a href="#" class="sidebar-item">
-                            <i class="fas fa-users"></i> Développeurs Web
-                        </a>
-                        <a href="#" class="sidebar-item">
-                            <i class="fas fa-robot"></i> Intelligence Artificielle
-                        </a>
-                        <a href="#" class="sidebar-item">
-                            <i class="fas fa-mobile-alt"></i> Mobile Dev
-                        </a>
-                        <a href="#" class="sidebar-item">
-                            <i class="fas fa-gamepad"></i> Game Dev
-                        </a>
-                    </div>
-                    
-                    <div class="sidebar-section">
-                        <div class="sidebar-title">HCoins</div>
-                        <div class="sidebar-item">
-                            <i class="fas fa-coins" style="color: #f59e0b;"></i>
-                            <span>Balance: <strong>${currentUser.hcoins_balance || 0}</strong> HCoins</span>
-                        </div>
-                        <a href="#" class="sidebar-item">
-                            <i class="fas fa-store"></i> Marketplace
-                        </a>
-                        <a href="#" class="sidebar-item">
-                            <i class="fas fa-trophy"></i> Défis
-                        </a>
-                    </div>
-                `;
-            }
-        }
-
-        // Page templates
-        function getLoginPage() {
-            return `
-                <div class="auth-container">
-                    <div class="auth-left">
-                        <h1 style="font-size: 48px; font-weight: bold; margin-bottom: 20px;">Bienvenue sur HostHub</h1>
-                        <p style="font-size: 18px; opacity: 0.9;">
-                            Rejoignez la plus grande communauté de développeurs. Partagez du code, 
-                            collaborez sur des projets et développez vos compétences.
-                        </p>
-                        <div style="margin-top: 40px;">
-                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                                <i class="fas fa-code" style="font-size: 24px;"></i>
-                                <span>Partage de code en temps réel</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                                <i class="fas fa-users" style="font-size: 24px;"></i>
-                                <span>Communauté de 50,000+ développeurs</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <i class="fas fa-trophy" style="font-size: 24px;"></i>
-                                <span>Défis et compétitions de codage</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="auth-right">
-                        <div class="auth-card">
-                            <h2 class="auth-title">Connexion</h2>
-                            <p class="auth-subtitle">Accédez à votre compte HostHub</p>
-                            <form id="loginForm">
-                                <div class="form-group">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="loginEmail" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Mot de passe</label>
-                                    <input type="password" class="form-control" id="loginPassword" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    <i class="fas fa-sign-in-alt"></i> Se connecter
-                                </button>
-                            </form>
-                            <p class="text-center mt-3">
-                                Pas de compte ? <a href="#" class="text-primary" onclick="showPage('register')">S'inscrire</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getRegisterPage() {
-            return `
-                <div class="auth-container">
-                    <div class="auth-left">
-                        <h1 style="font-size: 48px; font-weight: bold; margin-bottom: 20px;">Rejoignez HostHub</h1>
-                        <p style="font-size: 18px; opacity: 0.9;">
-                            Créez votre profil de développeur, partagez vos projets et connectez-vous 
-                            avec d'autres passionnés de technologie.
-                        </p>
-                        <div style="margin-top: 40px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
-                            <h3 style="margin-bottom: 15px;">Pourquoi rejoindre HostHub ?</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                                    <i class="fas fa-check-circle"></i> Portfolio de code personnel
-                                </li>
-                                <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                                    <i class="fas fa-check-circle"></i> Messagerie en temps réel
-                                </li>
-                                <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                                    <i class="fas fa-check-circle"></i> Marketplace de templates
-                                </li>
-                                <li style="display: flex; align-items: center; gap: 10px;">
-                                    <i class="fas fa-check-circle"></i> Système de badges et récompenses
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="auth-right">
-                        <div class="auth-card">
-                            <h2 class="auth-title">Inscription</h2>
-                            <p class="auth-subtitle">Créez votre compte gratuitement</p>
-                            <form id="registerForm">
-                                <div class="form-group">
-                                    <label class="form-label">Nom d'utilisateur</label>
-                                    <input type="text" class="form-control" id="registerUsername" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="registerEmail" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Mot de passe</label>
-                                    <input type="password" class="form-control" id="registerPassword" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Nom complet (optionnel)</label>
-                                    <input type="text" class="form-control" id="registerFullName">
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    <i class="fas fa-user-plus"></i> S'inscrire
-                                </button>
-                            </form>
-                            <p class="text-center mt-3">
-                                Déjà un compte ? <a href="#" class="text-primary" onclick="showPage('login')">Se connecter</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getDashboardPage() {
-            return `
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">Tableau de bord</h1>
-                    <div>
-                        <button class="btn btn-primary" onclick="showModal('profileModal')">
-                            <i class="fas fa-edit"></i> Modifier le profil
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">${currentUser.followers_count || 0}</div>
-                        <div class="stat-label">Abonnés</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${currentUser.following_count || 0}</div>
-                        <div class="stat-label">Abonnements</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${currentUser.posts_count || 0}</div>
-                        <div class="stat-label">Publications</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${currentUser.hcoins_balance || 0}</div>
-                        <div class="stat-label">HCoins</div>
-                    </div>
-                </div>
-                
-                <div class="create-post">
-                    <form id="createPostForm">
-                        <textarea class="post-textarea" id="postContent" placeholder="Partagez quelque chose avec la communauté..."></textarea>
-                        <div class="post-actions-bar">
-                            <div class="media-buttons">
-                                <button type="button" class="media-btn">
-                                    <i class="fas fa-image"></i>
-                                </button>
-                                <button type="button" class="media-btn">
-                                    <i class="fas fa-video"></i>
-                                </button>
-                                <button type="button" class="media-btn">
-                                    <i class="fas fa-code"></i>
-                                </button>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i> Publier
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                
-                <div id="postsContainer">
-                    ${posts.map(post => `
-                        <div class="post-card">
-                            <div class="post-header">
-                                <img src="${post.user?.avatar_url || 'https://ui-avatars.com/api/?name=' + post.user?.username + '&background=6366f1&color=fff'}" 
-                                     alt="${post.user?.username}" class="post-avatar">
-                                <div class="post-user">
-                                    <div class="post-username">${post.user?.username}</div>
-                                    <div class="post-time">${new Date(post.created_at).toLocaleDateString('fr-FR', { 
-                                        hour: '2-digit', 
-                                        minute: '2-digit',
-                                        day: 'numeric',
-                                        month: 'short'
-                                    })}</div>
-                                </div>
-                            </div>
-                            <div class="post-content">${post.content}</div>
-                            ${post.media_urls && post.media_urls.length > 0 ? `
-                                <div style="margin-bottom: 1rem;">
-                                    <img src="${post.media_urls[0]}" alt="Post image" style="width: 100%; border-radius: 8px; max-height: 400px; object-fit: cover;">
-                                </div>
-                            ` : ''}
-                            <div class="post-actions">
-                                <div class="post-action like-btn ${post.liked ? 'liked' : ''}" data-post-id="${post.id}">
-                                    <i class="fas fa-heart"></i>
-                                    <span>${post.likes_count || 0}</span>
-                                </div>
-                                <div class="post-action">
-                                    <i class="fas fa-comment"></i>
-                                    <span>${post.comments_count || 0}</span>
-                                </div>
-                                <div class="post-action">
-                                    <i class="fas fa-share"></i>
-                                    <span>${post.shares_count || 0}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function getProfilePage() {
-            return `
-                <div class="profile-header">
-                    <div class="profile-cover" style="background-image: url('https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"></div>
-                    <div class="profile-info">
-                        <img src="${currentUser.avatar_url || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=6366f1&color=fff'}" 
-                             alt="${currentUser.username}" class="profile-avatar">
-                        <div class="profile-details">
-                            <h1 class="profile-name">${currentUser.full_name || currentUser.username}</h1>
-                            <p class="profile-bio">${currentUser.bio || 'Aucune bio pour le moment.'}</p>
-                            <div class="profile-stats">
-                                <div class="profile-stat">
-                                    <span class="stat-number">${currentUser.posts_count || 0}</span>
-                                    <span class="stat-text">Publications</span>
-                                </div>
-                                <div class="profile-stat">
-                                    <span class="stat-number">${currentUser.followers_count || 0}</span>
-                                    <span class="stat-text">Abonnés</span>
-                                </div>
-                                <div class="profile-stat">
-                                    <span class="stat-number">${currentUser.following_count || 0}</span>
-                                    <span class="stat-text">Abonnements</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="showModal('profileModal')">
-                            <i class="fas fa-edit"></i> Modifier
-                        </button>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-                    <div>
-                        <h2 class="mb-3">Publications récentes</h2>
-                        ${posts.filter(p => p.user_id === currentUser.id).slice(0, 5).map(post => `
-                            <div class="post-card">
-                                <div class="post-content">${post.content}</div>
-                                <div class="post-time" style="font-size: 12px; color: var(--gray);">
-                                    ${new Date(post.created_at).toLocaleDateString('fr-FR')}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <div>
-                        <div class="stat-card mb-4">
-                            <h3 class="mb-2">Badges</h3>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                <div style="background: gold; color: black; padding: 5px 10px; border-radius: 20px; font-size: 12px;">
-                                    <i class="fas fa-award"></i> Débutant
-                                </div>
-                                <div style="background: silver; color: black; padding: 5px 10px; border-radius: 20px; font-size: 12px;">
-                                    <i class="fas fa-code"></i> Codeur
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <h3 class="mb-2">Compétences</h3>
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                <span style="background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">JavaScript</span>
-                                <span style="background: var(--secondary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">React</span>
-                                <span style="background: var(--success); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">Node.js</span>
-                                <span style="background: var(--warning); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">Python</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getExplorePage() {
-            return `
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">Explorer</h1>
-                    <div style="display: flex; gap: 1rem;">
-                        <input type="text" class="form-control" placeholder="Rechercher des posts, utilisateurs..." style="width: 300px;">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div class="post-card">
-                        <div class="post-header">
-                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=10b981&color=fff" class="post-avatar">
-                            <div class="post-user">
-                                <div class="post-username">John Doe</div>
-                                <div class="post-time">Il y a 2 heures</div>
-                            </div>
-                        </div>
-                        <div class="post-content">
-                            J'ai créé un nouveau framework React pour les applications à grande échelle. 
-                            Open-source et disponible sur GitHub !
-                        </div>
-                        <div class="post-actions">
-                            <div class="post-action">
-                                <i class="fas fa-heart"></i>
-                                <span>245</span>
-                            </div>
-                            <div class="post-action">
-                                <i class="fas fa-comment"></i>
-                                <span>42</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="post-card">
-                        <div class="post-header">
-                            <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=8b5cf6&color=fff" class="post-avatar">
-                            <div class="post-user">
-                                <div class="post-username">Jane Smith</div>
-                                <div class="post-time">Il y a 5 heures</div>
-                            </div>
-                        </div>
-                        <div class="post-content">
-                            Nouveau tutoriel sur l'IA générative avec Python. Code complet disponible avec explications détaillées.
-                        </div>
-                        <div class="post-actions">
-                            <div class="post-action">
-                                <i class="fas fa-heart"></i>
-                                <span>189</span>
-                            </div>
-                            <div class="post-action">
-                                <i class="fas fa-comment"></i>
-                                <span>31</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="post-card">
-                        <div class="post-header">
-                            <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=ef4444&color=fff" class="post-avatar">
-                            <div class="post-user">
-                                <div class="post-username">Mike Johnson</div>
-                                <div class="post-time">Hier</div>
-                            </div>
-                        </div>
-                        <div class="post-content">
-                            J'ai lancé un nouveau défi de codage : créer un clone de Netflix en 48 heures. 
-                            Prix de 500 HCoins pour le gagnant !
-                        </div>
-                        <div class="post-actions">
-                            <div class="post-action">
-                                <i class="fas fa-heart"></i>
-                                <span>312</span>
-                            </div>
-                            <div class="post-action">
-                                <i class="fas fa-comment"></i>
-                                <span>67</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getMessagesPage() {
-            return `
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">Messages</h1>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nouvelle conversation
-                    </button>
-                </div>
-                
-                <div class="messages-container">
-                    <div class="conversations-sidebar">
-                        <div class="conversations-header">
-                            <input type="text" class="conversations-search" placeholder="Rechercher une conversation...">
-                        </div>
-                        <div class="conversations-list" id="conversationsList">
-                            ${conversations.map(conv => `
-                                <div class="conversation-item ${currentChat?.id === conv.id ? 'active' : ''}" 
-                                     onclick="selectConversation('${conv.id}')">
-                                    <img src="${conv.avatar || 'https://ui-avatars.com/api/?name=' + conv.name + '&background=6366f1&color=fff'}" 
-                                         class="conversation-avatar">
-                                    <div class="conversation-info">
-                                        <div class="conversation-name">${conv.name}</div>
-                                        <div class="conversation-preview">${conv.lastMessage}</div>
-                                    </div>
-                                    <div class="conversation-time">${conv.time}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="chat-window" id="chatWindow">
-                        ${currentChat ? `
-                            <div class="chat-header">
-                                <img src="${currentChat.avatar}" class="conversation-avatar">
-                                <div>
-                                    <div style="font-weight: bold;">${currentChat.name}</div>
-                                    <div style="font-size: 12px; color: var(--success);">En ligne</div>
-                                </div>
-                            </div>
-                            <div class="chat-messages" id="chatMessages">
-                                <!-- Messages will be loaded here -->
-                            </div>
-                            <form id="sendMessageForm" class="chat-input-container">
-                                <input type="text" class="chat-input" id="messageInput" placeholder="Tapez votre message...">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </form>
-                        ` : `
-                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--gray);">
-                                <i class="fas fa-comments" style="font-size: 64px; margin-bottom: 20px;"></i>
-                                <h3>Sélectionnez une conversation</h3>
-                                <p>Choisissez un contact pour commencer à discuter</p>
-                            </div>
-                        `}
-                    </div>
-                </div>
-            `;
-        }
-
-        function getCodePage() {
-            return `
-                <div class="dashboard-header">
-                    <h1 class="dashboard-title">Éditeur de Code</h1>
-                    <div style="display: flex; gap: 1rem;">
-                        <select class="language-selector" id="languageSelect">
-                            <option value="javascript">JavaScript</option>
-                            <option value="python">Python</option>
-                            <option value="html">HTML</option>
-                            <option value="css">CSS</option>
-                            <option value="java">Java</option>
-                            <option value="cpp">C++</option>
-                        </select>
-                        <button class="btn btn-success" onclick="runCode()">
-                            <i class="fas fa-play"></i> Exécuter
-                        </button>
-                        <button class="btn btn-primary" onclick="saveSnippet()">
-                            <i class="fas fa-save"></i> Sauvegarder
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="code-editor-container">
-                    <div class="editor-header">
-                        <div class="editor-title">main.js</div>
-                        <div class="editor-actions">
-                            <button class="media-btn" style="background: #3b82f6; color: white;">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="media-btn" style="background: #10b981; color: white;">
-                                <i class="fas fa-share"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="editor-body">
-                        <textarea class="code-input" id="codeEditor" spellcheck="false">// Bienvenue dans l'éditeur de code HostHub
-// Écrivez votre code ici
-
-function helloWorld() {
-    console.log("Hello, HostHub!");
-    return "Code exécuté avec succès!";
-}
-
-// Appeler la fonction
-helloWorld();</textarea>
-                    </div>
-                </div>
-                
-                <div class="post-card">
-                    <h3 class="mb-3">Sortie</h3>
-                    <div id="codeOutput" style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; font-family: monospace; min-height: 100px;">
-                        // La sortie apparaîtra ici
-                    </div>
-                </div>
-            `;
-        }
-
-        // API Functions
-        async function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+            loginBtn.disabled = true;
 
             try {
-                const response = await fetch(`${API_URL}/api/auth/login`, {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1797,247 +874,467 @@ helloWorld();</textarea>
                     body: JSON.stringify({ email, password })
                 });
 
+                const data = await response.json();
+
                 if (response.ok) {
-                    const data = await response.json();
-                    token = data.access_token;
-                    currentUser = data.user;
+                    authToken = data.access_token;
+                    localStorage.setItem('hosthub_token', authToken);
                     
-                    localStorage.setItem('hosthub_token', token);
-                    localStorage.setItem('hosthub_user', JSON.stringify(currentUser));
+                    alertDiv.className = 'alert alert-success';
+                    alertDiv.innerHTML = '<i class="fas fa-check-circle"></i> Connexion réussie !';
+                    alertDiv.style.display = 'block';
                     
-                    showToast('Connexion réussie !', 'success');
-                    showPage('dashboard');
+                    setTimeout(async () => {
+                        closeModal('login-modal');
+                        await checkAuthStatus();
+                        loadPosts();
+                    }, 1500);
                 } else {
-                    throw new Error('Identifiants incorrects');
+                    throw new Error(data.detail || 'Erreur de connexion');
                 }
             } catch (error) {
-                showToast(error.message, 'error');
+                alertDiv.className = 'alert alert-error';
+                alertDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
+                alertDiv.style.display = 'block';
+            } finally {
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
+                loginBtn.disabled = false;
             }
         }
 
-        async function handleRegister() {
-            const username = document.getElementById('registerUsername').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const fullName = document.getElementById('registerFullName').value;
+        // Inscription
+        async function register() {
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const fullName = document.getElementById('register-fullname').value;
+            const bio = document.getElementById('register-bio').value;
+            const registerBtn = document.getElementById('register-btn');
+            const alertDiv = document.getElementById('register-alert');
+
+            if (password.length < 8) {
+                alertDiv.className = 'alert alert-error';
+                alertDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Le mot de passe doit contenir au moins 8 caractères';
+                alertDiv.style.display = 'block';
+                return;
+            }
+
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inscription...';
+            registerBtn.disabled = true;
 
             try {
-                const response = await fetch(`${API_URL}/api/auth/register`, {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ username, email, password, full_name: fullName })
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        full_name: fullName || null,
+                        bio: bio || null
+                    })
                 });
 
+                const data = await response.json();
+
                 if (response.ok) {
-                    showToast('Compte créé avec succès ! Connectez-vous.', 'success');
-                    showPage('login');
+                    authToken = data.access_token;
+                    localStorage.setItem('hosthub_token', authToken);
+                    
+                    alertDiv.className = 'alert alert-success';
+                    alertDiv.innerHTML = '<i class="fas fa-check-circle"></i> Inscription réussie ! Vous êtes maintenant connecté.';
+                    alertDiv.style.display = 'block';
+                    
+                    setTimeout(async () => {
+                        closeModal('register-modal');
+                        await checkAuthStatus();
+                        loadPosts();
+                    }, 1500);
                 } else {
-                    const error = await response.json();
-                    throw new Error(error.detail || 'Erreur lors de l\'inscription');
+                    throw new Error(data.detail || 'Erreur d\'inscription');
                 }
             } catch (error) {
-                showToast(error.message, 'error');
+                alertDiv.className = 'alert alert-error';
+                alertDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
+                alertDiv.style.display = 'block';
+            } finally {
+                registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> S\'inscrire';
+                registerBtn.disabled = false;
             }
         }
 
+        // Déconnexion
+        function logout() {
+            localStorage.removeItem('hosthub_token');
+            authToken = null;
+            currentUser = null;
+            showAuthInterface();
+            clearPosts();
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+        }
+
+        // Charger les posts
         async function loadPosts() {
+            const postsContainer = document.getElementById('posts-container');
+            postsContainer.innerHTML = '<div class="loading" id="loading-posts"><i class="fas fa-spinner"></i><p>Chargement des posts...</p></div>';
+
             try {
-                const response = await fetch(`${API_URL}/api/posts`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await fetch(`${API_BASE_URL}/posts`);
                 
-                if (response.ok) {
-                    posts = await response.json();
+                if (!response.ok) {
+                    throw new Error('Erreur de chargement des posts');
                 }
+                
+                const posts = await response.json();
+                displayPosts(posts);
             } catch (error) {
-                console.error('Error loading posts:', error);
-                // Use sample data if API fails
-                posts = [
-                    {
-                        id: '1',
-                        content: 'Bienvenue sur HostHub ! Partagez vos projets et collaborez avec d\'autres développeurs.',
-                        user: { username: 'Admin', avatar_url: null },
-                        likes_count: 42,
-                        comments_count: 5,
-                        created_at: new Date().toISOString()
-                    }
-                ];
-            }
-        }
-
-        async function handleCreatePost() {
-            const content = document.getElementById('postContent').value;
-            
-            try {
-                const response = await fetch(`${API_URL}/api/posts`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content })
-                });
-
-                if (response.ok) {
-                    showToast('Post publié !', 'success');
-                    document.getElementById('postContent').value = '';
-                    await loadPosts();
-                    showPage('dashboard');
-                }
-            } catch (error) {
-                showToast('Erreur lors de la publication', 'error');
-            }
-        }
-
-        async function toggleLike(postId, button) {
-            try {
-                const response = await fetch(`${API_URL}/api/posts/${postId}/like`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const likeCount = button.querySelector('span');
-                    const icon = button.querySelector('i');
-                    
-                    if (data.liked) {
-                        button.classList.add('liked');
-                        icon.classList.remove('fa-heart');
-                        icon.classList.add('fa-heart');
-                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                    } else {
-                        button.classList.remove('liked');
-                        likeCount.textContent = parseInt(likeCount.textContent) - 1;
-                    }
-                }
-            } catch (error) {
-                console.error('Error liking post:', error);
-            }
-        }
-
-        async function loadConversations() {
-            // Sample conversations
-            conversations = [
-                {
-                    id: '1',
-                    name: 'John Doe',
-                    avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=10b981&color=fff',
-                    lastMessage: 'Salut ! As-tu vu mon dernier projet ?',
-                    time: '10:30'
-                },
-                {
-                    id: '2',
-                    name: 'Jane Smith',
-                    avatar: 'https://ui-avatars.com/api/?name=Jane+Smith&background=8b5cf6&color=fff',
-                    lastMessage: 'Le code est disponible sur GitHub',
-                    time: 'Hier'
-                }
-            ];
-        }
-
-        function selectConversation(convId) {
-            currentChat = conversations.find(c => c.id === convId);
-            showPage('messages');
-        }
-
-        function handleSendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                // In a real app, this would send to WebSocket
-                const chatMessages = document.getElementById('chatMessages');
-                chatMessages.innerHTML += `
-                    <div class="message sent">
-                        ${message}
-                        <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                console.error('Erreur:', error);
+                postsContainer.innerHTML = `
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-circle"></i> ${error.message}
                     </div>
                 `;
-                input.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        async function handleEditProfile() {
-            const fullName = document.getElementById('editFullName').value;
-            const bio = document.getElementById('editBio').value;
-            const avatarFile = document.getElementById('editAvatar').files[0];
+        // Afficher les posts
+        function displayPosts(posts) {
+            const postsContainer = document.getElementById('posts-container');
+            
+            if (!posts || posts.length === 0) {
+                postsContainer.innerHTML = `
+                    <div class="post" style="text-align: center; padding: 40px;">
+                        <i class="fas fa-newspaper" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3>Aucun post pour le moment</h3>
+                        <p>Soyez le premier à publier quelque chose !</p>
+                    </div>
+                `;
+                return;
+            }
+
+            postsContainer.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postDate = new Date(post.created_at);
+                const timeAgo = getTimeAgo(postDate);
+                
+                const mediaHtml = post.media_urls && post.media_urls.length > 0 ? 
+                    `<img src="${post.media_urls[0]}" class="post-image" alt="Media">` : '';
+                
+                const hashtagsHtml = post.hashtags && post.hashtags.length > 0 ?
+                    post.hashtags.map(tag => `<span class="hashtag">#${tag}</span>`).join(' ') : '';
+                
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            ${post.user && post.user.avatar_url ? 
+                                `<img src="${post.user.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : 
+                                `<i class="fas fa-user"></i>`}
+                        </div>
+                        <div class="post-user-info">
+                            <div class="post-username">
+                                ${post.user ? post.user.username : 'Utilisateur'}
+                            </div>
+                            <div class="post-time">${timeAgo}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        ${post.content}
+                        ${hashtagsHtml ? `<div style="margin-top: 10px;">${hashtagsHtml}</div>` : ''}
+                    </div>
+                    ${mediaHtml}
+                    <div class="post-actions-bar">
+                        <div class="post-action" onclick="likePost('${post.id}')">
+                            <i class="fas fa-heart"></i>
+                            <span>${post.likes_count || 0}</span>
+                        </div>
+                        <div class="post-action" onclick="commentOnPost('${post.id}')">
+                            <i class="fas fa-comment"></i>
+                            <span>${post.comments_count || 0}</span>
+                        </div>
+                        <div class="post-action" onclick="sharePost('${post.id}')">
+                            <i class="fas fa-share"></i>
+                            <span>Partager</span>
+                        </div>
+                    </div>
+                `;
+                
+                postsContainer.appendChild(postElement);
+            });
+        }
+
+        // Créer un post
+        async function createPost() {
+            if (!authToken) {
+                showLoginModal();
+                return;
+            }
+
+            const content = document.getElementById('post-content').value.trim();
+            const postBtn = document.querySelector('.post-btn');
+
+            if (!content) {
+                alert('Veuillez écrire quelque chose !');
+                return;
+            }
+
+            postBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publication...';
+            postBtn.disabled = true;
 
             try {
                 const formData = new FormData();
-                if (fullName) formData.append('full_name', fullName);
-                if (bio) formData.append('bio', bio);
-                if (avatarFile) formData.append('avatar', avatarFile);
+                formData.append('content', content);
+                formData.append('is_public', 'true');
 
-                const response = await fetch(`${API_URL}/api/users/me`, {
-                    method: 'PUT',
+                const response = await fetch(`${API_BASE_URL}/posts`, {
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${authToken}`
                     },
                     body: formData
                 });
 
                 if (response.ok) {
-                    const updatedUser = await response.json();
-                    currentUser = { ...currentUser, ...updatedUser };
-                    localStorage.setItem('hosthub_user', JSON.stringify(currentUser));
-                    
-                    showToast('Profil mis à jour !', 'success');
-                    closeModal('profileModal');
-                    showPage('profile');
+                    document.getElementById('post-content').value = '';
+                    showAlert('success', 'Post publié avec succès !');
+                    loadPosts(); // Recharger les posts
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Erreur de publication');
                 }
             } catch (error) {
-                showToast('Erreur lors de la mise à jour', 'error');
+                console.error('Erreur:', error);
+                showAlert('error', error.message);
+            } finally {
+                postBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publier';
+                postBtn.disabled = false;
             }
         }
 
-        function runCode() {
-            const code = document.getElementById('codeEditor').value;
-            const output = document.getElementById('codeOutput');
-            
+        // Aimer un post
+        async function likePost(postId) {
+            if (!authToken) {
+                showLoginModal();
+                return;
+            }
+
             try {
-                // In a real app, this would execute code safely on server
-                output.innerHTML = `
-                    <div style="color: #10b981;">
-                        > Code exécuté avec succès
-                    </div>
-                    <div style="margin-top: 10px;">
-                        ${code}
-                    </div>
-                `;
+                const response = await fetch(`${API_BASE_URL}/posts/${postId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    loadPosts(); // Recharger pour mettre à jour les compteurs
+                }
             } catch (error) {
-                output.innerHTML = `<div style="color: #ef4444;">> Erreur: ${error.message}</div>`;
+                console.error('Erreur:', error);
             }
         }
 
-        function saveSnippet() {
-            showToast('Snippet sauvegardé !', 'success');
+        // Charger les hashtags tendance
+        async function loadTrendingHashtags() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/explore/hashtags`);
+                
+                if (response.ok) {
+                    const hashtags = await response.json();
+                    const container = document.getElementById('trending-hashtags');
+                    
+                    if (hashtags.length > 0) {
+                        container.innerHTML = hashtags.slice(0, 10).map(h => 
+                            `<span class="hashtag" onclick="searchByHashtag('${h.hashtag}')">#${h.hashtag}</span>`
+                        ).join(' ');
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur chargement hashtags:', error);
+            }
         }
 
-        function logout() {
-            localStorage.removeItem('hosthub_token');
-            localStorage.removeItem('hosthub_user');
-            token = null;
-            currentUser = null;
-            showPage('login');
-            showToast('Déconnexion réussie', 'success');
+        // Charger les utilisateurs suggérés
+        async function loadSuggestedUsers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/explore/users?limit=5`);
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    const container = document.getElementById('suggested-users');
+                    
+                    if (users.length > 0) {
+                        container.innerHTML = users.map(user => `
+                            <div class="user-suggestion">
+                                <div class="avatar" style="width: 40px; height: 40px; font-size: 14px;">
+                                    ${user.avatar_url ? 
+                                        `<img src="${user.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : 
+                                        `<i class="fas fa-user"></i>`}
+                                </div>
+                                <div>
+                                    <div class="username">${user.username}</div>
+                                    <div class="user-email">@${user.username}</div>
+                                </div>
+                                <button class="follow-btn" onclick="followUser('${user.id}')">Suivre</button>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur chargement users:', error);
+            }
         }
 
-        // Global functions for HTML onclick handlers
-        window.showPage = showPage;
-        window.logout = logout;
-        window.showModal = showModal;
-        window.closeModal = closeModal;
-        window.runCode = runCode;
-        window.saveSnippet = saveSnippet;
-        window.selectConversation = selectConversation;
+        // Suivre un utilisateur
+        async function followUser(userId) {
+            if (!authToken) {
+                showLoginModal();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${userId}/follow`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    showAlert('success', 'Utilisateur suivi avec succès !');
+                    loadSuggestedUsers();
+                    checkAuthStatus(); // Mettre à jour les stats
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showAlert('error', error.message);
+            }
+        }
+
+        // Charger les notifications
+        async function loadNotifications() {
+            if (!authToken) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/notifications`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const notifications = await response.json();
+                    const unreadCount = notifications.filter(n => !n.is_read).length;
+                    
+                    if (unreadCount > 0) {
+                        document.getElementById('notification-count').textContent = unreadCount;
+                        document.getElementById('notification-count').style.display = 'flex';
+                    } else {
+                        document.getElementById('notification-count').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur notifications:', error);
+            }
+        }
+
+        // Utilitaires
+        function showLoginModal() {
+            document.getElementById('login-modal').style.display = 'flex';
+            document.getElementById('register-modal').style.display = 'none';
+        }
+
+        function showRegisterModal() {
+            document.getElementById('register-modal').style.display = 'flex';
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i> ${message}`;
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '1000';
+            alertDiv.style.maxWidth = '300px';
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 60) {
+                return `il y a ${diffMins} min`;
+            } else if (diffHours < 24) {
+                return `il y a ${diffHours} h`;
+            } else if (diffDays < 7) {
+                return `il y a ${diffDays} j`;
+            } else {
+                return date.toLocaleDateString('fr-FR');
+            }
+        }
+
+        function showSection(section) {
+            // Implémentation basique - à étendre
+            const sections = ['feed', 'explore', 'notifications', 'messages', 'profile', 'code', 'stories', 'groups', 'marketplace', 'servers', 'settings'];
+            sections.forEach(sec => {
+                const element = document.getElementById(sec + '-section');
+                if (element) element.style.display = 'none';
+            });
+            
+            // Pour l'instant, on garde juste le feed visible
+            if (section === 'feed') {
+                loadPosts();
+            }
+            
+            // Mettre à jour le menu actif
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeItem = document.querySelector(`.menu-item[onclick*="${section}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+
+        function clearPosts() {
+            document.getElementById('posts-container').innerHTML = '';
+        }
+
+        // Fermer les modales en cliquant en dehors
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Gestion des touches
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal('login-modal');
+                closeModal('register-modal');
+            }
+        });
     </script>
 </body>
 </html>
