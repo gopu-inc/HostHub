@@ -1,17 +1,15 @@
 {
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
-  "framework": "vite",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "package.json",
+      "use": "@vercel/next"
     }
   ],
-  "env": {
-    "VITE_API_URL": "https://serv-ynsd.onrender.com",
-    "VITE_WS_URL": "wss://serv-ynsd.onrender.com/ws"
-  }
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/app/$1"
+    }
+  ]
 }
