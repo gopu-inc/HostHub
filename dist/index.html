@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M&J Social | HoostHubs</title>
     
-    <!-- Next.js Style CDNs -->
+    <!-- CDNs -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS (CDN version) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,9 +21,6 @@
                         'primary-dark': '#CC0044',
                         secondary: '#00E5FF',
                         accent: '#9D4EDD',
-                        success: '#00CC88',
-                        warning: '#FFAA00',
-                        danger: '#FF3333',
                         dark: {
                             50: '#fafafa',
                             100: '#f5f5f5',
@@ -40,384 +37,131 @@
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.3s ease-in-out',
-                        'slide-up': 'slideUp 0.3s ease-out',
-                        'slide-down': 'slideDown 0.3s ease-out',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'bounce-slow': 'bounce 2s infinite',
-                        'spin-slow': 'spin 3s linear infinite',
                     }
                 }
             }
         }
     </script>
-    
-    <style>
-        /* Custom CSS for advanced features */
-        :root {
-            --primary: #FF0055;
-            --secondary: #00E5FF;
-            --accent: #9D4EDD;
-            --dark: #000000;
-            --card: #121212;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-        
-        /* Glass morphism effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Gradient text */
-        .gradient-text {
-            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Shimmer effect */
-        .shimmer {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .shimmer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            transform: translateX(-100%);
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0,
-                rgba(255, 255, 255, 0.1) 20%,
-                rgba(255, 255, 255, 0.3) 60%,
-                rgba(255, 255, 255, 0)
-            );
-            animation: shimmer 2s infinite;
-        }
-        
-        /* Custom animations */
-        @keyframes shimmer {
-            100% {
-                transform: translateX(100%);
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
-        
-        /* Video player custom styles */
-        .video-container {
-            position: relative;
-            padding-bottom: 177.78%; /* 9:16 aspect ratio */
-            height: 0;
-            overflow: hidden;
-        }
-        
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Story ring animation */
-        .story-ring {
-            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
-            padding: 2px;
-            border-radius: 50%;
-        }
-        
-        /* Loading skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        /* Notification badge */
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            font-size: 11px;
-            background: var(--primary);
-            color: white;
-            border-radius: 9px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s infinite;
-        }
-        
-        /* Message bubble */
-        .message-bubble {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            position: relative;
-        }
-        
-        .message-bubble.sent {
-            background: var(--primary);
-            border-bottom-right-radius: 4px;
-            margin-left: auto;
-        }
-        
-        .message-bubble.received {
-            background: var(--card);
-            border-bottom-left-radius: 4px;
-        }
-        
-        /* Floating action button */
-        .fab {
-            width: 56px;
-            height: 56px;
-            border-radius: 28px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            box-shadow: 0 4px 20px rgba(255, 0, 85, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(255, 0, 85, 0.4);
-        }
-        
-        /* Tab underline animation */
-        .tab-underline {
-            position: relative;
-        }
-        
-        .tab-underline::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .tab-underline.active::after {
-            transform: scaleX(1);
-        }
-        
-        /* Card hover effects */
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-    </style>
 </head>
-<body class="bg-dark-950 text-white font-sans overflow-x-hidden">
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="fixed inset-0 bg-dark-950 z-50 flex flex-col items-center justify-center transition-opacity duration-500">
+<body class="bg-dark-950 text-white font-sans min-h-screen">
+    <!-- Loading -->
+    <div id="loadingScreen" class="fixed inset-0 bg-dark-950 z-50 flex flex-col items-center justify-center">
         <div class="relative">
-            <div class="w-20 h-20 rounded-full border-4 border-dark-800 border-t-primary animate-spin-slow"></div>
+            <div class="w-20 h-20 rounded-full border-4 border-dark-800 border-t-primary animate-spin"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-2xl font-black gradient-text">M&J</div>
+                <div class="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">M&J</div>
             </div>
         </div>
-        <div class="mt-6 text-dark-400 text-sm font-medium animate-pulse">Connexion à HoostHubs...</div>
-        <div class="mt-2 text-xs text-dark-500">https://hoosthubs-g.onrender.com</div>
+        <div class="mt-6 text-dark-400 text-sm">Chargement...</div>
     </div>
 
-    <!-- Auth Screen -->
-    <div id="authScreen" class="fixed inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950 z-40 hidden">
+    <!-- Auth -->
+    <div id="authScreen" class="hidden fixed inset-0 bg-dark-950 z-40">
         <div class="container mx-auto px-4 h-full flex items-center justify-center">
             <div class="w-full max-w-md">
-                <!-- Logo -->
                 <div class="text-center mb-8">
-                    <div class="text-5xl font-black gradient-text inline-block mb-2">M&J</div>
-                    <div class="text-dark-400 text-sm font-medium">Plateforme Sociale HoostHubs</div>
+                    <div class="text-5xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block mb-2">M&J</div>
+                    <div class="text-dark-400">HoostHubs Social Platform</div>
                 </div>
                 
-                <!-- Auth Card -->
-                <div class="glass rounded-2xl p-8 shadow-2xl animate-fade-in">
-                    <!-- Tabs -->
-                    <div class="flex mb-6 bg-dark-800 rounded-xl p-1">
-                        <button id="loginTab" class="flex-1 py-2 rounded-lg font-semibold transition-colors bg-primary text-white">
+                <div class="bg-dark-800 rounded-2xl p-8">
+                    <div class="flex mb-6 bg-dark-900 rounded-xl p-1">
+                        <button id="loginTab" class="flex-1 py-2 rounded-lg font-semibold bg-primary text-white">
                             Connexion
                         </button>
-                        <button id="registerTab" class="flex-1 py-2 rounded-lg font-semibold transition-colors text-dark-300 hover:text-white">
+                        <button id="registerTab" class="flex-1 py-2 rounded-lg font-semibold text-dark-300">
                             Inscription
                         </button>
                     </div>
                     
-                    <!-- Login Form -->
                     <div id="loginForm">
                         <div class="mb-4">
-                            <label class="block text-dark-300 text-sm font-medium mb-2">Nom d'utilisateur</label>
                             <input type="text" id="loginUsername" 
-                                   class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3 text-white placeholder-dark-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
-                                   placeholder="Entrez votre username" value="test">
+                                   class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400"
+                                   placeholder="Nom d'utilisateur" value="test">
                         </div>
                         <div class="mb-6">
-                            <label class="block text-dark-300 text-sm font-medium mb-2">Mot de passe</label>
                             <input type="password" id="loginPassword" 
-                                   class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3 text-white placeholder-dark-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
-                                   placeholder="Votre mot de passe" value="test123">
+                                   class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400"
+                                   placeholder="Mot de passe" value="test123">
                         </div>
                         <button onclick="login()" 
-                                class="w-full bg-gradient-to-r from-primary to-primary-dark text-white font-semibold py-3 rounded-xl hover:opacity-90 transition active:scale-95 flex items-center justify-center gap-2">
-                            <i class="fas fa-sign-in-alt"></i>
+                                class="w-full bg-gradient-to-r from-primary to-primary-dark text-white font-semibold py-3 rounded-xl hover:opacity-90">
                             Se connecter
                         </button>
                     </div>
                     
-                    <!-- Register Form -->
                     <div id="registerForm" class="hidden">
                         <div class="mb-4">
-                            <label class="block text-dark-300 text-sm font-medium mb-2">Nom d'utilisateur</label>
                             <input type="text" id="registerUsername" 
-                                   class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3 text-white placeholder-dark-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
+                                   class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400"
                                    placeholder="Choisissez un username">
                         </div>
                         <div class="mb-4">
-                            <label class="block text-dark-300 text-sm font-medium mb-2">Mot de passe</label>
                             <input type="password" id="registerPassword" 
-                                   class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3 text-white placeholder-dark-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
-                                   placeholder="Minimum 6 caractères">
+                                   class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400"
+                                   placeholder="Mot de passe">
                         </div>
                         <div class="mb-6">
-                            <label class="block text-dark-300 text-sm font-medium mb-2">Confirmer le mot de passe</label>
                             <input type="password" id="registerConfirm" 
-                                   class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3 text-white placeholder-dark-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
-                                   placeholder="Retapez votre mot de passe">
+                                   class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400"
+                                   placeholder="Confirmer le mot de passe">
                         </div>
                         <button onclick="register()" 
-                                class="w-full bg-gradient-to-r from-primary to-primary-dark text-white font-semibold py-3 rounded-xl hover:opacity-90 transition active:scale-95 flex items-center justify-center gap-2">
-                            <i class="fas fa-user-plus"></i>
+                                class="w-full bg-gradient-to-r from-primary to-primary-dark text-white font-semibold py-3 rounded-xl hover:opacity-90">
                             Créer mon compte
                         </button>
                     </div>
-                    
-                    <!-- Forgot Password -->
-                    <div class="mt-6 text-center">
-                        <a href="#" onclick="showForgotPassword()" class="text-dark-400 hover:text-primary text-sm transition">
-                            Mot de passe oublié ?
-                        </a>
-                    </div>
-                    
-                    <!-- Server Status -->
-                    <div class="mt-6 pt-6 border-t border-dark-800">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-dark-400">Serveur:</span>
-                            <span id="serverStatus" class="flex items-center gap-1">
-                                <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                                <span>Déconnecté</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Welcome Message -->
-                <div class="mt-8 text-center text-dark-400 text-sm">
-                    <p>Bienvenue sur la plateforme sociale M&J</p>
-                    <p class="mt-1">Connecté à <span class="text-primary">https://hoosthubs-g.onrender.com</span></p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Main App -->
-    <div id="app" class="hidden min-h-screen">
+    <div id="app" class="hidden">
         <!-- Header -->
-        <header class="sticky top-0 glass border-b border-dark-800 z-30">
+        <header class="sticky top-0 bg-dark-900/90 backdrop-blur-lg border-b border-dark-800 z-30">
             <div class="container mx-auto px-4">
                 <div class="flex items-center justify-between h-16">
-                    <!-- Left: Logo & Title -->
                     <div class="flex items-center gap-3">
-                        <div class="text-2xl font-black gradient-text">M&J</div>
-                        <div class="text-sm text-dark-400 hidden md:block">HoostHubs Social</div>
+                        <div class="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">M&J</div>
                     </div>
                     
-                    <!-- Center: Page Title -->
                     <div class="flex-1 max-w-xl">
                         <h1 id="pageTitle" class="text-lg font-bold text-center">Pour toi</h1>
                     </div>
                     
-                    <!-- Right: Actions -->
                     <div class="flex items-center gap-3">
-                        <!-- Search Button -->
-                        <button onclick="toggleSearch()" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-dark-800 transition">
+                        <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center">
                             <i class="fas fa-search text-dark-300"></i>
                         </button>
                         
-                        <!-- Notifications -->
                         <div class="relative">
-                            <button onclick="toggleNotifications()" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-dark-800 transition">
+                            <button onclick="showNotifications()" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center">
                                 <i class="fas fa-bell text-dark-300"></i>
-                                <span id="notificationCount" class="notification-badge hidden">0</span>
+                                <span id="notificationCount" class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
                             </button>
                         </div>
                         
-                        <!-- User Menu -->
                         <div class="relative">
-                            <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+                            <button onclick="toggleUserMenu()" id="userMenuBtn" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
                                 <img id="userAvatar" src="" alt="Avatar" class="w-full h-full object-cover">
                             </button>
+                            <div id="userMenu" class="hidden absolute right-0 top-12 bg-dark-800 rounded-lg shadow-lg w-48 z-40">
+                                <div class="p-3 border-b border-dark-700">
+                                    <div class="font-semibold" id="menuUsername"></div>
+                                    <div class="text-sm text-dark-400" id="menuEmail"></div>
+                                </div>
+                                <button onclick="showPage('profile')" class="w-full text-left px-4 py-3 hover:bg-dark-700">
+                                    <i class="fas fa-user mr-2"></i> Mon profil
+                                </button>
+                                <button onclick="showSettings()" class="w-full text-left px-4 py-3 hover:bg-dark-700">
+                                    <i class="fas fa-cog mr-2"></i> Paramètres
+                                </button>
+                                <button onclick="logout()" class="w-full text-left px-4 py-3 hover:bg-dark-700 text-red-400">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -426,8 +170,8 @@
                 <div id="searchBar" class="hidden py-4">
                     <div class="relative">
                         <input type="text" id="globalSearch" 
-                               class="w-full bg-dark-800 border border-dark-700 rounded-xl pl-12 pr-4 py-3 text-white placeholder-dark-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"
-                               placeholder="Rechercher des vidéos, utilisateurs, hashtags...">
+                               class="w-full bg-dark-800 border border-dark-700 rounded-xl pl-12 pr-4 py-3 text-white"
+                               placeholder="Rechercher...">
                         <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
                             <i class="fas fa-search text-dark-500"></i>
                         </div>
@@ -437,60 +181,55 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-1">
+        <main class="pb-20">
             <!-- Stories -->
-            <div id="storiesSection" class="py-4 border-b border-dark-800 hidden">
+            <div id="storiesSection" class="py-4 border-b border-dark-800">
                 <div class="container mx-auto px-4">
-                    <div class="flex gap-4 overflow-x-auto pb-2">
-                        <!-- Stories will be loaded here -->
+                    <div class="flex gap-4 overflow-x-auto pb-2" id="storiesContainer">
+                        <!-- Stories loaded here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Video Feed -->
-            <div id="feedContainer" class="min-h-screen">
-                <!-- Videos will be loaded here -->
+            <!-- Feed -->
+            <div id="feedContainer">
+                <!-- Videos loaded here -->
             </div>
 
-            <!-- Explore Page -->
+            <!-- Explore -->
             <div id="explorePage" class="hidden p-4">
-                <div class="container mx-auto">
-                    <h2 class="text-2xl font-bold mb-6">Explorer</h2>
-                    
-                    <!-- Categories Grid -->
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-                        <!-- Categories will be loaded here -->
-                    </div>
-                    
-                    <!-- Trending Videos -->
-                    <div id="trendingVideos"></div>
+                <h2 class="text-2xl font-bold mb-6">Explorer</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8" id="categoriesGrid">
+                    <!-- Categories loaded here -->
                 </div>
+                
+                <div id="trendingVideos"></div>
             </div>
 
-            <!-- Messages Page -->
+            <!-- Messages -->
             <div id="messagesPage" class="hidden">
-                <div class="container mx-auto px-4 py-6">
+                <div class="p-4">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold">Messages</h2>
-                        <button onclick="startNewChat()" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-dark-800 transition">
+                        <button onclick="startNewChat()" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center">
                             <i class="fas fa-edit"></i>
                         </button>
                     </div>
                     
                     <div id="conversationsList">
-                        <!-- Conversations will be loaded here -->
+                        <!-- Conversations loaded here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Page -->
+            <!-- Profile -->
             <div id="profilePage" class="hidden">
                 <!-- Profile Header -->
                 <div class="relative">
                     <div class="h-48 bg-gradient-to-r from-primary/20 to-secondary/20"></div>
                     <div class="container mx-auto px-4 relative -top-12">
                         <div class="flex items-end justify-between">
-                            <!-- Avatar & Info -->
                             <div class="flex items-end gap-4">
                                 <div class="relative">
                                     <img id="profileAvatar" src="" alt="" class="w-32 h-32 rounded-full border-4 border-dark-950 object-cover">
@@ -504,12 +243,11 @@
                                 </div>
                             </div>
                             
-                            <!-- Action Buttons -->
                             <div class="flex gap-2 pb-4">
-                                <button id="followButton" class="px-6 py-2 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition">
+                                <button id="followButton" class="px-6 py-2 bg-primary text-white rounded-lg font-semibold">
                                     Suivre
                                 </button>
-                                <button onclick="openChat()" class="w-10 h-10 glass rounded-lg flex items-center justify-center hover:bg-dark-800 transition">
+                                <button onclick="openChatWithUser()" class="w-10 h-10 bg-dark-800 rounded-lg flex items-center justify-center">
                                     <i class="fas fa-envelope"></i>
                                 </button>
                             </div>
@@ -517,65 +255,64 @@
                     </div>
                 </div>
                 
-                <!-- Profile Stats -->
+                <!-- Stats -->
                 <div class="container mx-auto px-4 -mt-8 mb-8">
                     <div class="grid grid-cols-3 gap-4">
-                        <div class="glass rounded-xl p-4 text-center">
+                        <div class="bg-dark-800 rounded-xl p-4 text-center">
                             <div id="profileVideosCount" class="text-2xl font-bold">0</div>
-                            <div class="text-sm text-dark-400 mt-1">Vidéos</div>
+                            <div class="text-sm text-dark-400">Vidéos</div>
                         </div>
-                        <div class="glass rounded-xl p-4 text-center">
+                        <div class="bg-dark-800 rounded-xl p-4 text-center">
                             <div id="profileFollowersCount" class="text-2xl font-bold">0</div>
-                            <div class="text-sm text-dark-400 mt-1">Abonnés</div>
+                            <div class="text-sm text-dark-400">Abonnés</div>
                         </div>
-                        <div class="glass rounded-xl p-4 text-center">
+                        <div class="bg-dark-800 rounded-xl p-4 text-center">
                             <div id="profileFollowingCount" class="text-2xl font-bold">0</div>
-                            <div class="text-sm text-dark-400 mt-1">Abonnements</div>
+                            <div class="text-sm text-dark-400">Abonnements</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Profile Videos -->
+                <!-- Videos -->
                 <div class="container mx-auto px-4">
                     <div class="flex border-b border-dark-800 mb-6">
-                        <button class="tab-underline active px-4 py-2 font-semibold">Vidéos</button>
-                        <button class="tab-underline px-4 py-2 font-semibold" onclick="loadLikedVideos()">J'aime</button>
+                        <button class="px-4 py-2 font-semibold border-b-2 border-primary">Vidéos</button>
+                        <button class="px-4 py-2 font-semibold text-dark-400" onclick="loadLikedVideos()">J'aime</button>
                     </div>
                     
                     <div id="profileVideosGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <!-- User's videos will be loaded here -->
+                        <!-- Videos loaded here -->
                     </div>
                 </div>
             </div>
         </main>
 
         <!-- Bottom Navigation -->
-        <nav class="sticky bottom-0 glass border-t border-dark-800 py-2 z-30">
+        <nav class="fixed bottom-0 left-0 right-0 bg-dark-900/90 backdrop-blur-lg border-t border-dark-800 py-2 z-30">
             <div class="container mx-auto px-4">
                 <div class="flex justify-around items-center">
-                    <button onclick="showPage('home')" class="flex flex-col items-center p-2 rounded-lg transition-colors text-primary">
+                    <button onclick="showPage('home')" class="flex flex-col items-center p-2 text-primary">
                         <i class="fas fa-home text-xl mb-1"></i>
                         <span class="text-xs font-medium">Accueil</span>
                     </button>
                     
-                    <button onclick="showPage('explore')" class="flex flex-col items-center p-2 rounded-lg transition-colors text-dark-400 hover:text-white">
+                    <button onclick="showPage('explore')" class="flex flex-col items-center p-2 text-dark-400">
                         <i class="fas fa-compass text-xl mb-1"></i>
                         <span class="text-xs font-medium">Explorer</span>
                     </button>
                     
-                    <!-- Create Button -->
                     <div class="relative -top-4">
                         <button onclick="showUploadModal()" class="fab">
                             <i class="fas fa-plus text-white text-xl"></i>
                         </button>
                     </div>
                     
-                    <button onclick="showPage('messages')" class="flex flex-col items-center p-2 rounded-lg transition-colors text-dark-400 hover:text-white">
+                    <button onclick="showPage('messages')" class="flex flex-col items-center p-2 text-dark-400">
                         <i class="fas fa-comment-dots text-xl mb-1"></i>
                         <span class="text-xs font-medium">Messages</span>
                     </button>
                     
-                    <button onclick="showPage('profile')" class="flex flex-col items-center p-2 rounded-lg transition-colors text-dark-400 hover:text-white">
+                    <button onclick="showPage('profile')" class="flex flex-col items-center p-2 text-dark-400">
                         <i class="fas fa-user text-xl mb-1"></i>
                         <span class="text-xs font-medium">Profil</span>
                     </button>
@@ -588,13 +325,12 @@
     <input type="file" id="videoUpload" accept="video/*" class="hidden">
     <input type="file" id="imageUpload" accept="image/*" class="hidden">
 
-    <!-- JavaScript -->
+    <!-- JavaScript avec TOUTES les fonctionnalités -->
     <script>
         // Configuration
         const API_BASE_URL = 'https://hoosthubs-g.onrender.com';
-        const WS_URL = 'wss://hoosthubs-g.onrender.com/ws';
         
-        // Application State
+        // State
         let state = {
             token: localStorage.getItem('mj_token'),
             user: null,
@@ -603,23 +339,20 @@
             stories: [],
             conversations: [],
             notifications: [],
-            ws: null,
-            isOnline: false,
-            unreadNotifications: 0
+            currentProfileId: null
         };
 
-        // Initialize App
+        // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('Initializing M&J Social App...');
-            console.log('Connecting to:', API_BASE_URL);
+            document.getElementById('serverUrl').textContent = API_BASE_URL;
             
-            // Test server connection
+            // Check server
             await checkServerStatus();
             
             // Setup auth tabs
             setupAuthTabs();
             
-            // Check if user is already logged in
+            // Check if already logged in
             if (state.token) {
                 try {
                     const user = await fetchWithAuth('/api/users/me');
@@ -629,97 +362,61 @@
                     } else {
                         showAuthScreen();
                     }
-                } catch (error) {
-                    console.error('Auth check failed:', error);
+                } catch {
                     showAuthScreen();
                 }
             } else {
                 setTimeout(() => {
-                    document.getElementById('loadingScreen').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').style.display = 'none';
-                        showAuthScreen();
-                    }, 500);
-                }, 1500);
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    showAuthScreen();
+                }, 1000);
             }
         });
 
-        // Server Status Check
+        // Server check
         async function checkServerStatus() {
             try {
-                const response = await fetch(`${API_BASE_URL}/health`);
-                const data = await response.json();
-                
-                const statusEl = document.getElementById('serverStatus');
-                if (data.status === 'healthy') {
-                    statusEl.innerHTML = `
-                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                        <span class="text-green-500">Connecté</span>
-                    `;
-                    state.isOnline = true;
-                } else {
-                    statusEl.innerHTML = `
-                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                        <span class="text-red-500">Déconnecté</span>
-                    `;
-                    state.isOnline = false;
-                }
-            } catch (error) {
-                console.error('Server check failed:', error);
-                document.getElementById('serverStatus').innerHTML = `
-                    <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                    <span class="text-red-500">Hors ligne</span>
-                `;
-                state.isOnline = false;
+                await fetch(`${API_BASE_URL}/health`);
+            } catch {
+                console.warn('Server might be offline');
             }
         }
 
-        // Setup Auth Tabs
+        // Auth
         function setupAuthTabs() {
             const loginTab = document.getElementById('loginTab');
             const registerTab = document.getElementById('registerTab');
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
 
-            loginTab.addEventListener('click', () => {
-                loginTab.classList.add('bg-primary', 'text-white');
-                loginTab.classList.remove('text-dark-300');
-                registerTab.classList.remove('bg-primary', 'text-white');
-                registerTab.classList.add('text-dark-300');
+            loginTab.onclick = () => {
+                loginTab.className = 'flex-1 py-2 rounded-lg font-semibold bg-primary text-white';
+                registerTab.className = 'flex-1 py-2 rounded-lg font-semibold text-dark-300';
                 loginForm.classList.remove('hidden');
                 registerForm.classList.add('hidden');
-            });
+            };
 
-            registerTab.addEventListener('click', () => {
-                registerTab.classList.add('bg-primary', 'text-white');
-                registerTab.classList.remove('text-dark-300');
-                loginTab.classList.remove('bg-primary', 'text-white');
-                loginTab.classList.add('text-dark-300');
+            registerTab.onclick = () => {
+                registerTab.className = 'flex-1 py-2 rounded-lg font-semibold bg-primary text-white';
+                loginTab.className = 'flex-1 py-2 rounded-lg font-semibold text-dark-300';
                 registerForm.classList.remove('hidden');
                 loginForm.classList.add('hidden');
-            });
+            };
         }
 
-        // Show Auth Screen
         function showAuthScreen() {
-            const authScreen = document.getElementById('authScreen');
-            authScreen.classList.remove('hidden');
-            setTimeout(() => {
-                authScreen.style.opacity = '1';
-            }, 10);
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('authScreen').classList.remove('hidden');
         }
 
-        // Authentication
         async function login() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
             if (!username || !password) {
-                showToast('Veuillez remplir tous les champs', 'error');
+                alert('Veuillez remplir tous les champs');
                 return;
             }
-            
-            showToast('Connexion en cours...', 'info');
             
             try {
                 const formData = new FormData();
@@ -737,19 +434,16 @@
                     state.token = data.access_token;
                     localStorage.setItem('mj_token', state.token);
                     
-                    // Get user profile
                     const user = await fetchWithAuth('/api/users/me');
                     if (user) {
                         state.user = user;
-                        showToast('Connexion réussie !', 'success');
                         initializeApp();
                     }
                 } else {
-                    showToast(data.detail || 'Identifiants incorrects', 'error');
+                    alert(data.detail || 'Erreur de connexion');
                 }
-            } catch (error) {
-                console.error('Login error:', error);
-                showToast('Erreur de connexion au serveur', 'error');
+            } catch {
+                alert('Erreur réseau');
             }
         }
 
@@ -759,28 +453,19 @@
             const confirm = document.getElementById('registerConfirm').value;
             
             if (!username || !password || !confirm) {
-                showToast('Veuillez remplir tous les champs', 'error');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showToast('Le mot de passe doit contenir au moins 6 caractères', 'error');
+                alert('Veuillez remplir tous les champs');
                 return;
             }
             
             if (password !== confirm) {
-                showToast('Les mots de passe ne correspondent pas', 'error');
+                alert('Les mots de passe ne correspondent pas');
                 return;
             }
-            
-            showToast('Création du compte...', 'info');
             
             try {
                 const response = await fetch(`${API_BASE_URL}/api/users/register`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
                 
@@ -789,45 +474,39 @@
                 if (response.ok) {
                     state.token = data.access_token;
                     localStorage.setItem('mj_token', state.token);
-                    showToast('Compte créé avec succès !', 'success');
                     location.reload();
                 } else {
-                    showToast(data.detail || "Erreur lors de l'inscription", 'error');
+                    alert(data.detail || "Erreur d'inscription");
                 }
-            } catch (error) {
-                console.error('Register error:', error);
-                showToast('Erreur de connexion au serveur', 'error');
+            } catch {
+                alert('Erreur réseau');
             }
         }
 
-        function showForgotPassword() {
-            showToast('Fonctionnalité bientôt disponible', 'info');
-        }
-
-        // Initialize Main App
+        // Main App
         function initializeApp() {
-            // Hide auth screen
-            const authScreen = document.getElementById('authScreen');
-            authScreen.style.opacity = '0';
-            setTimeout(() => {
-                authScreen.classList.add('hidden');
-            }, 500);
-            
-            // Show main app
+            document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('app').classList.remove('hidden');
             
-            // Update user avatar
-            if (state.user && state.user.avatar_url) {
+            // Update user info
+            if (state.user) {
                 document.getElementById('userAvatar').src = state.user.avatar_url;
+                document.getElementById('menuUsername').textContent = '@' + state.user.username;
                 document.getElementById('profileAvatar').src = state.user.avatar_url;
+                document.getElementById('profileUsername').textContent = '@' + state.user.username;
+                
+                if (state.user.bio) {
+                    document.getElementById('profileBio').textContent = state.user.bio;
+                }
             }
             
             // Load initial data
             loadHomeFeed();
+            loadStories();
             loadNotifications();
             
-            // Setup WebSocket
-            setupWebSocket();
+            // Show home page
+            showPage('home');
         }
 
         // API Helper
@@ -848,7 +527,6 @@
                 });
                 
                 if (response.status === 401) {
-                    // Token expired
                     localStorage.removeItem('mj_token');
                     state.token = null;
                     showAuthScreen();
@@ -861,62 +539,13 @@
                 
                 return await response.json();
             } catch (error) {
-                console.error(`API Error (${endpoint}):`, error);
+                console.error(`API Error: ${error}`);
                 return null;
             }
         }
 
-        // WebSocket Setup
-        function setupWebSocket() {
-            if (!state.user) return;
-            
-            try {
-                state.ws = new WebSocket(`${WS_URL}/${state.user.id}`);
-                
-                state.ws.onopen = () => {
-                    console.log('WebSocket connected');
-                    state.isOnline = true;
-                };
-                
-                state.ws.onmessage = (event) => {
-                    const data = JSON.parse(event.data);
-                    handleWebSocketMessage(data);
-                };
-                
-                state.ws.onclose = () => {
-                    console.log('WebSocket disconnected');
-                    state.isOnline = false;
-                    // Try to reconnect after 5 seconds
-                    setTimeout(setupWebSocket, 5000);
-                };
-                
-                state.ws.onerror = (error) => {
-                    console.error('WebSocket error:', error);
-                };
-            } catch (error) {
-                console.error('WebSocket setup failed:', error);
-            }
-        }
-
-        // WebSocket Message Handler
-        function handleWebSocketMessage(data) {
-            switch (data.type) {
-                case 'notification':
-                    handleNewNotification(data);
-                    break;
-                case 'message':
-                    handleNewMessage(data);
-                    break;
-                case 'like':
-                    handleVideoLike(data);
-                    break;
-            }
-        }
-
-        // Load Home Feed
+        // Feed
         async function loadHomeFeed() {
-            showLoadingSkeleton('feedContainer', 3);
-            
             try {
                 const videos = await fetchWithAuth('/api/videos/feed');
                 if (videos) {
@@ -934,17 +563,15 @@
             }
         }
 
-        // Render Video Feed
         function renderVideoFeed(videos) {
             const container = document.getElementById('feedContainer');
             
             if (!videos || videos.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-12">
-                        <i class="fas fa-video-slash text-4xl text-dark-600 mb-4"></i>
                         <p class="text-dark-400">Aucune vidéo pour le moment</p>
                         <button onclick="showUploadModal()" class="mt-4 px-6 py-2 bg-primary text-white rounded-lg">
-                            <i class="fas fa-plus mr-2"></i> Créer la première vidéo
+                            Publier une vidéo
                         </button>
                     </div>
                 `;
@@ -954,14 +581,14 @@
             container.innerHTML = videos.map(video => `
                 <div class="border-b border-dark-800">
                     <div class="container mx-auto px-4 py-6">
-                        <!-- Video Header -->
+                        <!-- Header -->
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-3">
                                 <img src="${video.avatar_url || 'https://via.placeholder.com/40'}" 
                                      class="w-10 h-10 rounded-full object-cover cursor-pointer"
                                      onclick="showUserProfile('${video.user_id}')">
                                 <div>
-                                    <div class="font-semibold cursor-pointer hover:underline" 
+                                    <div class="font-semibold cursor-pointer" 
                                          onclick="showUserProfile('${video.user_id}')">
                                         @${video.username}
                                     </div>
@@ -970,12 +597,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="w-8 h-8 rounded-full hover:bg-dark-800 flex items-center justify-center">
-                                <i class="fas fa-ellipsis-h text-dark-400"></i>
+                            <button class="text-dark-400">
+                                <i class="fas fa-ellipsis-h"></i>
                             </button>
                         </div>
                         
-                        <!-- Video Player -->
+                        <!-- Video -->
                         <div class="mb-4 rounded-xl overflow-hidden">
                             <video class="w-full h-auto max-h-[600px] bg-black" 
                                    controls 
@@ -984,7 +611,7 @@
                             </video>
                         </div>
                         
-                        <!-- Video Actions -->
+                        <!-- Actions -->
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-4">
                                 <button onclick="toggleLike('${video.id}')" 
@@ -1002,142 +629,251 @@
                                 <button onclick="shareVideo('${video.id}')" 
                                         class="flex items-center gap-2 text-dark-300">
                                     <i class="fas fa-share text-xl"></i>
-                                    <span>Partager</span>
                                 </button>
                             </div>
-                            
-                            <button onclick="saveVideo('${video.id}')" 
-                                    class="text-dark-300">
-                                <i class="fas fa-bookmark text-xl"></i>
-                            </button>
                         </div>
                         
-                        <!-- Video Description -->
+                        <!-- Description -->
                         <div class="mb-4">
                             <p class="text-dark-300">${video.description || ''}</p>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                ${video.description ? extractHashtags(video.description).map(tag => 
-                                    `<span class="text-primary cursor-pointer">${tag}</span>`
-                                ).join('') : ''}
-                            </div>
-                        </div>
-                        
-                        <!-- Music Tag -->
-                        <div class="flex items-center gap-2 text-dark-400 text-sm">
-                            <i class="fas fa-music"></i>
-                            <span>${video.music || 'Son original'}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Page Navigation
-        function showPage(page) {
-            state.currentPage = page;
-            
-            // Hide all pages
-            document.getElementById('feedContainer').classList.add('hidden');
-            document.getElementById('explorePage').classList.add('hidden');
-            document.getElementById('messagesPage').classList.add('hidden');
-            document.getElementById('profilePage').classList.add('hidden');
-            
-            // Update page title
-            const titles = {
-                'home': 'Pour toi',
-                'explore': 'Explorer',
-                'messages': 'Messages',
-                'profile': 'Profil'
-            };
-            document.getElementById('pageTitle').textContent = titles[page] || 'M&J';
-            
-            // Show selected page
-            switch (page) {
-                case 'home':
-                    document.getElementById('feedContainer').classList.remove('hidden');
-                    loadHomeFeed();
-                    break;
-                case 'explore':
-                    document.getElementById('explorePage').classList.remove('hidden');
-                    loadExplorePage();
-                    break;
-                case 'messages':
-                    document.getElementById('messagesPage').classList.remove('hidden');
-                    loadMessagesPage();
-                    break;
-                case 'profile':
-                    document.getElementById('profilePage').classList.remove('hidden');
-                    loadProfilePage();
-                    break;
+        // Stories
+        async function loadStories() {
+            try {
+                const stories = await fetchWithAuth('/api/stories/feed');
+                if (stories) {
+                    state.stories = stories;
+                    renderStories(stories);
+                }
+            } catch (error) {
+                console.error('Error loading stories:', error);
             }
         }
 
-        // Load Explore Page
-        async function loadExplorePage() {
-            try {
-                // Load categories
-                const categories = [
-                    { id: 'trending', name: 'Tendances', icon: '🔥', color: 'from-orange-500 to-red-500' },
-                    { id: 'music', name: 'Musique', icon: '🎵', color: 'from-blue-500 to-purple-500' },
-                    { id: 'dance', name: 'Danse', icon: '💃', color: 'from-pink-500 to-rose-500' },
-                    { id: 'comedy', name: 'Humour', icon: '😂', color: 'from-yellow-500 to-orange-500' },
-                    { id: 'sports', name: 'Sports', icon: '⚽', color: 'from-green-500 to-emerald-500' },
-                    { id: 'gaming', name: 'Gaming', icon: '🎮', color: 'from-purple-500 to-indigo-500' },
-                    { id: 'food', name: 'Cuisine', icon: '🍕', color: 'from-red-500 to-orange-500' },
-                    { id: 'fashion', name: 'Mode', icon: '👗', color: 'from-pink-500 to-fuchsia-500' }
-                ];
-                
-                const container = document.querySelector('#explorePage .grid');
-                container.innerHTML = categories.map(cat => `
-                    <div class="bg-gradient-to-br ${cat.color} rounded-2xl p-6 text-white cursor-pointer hover:scale-105 transition-transform">
-                        <div class="text-3xl mb-2">${cat.icon}</div>
-                        <div class="font-bold">${cat.name}</div>
+        function renderStories(stories) {
+            const container = document.getElementById('storiesContainer');
+            
+            // Add user's own story
+            container.innerHTML = `
+                <div class="flex flex-col items-center cursor-pointer" onclick="createStory()">
+                    <div class="relative">
+                        <img src="${state.user.avatar_url}" class="w-16 h-16 rounded-full border-2 border-primary">
+                        <div class="absolute bottom-0 right-0 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center">
+                            <i class="fas fa-plus text-xs"></i>
+                        </div>
                     </div>
-                `).join('');
+                    <span class="text-xs mt-1">Votre story</span>
+                </div>
+            `;
+            
+            // Add other stories
+            stories.forEach(storyGroup => {
+                const storyEl = document.createElement('div');
+                storyEl.className = 'flex flex-col items-center cursor-pointer';
+                storyEl.innerHTML = `
+                    <div class="relative">
+                        <img src="${storyGroup.user.avatar_url}" class="w-16 h-16 rounded-full border-2 border-secondary">
+                    </div>
+                    <span class="text-xs mt-1">${storyGroup.user.username}</span>
+                `;
+                storyEl.onclick = () => viewStories(storyGroup);
+                container.appendChild(storyEl);
+            });
+        }
+
+        // Upload
+        function showUploadModal() {
+            // Create upload modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 z-50 flex items-end';
+            
+            modal.innerHTML = `
+                <div class="w-full bg-dark-800 rounded-t-2xl p-6 animate-slide-up">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold mb-2">Publier une vidéo</h3>
+                        <div class="w-12 h-1 bg-dark-700 rounded-full mx-auto"></div>
+                    </div>
+                    
+                    <div id="uploadZone" class="border-2 border-dashed border-dark-700 rounded-2xl p-8 text-center mb-6 cursor-pointer hover:border-primary transition"
+                         onclick="document.getElementById('videoUpload').click()">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-dark-600 mb-4"></i>
+                        <p class="font-semibold mb-2">Glissez votre vidéo ici</p>
+                        <p class="text-sm text-dark-400">ou cliquez pour sélectionner</p>
+                        <p class="text-xs text-dark-500 mt-4">MP4, max 100MB</p>
+                    </div>
+                    
+                    <div id="uploadPreview" class="hidden mb-6">
+                        <video id="videoPreview" class="w-full rounded-xl mb-4" controls></video>
+                        <div class="space-y-4">
+                            <input type="text" id="videoDescription" class="w-full bg-dark-700 rounded-xl px-4 py-3" placeholder="Description...">
+                            <input type="text" id="videoMusic" class="w-full bg-dark-700 rounded-xl px-4 py-3" placeholder="Musique (optionnel)">
+                            <input type="text" id="videoLocation" class="w-full bg-dark-700 rounded-xl px-4 py-3" placeholder="Lieu (optionnel)">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="videoPublic" class="rounded" checked>
+                                <label for="videoPublic" class="text-sm">Publique</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button onclick="closeModal(this)" class="flex-1 bg-dark-700 py-3 rounded-lg">
+                            Annuler
+                        </button>
+                        <button id="uploadButton" onclick="uploadVideo()" class="flex-1 bg-primary py-3 rounded-lg hidden">
+                            <i class="fas fa-paper-plane mr-2"></i> Publier
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Setup file upload
+            document.getElementById('videoUpload').onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
                 
-                // Load trending videos
-                const videos = await fetchWithAuth('/api/explore');
-                if (videos) {
-                    renderTrendingVideos(videos);
+                if (!file.type.startsWith('video/')) {
+                    alert('Veuillez sélectionner une vidéo');
+                    return;
                 }
-            } catch (error) {
-                console.error('Error loading explore page:', error);
-            }
+                
+                if (file.size > 100 * 1024 * 1024) {
+                    alert('La vidéo est trop volumineuse (max 100MB)');
+                    return;
+                }
+                
+                const url = URL.createObjectURL(file);
+                
+                document.getElementById('uploadZone').classList.add('hidden');
+                document.getElementById('uploadPreview').classList.remove('hidden');
+                document.getElementById('uploadButton').classList.remove('hidden');
+                
+                const videoPreview = document.getElementById('videoPreview');
+                videoPreview.src = url;
+                
+                // Store file reference
+                videoPreview.dataset.file = file;
+            };
         }
 
-        // Load Messages Page
-        async function loadMessagesPage() {
-            try {
-                const conversations = await fetchWithAuth('/api/messages/conversations');
-                if (conversations) {
-                    state.conversations = conversations;
-                    renderConversations(conversations);
-                }
-            } catch (error) {
-                console.error('Error loading messages:', error);
+        async function uploadVideo() {
+            const fileInput = document.getElementById('videoUpload');
+            if (!fileInput.files[0]) {
+                alert('Veuillez sélectionner une vidéo');
+                return;
             }
-        }
-
-        // Load Profile Page
-        async function loadProfilePage() {
-            if (!state.user) return;
+            
+            const file = fileInput.files[0];
+            const description = document.getElementById('videoDescription').value;
+            const music = document.getElementById('videoMusic').value;
+            const location = document.getElementById('videoLocation').value;
+            const isPublic = document.getElementById('videoPublic').checked;
+            
+            const formData = new FormData();
+            formData.append('video', file);
+            formData.append('description', description);
+            formData.append('music', music);
+            formData.append('location', location);
+            formData.append('is_public', isPublic.toString());
             
             try {
-                const profile = await fetchWithAuth(`/api/users/${state.user.id}`);
-                if (profile) {
-                    updateProfileUI(profile);
-                    
-                    const videos = await fetchWithAuth(`/api/users/${state.user.id}/videos`);
-                    if (videos) {
-                        renderProfileVideos(videos);
-                    }
+                const response = await fetch(`${API_BASE_URL}/api/videos/upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${state.token}`
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    alert('Vidéo publiée avec succès !');
+                    closeAllModals();
+                    loadHomeFeed();
+                } else {
+                    const error = await response.json();
+                    alert(error.detail || 'Erreur lors de l\'upload');
                 }
             } catch (error) {
-                console.error('Error loading profile:', error);
+                console.error('Upload error:', error);
+                alert('Erreur réseau');
             }
         }
 
-        // Video Actions
+        // Story creation
+        function createStory() {
+            document.getElementById('videoUpload').onchange = async function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const formData = new FormData();
+                formData.append('video', file);
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/stories`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${state.token}`
+                        },
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        alert('Story publiée !');
+                        loadStories();
+                    } else {
+                        alert('Erreur lors de la publication');
+                    }
+                } catch {
+                    alert('Erreur réseau');
+                }
+            };
+            
+            document.getElementById('videoUpload').click();
+        }
+
+        function viewStories(storyGroup) {
+            // Create story viewer
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black z-50';
+            modal.innerHTML = `
+                <div class="h-full flex flex-col">
+                    <div class="absolute top-4 left-4 right-4 flex gap-1 z-10">
+                        ${storyGroup.stories.map((story, index) => `
+                            <div class="flex-1 h-1 bg-gray-600 rounded-full overflow-hidden">
+                                <div class="h-full bg-white story-progress" data-index="${index}"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="flex-1 relative">
+                        ${storyGroup.stories.map((story, index) => `
+                            <div class="absolute inset-0 ${index === 0 ? '' : 'hidden'}" data-index="${index}">
+                                <video src="${story.video_url}" class="w-full h-full object-contain" autoplay controls></video>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="absolute top-4 left-4 z-10">
+                        <button onclick="closeModal(this)" class="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Start progress animation
+            startStoryProgress(storyGroup.stories.length);
+        }
+
+        // Video actions
         async function toggleLike(videoId) {
             try {
                 const response = await fetchWithAuth(`/api/videos/${videoId}/like`, {
@@ -1145,22 +881,22 @@
                 });
                 
                 if (response) {
-                    // Update UI immediately
-                    const likeBtn = event.currentTarget;
-                    const icon = likeBtn.querySelector('i');
-                    const countSpan = likeBtn.querySelector('span');
+                    // Update UI
+                    const button = event.currentTarget;
+                    const icon = button.querySelector('i');
+                    const countSpan = button.querySelector('span');
                     
                     if (icon.classList.contains('fa-regular')) {
                         // Like
                         icon.classList.remove('fa-regular');
                         icon.classList.add('fa-solid', 'text-primary');
-                        likeBtn.classList.add('text-primary');
+                        button.classList.add('text-primary');
                         countSpan.textContent = formatCount(parseInt(countSpan.textContent) + 1);
                     } else {
                         // Unlike
                         icon.classList.remove('fa-solid', 'text-primary');
                         icon.classList.add('fa-regular');
-                        likeBtn.classList.remove('text-primary');
+                        button.classList.remove('text-primary');
                         countSpan.textContent = formatCount(parseInt(countSpan.textContent) - 1);
                     }
                 }
@@ -1180,15 +916,578 @@
             }
         }
 
+        function showCommentsModal(videoId, comments) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-dark-950 z-50 flex flex-col';
+            
+            modal.innerHTML = `
+                <div class="sticky top-0 bg-dark-900 p-4 flex items-center gap-3">
+                    <button onclick="closeModal(this)" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 class="text-xl font-bold">Commentaires</h2>
+                </div>
+                
+                <div id="commentsList" class="flex-1 overflow-y-auto p-4">
+                    ${comments.length === 0 ? '<p class="text-center text-dark-400 py-8">Aucun commentaire</p>' : 
+                      comments.map(comment => `
+                        <div class="flex gap-3 mb-4">
+                            <img src="${comment.avatar_url}" class="w-10 h-10 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-semibold">${comment.username}</span>
+                                    <span class="text-xs text-dark-400">${formatTimeAgo(comment.created_at)}</span>
+                                </div>
+                                <p class="mt-1">${comment.text}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="sticky bottom-0 bg-dark-900 border-t border-dark-800 p-4">
+                    <div class="flex gap-3">
+                        <input type="text" id="commentInput" class="flex-1 bg-dark-800 rounded-xl px-4 py-3" placeholder="Ajouter un commentaire...">
+                        <button onclick="postComment('${videoId}')" class="px-6 bg-primary rounded-xl">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.getElementById('commentInput').focus();
+        }
+
+        async function postComment(videoId) {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            
+            try {
+                const response = await fetchWithAuth(`/api/videos/${videoId}/comments`, {
+                    method: 'POST',
+                    body: JSON.stringify({ text })
+                });
+                
+                if (response) {
+                    input.value = '';
+                    // Reload comments
+                    showComments(videoId);
+                }
+            } catch (error) {
+                console.error('Error posting comment:', error);
+            }
+        }
+
         function shareVideo(videoId) {
             const url = `${window.location.origin}/video/${videoId}`;
             navigator.clipboard.writeText(url);
-            showToast('Lien copié dans le presse-papier', 'success');
+            showToast('Lien copié !');
         }
 
-        // Upload Modal
-        function showUploadModal() {
-            showToast('Fonction upload bientôt disponible', 'info');
+        // Explore
+        async function loadExplorePage() {
+            try {
+                // Load categories
+                const categories = [
+                    { id: 'trending', name: 'Tendances', icon: '🔥', color: 'from-orange-500 to-red-500' },
+                    { id: 'music', name: 'Musique', icon: '🎵', color: 'from-blue-500 to-purple-500' },
+                    { id: 'dance', name: 'Danse', icon: '💃', color: 'from-pink-500 to-rose-500' },
+                    { id: 'comedy', name: 'Humour', icon: '😂', color: 'from-yellow-500 to-orange-500' },
+                    { id: 'sports', name: 'Sports', icon: '⚽', color: 'from-green-500 to-emerald-500' },
+                    { id: 'gaming', name: 'Gaming', icon: '🎮', color: 'from-purple-500 to-indigo-500' }
+                ];
+                
+                const container = document.getElementById('categoriesGrid');
+                container.innerHTML = categories.map(cat => `
+                    <div class="bg-gradient-to-br ${cat.color} rounded-2xl p-6 text-white cursor-pointer" onclick="showCategory('${cat.id}')">
+                        <div class="text-3xl mb-2">${cat.icon}</div>
+                        <div class="font-bold">${cat.name}</div>
+                    </div>
+                `).join('');
+                
+                // Load trending videos
+                const videos = await fetchWithAuth('/api/explore');
+                if (videos) {
+                    renderTrendingVideos(videos);
+                }
+            } catch (error) {
+                console.error('Error loading explore:', error);
+            }
+        }
+
+        function renderTrendingVideos(videos) {
+            const container = document.getElementById('trendingVideos');
+            if (!container) return;
+            
+            if (videos.length === 0) {
+                container.innerHTML = '<p class="text-dark-400">Aucune vidéo tendance</p>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">Tendances</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    ${videos.slice(0, 6).map(video => `
+                        <div class="cursor-pointer" onclick="openVideo('${video.id}')">
+                            <div class="relative aspect-[9/16] rounded-xl overflow-hidden mb-2">
+                                <img src="${video.thumbnail_url}" class="w-full h-full object-cover">
+                                <div class="absolute bottom-2 right-2 bg-black/50 rounded px-2 py-1 text-xs">
+                                    ${formatDuration(video.duration)}
+                                </div>
+                            </div>
+                            <p class="text-sm truncate">${video.description || ''}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Messages
+        async function loadMessagesPage() {
+            try {
+                const conversations = await fetchWithAuth('/api/messages/conversations');
+                if (conversations) {
+                    state.conversations = conversations;
+                    renderConversations(conversations);
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        function renderConversations(conversations) {
+            const container = document.getElementById('conversationsList');
+            
+            if (!conversations || conversations.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-comment-slash text-4xl text-dark-600 mb-4"></i>
+                        <p class="text-dark-400">Aucun message</p>
+                        <button onclick="startNewChat()" class="mt-4 px-6 py-2 bg-primary rounded-lg">
+                            Nouveau message
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = conversations.map(conv => `
+                <div class="flex items-center gap-3 p-3 border-b border-dark-800 cursor-pointer hover:bg-dark-800" 
+                     onclick="openChat('${conv.user_id}')">
+                    <img src="${conv.avatar_url}" class="w-12 h-12 rounded-full">
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <div class="font-semibold">${conv.username}</div>
+                            <span class="text-xs text-dark-400">${formatTimeAgo(conv.last_message_at)}</span>
+                        </div>
+                        <p class="text-sm text-dark-400 truncate">${conv.last_message || '...'}</p>
+                    </div>
+                    ${conv.unread_count > 0 ? `
+                        <div class="bg-primary text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                            ${conv.unread_count}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function startNewChat() {
+            // Create modal to select user
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4';
+            
+            modal.innerHTML = `
+                <div class="w-full max-w-md bg-dark-800 rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">Nouveau message</h3>
+                        <button onclick="closeModal(this)" class="text-dark-400">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="relative mb-6">
+                        <input type="text" id="searchUser" 
+                               class="w-full bg-dark-700 rounded-xl px-4 py-3 pl-12" 
+                               placeholder="Rechercher un utilisateur...">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-dark-400"></i>
+                    </div>
+                    
+                    <div id="userSearchResults" class="space-y-2 max-h-64 overflow-y-auto">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Load suggested users
+            loadSuggestedUsers();
+            
+            // Setup search
+            document.getElementById('searchUser').addEventListener('input', async (e) => {
+                const query = e.target.value.trim();
+                if (query.length >= 2) {
+                    await searchUsers(query);
+                }
+            });
+        }
+
+        async function loadSuggestedUsers() {
+            try {
+                const response = await fetchWithAuth('/api/search?q=&type=users&limit=10');
+                if (response && response.users) {
+                    renderUserList(response.users);
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function searchUsers(query) {
+            try {
+                const response = await fetchWithAuth(`/api/search?q=${encodeURIComponent(query)}&type=users`);
+                if (response && response.users) {
+                    renderUserList(response.users);
+                }
+            } catch (error) {
+                console.error('Error searching users:', error);
+            }
+        }
+
+        function renderUserList(users) {
+            const container = document.getElementById('userSearchResults');
+            if (!container) return;
+            
+            container.innerHTML = users.map(user => `
+                <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-dark-700 cursor-pointer"
+                     onclick="startChatWithUser('${user.id}', '${user.username}')">
+                    <img src="${user.avatar_url}" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <div class="font-semibold">${user.username}</div>
+                        <div class="text-sm text-dark-400">${user.followers_count || 0} abonnés</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-dark-400"></i>
+                </div>
+            `).join('');
+        }
+
+        function startChatWithUser(userId, username) {
+            closeAllModals();
+            openChat(userId, username);
+        }
+
+        function openChat(userId, username = '') {
+            // Create chat modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-dark-950 z-50 flex flex-col';
+            
+            modal.innerHTML = `
+                <div class="sticky top-0 bg-dark-900 p-4 flex items-center gap-3">
+                    <button onclick="closeModal(this)" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <img src="" id="chatUserAvatar" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <div class="font-semibold" id="chatUsername">${username}</div>
+                        <div class="text-xs text-dark-400" id="chatStatus">En ligne</div>
+                    </div>
+                </div>
+                
+                <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                    <!-- Messages will be loaded here -->
+                </div>
+                
+                <div class="sticky bottom-0 bg-dark-900 border-t border-dark-800 p-4">
+                    <div class="flex gap-3">
+                        <input type="text" id="messageInput" 
+                               class="flex-1 bg-dark-800 rounded-xl px-4 py-3" 
+                               placeholder="Message..." 
+                               onkeydown="if(event.key === 'Enter') sendMessage('${userId}')">
+                        <button onclick="sendMessage('${userId}')" class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Load messages
+            loadChatMessages(userId);
+            
+            // Focus input
+            setTimeout(() => {
+                document.getElementById('messageInput').focus();
+            }, 100);
+        }
+
+        async function loadChatMessages(userId) {
+            try {
+                const messages = await fetchWithAuth(`/api/messages/${userId}`);
+                if (messages) {
+                    renderChatMessages(messages);
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        function renderChatMessages(messages) {
+            const container = document.getElementById('chatMessages');
+            if (!container) return;
+            
+            container.innerHTML = messages.map(msg => `
+                <div class="flex ${msg.sender_id === state.user.id ? 'justify-end' : 'justify-start'}">
+                    <div class="max-w-[70%] ${msg.sender_id === state.user.id ? 'bg-primary text-white rounded-2xl rounded-tr-none' : 'bg-dark-800 text-white rounded-2xl rounded-tl-none'} p-3">
+                        <p>${msg.content}</p>
+                        <p class="text-xs opacity-75 mt-1">${formatTimeAgo(msg.created_at)}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage(userId) {
+            const input = document.getElementById('messageInput');
+            const content = input.value.trim();
+            
+            if (!content) return;
+            
+            try {
+                const response = await fetchWithAuth('/api/messages', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        receiver_id: userId,
+                        content: content
+                    })
+                });
+                
+                if (response) {
+                    input.value = '';
+                    // Reload messages
+                    loadChatMessages(userId);
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+        }
+
+        // Profile
+        async function loadProfilePage() {
+            if (!state.user) return;
+            
+            try {
+                const profile = await fetchWithAuth(`/api/users/${state.user.id}`);
+                if (profile) {
+                    updateProfileUI(profile);
+                    
+                    const videos = await fetchWithAuth(`/api/users/${state.user.id}/videos`);
+                    if (videos) {
+                        renderProfileVideos(videos);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        function updateProfileUI(profile) {
+            document.getElementById('profileAvatar').src = profile.avatar_url;
+            document.getElementById('profileUsername').textContent = '@' + profile.username;
+            document.getElementById('profileBio').textContent = profile.bio || 'Aucune bio';
+            document.getElementById('profileVideosCount').textContent = profile.videos_count || 0;
+            document.getElementById('profileFollowersCount').textContent = profile.followers_count || 0;
+            document.getElementById('profileFollowingCount').textContent = profile.following_count || 0;
+            
+            // Update follow button
+            const followBtn = document.getElementById('followButton');
+            if (profile.id === state.user.id) {
+                followBtn.textContent = 'Modifier';
+                followBtn.onclick = editProfile;
+            } else {
+                followBtn.textContent = profile.is_following ? 'Suivi' : 'Suivre';
+                followBtn.onclick = () => toggleFollow(profile.id);
+            }
+        }
+
+        function renderProfileVideos(videos) {
+            const container = document.getElementById('profileVideosGrid');
+            if (!container) return;
+            
+            if (videos.length === 0) {
+                container.innerHTML = '<p class="text-dark-400 col-span-full text-center py-8">Aucune vidéo</p>';
+                return;
+            }
+            
+            container.innerHTML = videos.map(video => `
+                <div class="cursor-pointer" onclick="openVideo('${video.id}')">
+                    <div class="aspect-[9/16] rounded-xl overflow-hidden mb-2">
+                        <img src="${video.thumbnail_url}" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm truncate">${video.description || ''}</p>
+                </div>
+            `).join('');
+        }
+
+        async function loadLikedVideos() {
+            try {
+                const videos = await fetchWithAuth(`/api/users/${state.user.id}/liked`);
+                if (videos) {
+                    renderProfileVideos(videos);
+                }
+            } catch (error) {
+                console.error('Error loading liked videos:', error);
+            }
+        }
+
+        async function toggleFollow(userId) {
+            try {
+                const isFollowing = event.target.textContent === 'Suivi';
+                
+                const url = `${API_BASE_URL}/api/users/${userId}/follow`;
+                const method = isFollowing ? 'DELETE' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Authorization': `Bearer ${state.token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const button = event.target;
+                    if (isFollowing) {
+                        button.textContent = 'Suivre';
+                        button.classList.remove('bg-dark-800');
+                        button.classList.add('bg-primary');
+                    } else {
+                        button.textContent = 'Suivi';
+                        button.classList.remove('bg-primary');
+                        button.classList.add('bg-dark-800');
+                    }
+                }
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+            }
+        }
+
+        function editProfile() {
+            // Create edit modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4';
+            
+            modal.innerHTML = `
+                <div class="w-full max-w-md bg-dark-800 rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">Modifier le profil</h3>
+                        <button onclick="closeModal(this)" class="text-dark-400">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-dark-400 mb-2">Bio</label>
+                            <textarea id="editBio" class="w-full bg-dark-700 rounded-xl px-4 py-3 h-32">${state.user.bio || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-dark-400 mb-2">Site web</label>
+                            <input type="text" id="editWebsite" class="w-full bg-dark-700 rounded-xl px-4 py-3" value="${state.user.website || ''}">
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="editPrivate" class="rounded" ${state.user.is_private ? 'checked' : ''}>
+                            <label for="editPrivate" class="text-sm">Compte privé</label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-6">
+                        <button onclick="closeModal(this)" class="flex-1 bg-dark-700 py-3 rounded-lg">
+                            Annuler
+                        </button>
+                        <button onclick="saveProfile()" class="flex-1 bg-primary py-3 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        async function saveProfile() {
+            const bio = document.getElementById('editBio').value;
+            const website = document.getElementById('editWebsite').value;
+            const isPrivate = document.getElementById('editPrivate').checked;
+            
+            try {
+                const response = await fetchWithAuth('/api/users/me', {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        bio,
+                        website,
+                        is_private: isPrivate
+                    })
+                });
+                
+                if (response) {
+                    // Update local state
+                    state.user.bio = bio;
+                    state.user.website = website;
+                    state.user.is_private = isPrivate;
+                    
+                    closeAllModals();
+                    showToast('Profil mis à jour');
+                    
+                    // Reload profile
+                    if (state.currentPage === 'profile') {
+                        loadProfilePage();
+                    }
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+            }
+        }
+
+        function changeAvatar() {
+            document.getElementById('imageUpload').onchange = async function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/users/me/avatar`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${state.token}`
+                        },
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Update all avatar images
+                        document.getElementById('userAvatar').src = data.avatar_url;
+                        document.getElementById('profileAvatar').src = data.avatar_url;
+                        state.user.avatar_url = data.avatar_url;
+                        
+                        showToast('Avatar mis à jour');
+                    }
+                } catch {
+                    alert('Erreur lors du changement d\'avatar');
+                }
+            };
+            
+            document.getElementById('imageUpload').click();
         }
 
         // Notifications
@@ -1197,21 +1496,91 @@
                 const notifications = await fetchWithAuth('/api/notifications');
                 if (notifications) {
                     state.notifications = notifications;
-                    state.unreadNotifications = notifications.filter(n => !n.is_read).length;
-                    
-                    if (state.unreadNotifications > 0) {
-                        document.getElementById('notificationCount').classList.remove('hidden');
-                        document.getElementById('notificationCount').textContent = 
-                            state.unreadNotifications > 9 ? '9+' : state.unreadNotifications;
-                    }
+                    updateNotificationBadge();
                 }
             } catch (error) {
                 console.error('Error loading notifications:', error);
             }
         }
 
-        function toggleNotifications() {
-            showToast('Notifications bientôt disponibles', 'info');
+        function updateNotificationBadge() {
+            const unread = state.notifications.filter(n => !n.is_read).length;
+            const badge = document.getElementById('notificationCount');
+            
+            if (unread > 0) {
+                badge.classList.remove('hidden');
+                badge.textContent = unread > 9 ? '9+' : unread;
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function showNotifications() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 z-50 flex items-end';
+            
+            modal.innerHTML = `
+                <div class="w-full bg-dark-800 rounded-t-2xl max-h-[80vh] overflow-hidden">
+                    <div class="p-4 border-b border-dark-700">
+                        <h3 class="text-xl font-bold">Notifications</h3>
+                    </div>
+                    
+                    <div id="notificationsList" class="overflow-y-auto max-h-[60vh]">
+                        ${state.notifications.length === 0 ? 
+                            '<p class="text-center text-dark-400 py-8">Aucune notification</p>' : 
+                            state.notifications.map(notif => `
+                                <div class="p-4 border-b border-dark-700 hover:bg-dark-700 cursor-pointer ${notif.is_read ? '' : 'bg-dark-900/50'}">
+                                    <div class="flex items-start gap-3">
+                                        <img src="${notif.from_avatar}" class="w-10 h-10 rounded-full">
+                                        <div class="flex-1">
+                                            <p class="font-semibold">${notif.from_username}</p>
+                                            <p class="text-sm text-dark-400">${getNotificationMessage(notif)}</p>
+                                            <p class="text-xs text-dark-500 mt-1">${formatTimeAgo(notif.created_at)}</p>
+                                        </div>
+                                        ${!notif.is_read ? '<div class="w-2 h-2 bg-primary rounded-full"></div>' : ''}
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                    
+                    <div class="p-4">
+                        <button onclick="closeModal(this)" class="w-full bg-dark-700 py-3 rounded-lg">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Mark as read
+            markNotificationsAsRead();
+        }
+
+        function getNotificationMessage(notification) {
+            switch (notification.type) {
+                case 'like': return 'a aimé votre vidéo';
+                case 'comment': return 'a commenté votre vidéo';
+                case 'follow': return 'vous suit maintenant';
+                case 'message': return 'vous a envoyé un message';
+                default: return 'nouvelle notification';
+            }
+        }
+
+        async function markNotificationsAsRead() {
+            try {
+                await fetchWithAuth('/api/notifications/mark-read', {
+                    method: 'POST',
+                    body: JSON.stringify({ notification_ids: null })
+                });
+                
+                // Update local state
+                state.notifications.forEach(n => n.is_read = true);
+                updateNotificationBadge();
+            } catch (error) {
+                console.error('Error marking notifications as read:', error);
+            }
         }
 
         // Search
@@ -1237,27 +1606,105 @@
             }
         }
 
-        // UI Helpers
-        function showToast(message, type = 'info') {
-            // Remove existing toasts
-            document.querySelectorAll('.toast').forEach(toast => toast.remove());
+        function showSearchResults(results) {
+            // Create search results modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4';
             
-            const toast = document.createElement('div');
-            toast.className = `toast fixed top-4 right-4 px-6 py-3 rounded-lg font-semibold z-50 animate-fade-in ${
-                type === 'error' ? 'bg-red-500' :
-                type === 'success' ? 'bg-green-500' :
-                type === 'warning' ? 'bg-yellow-500' :
-                'bg-primary'
-            } text-white`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
+            let html = '<div class="w-full max-w-2xl bg-dark-800 rounded-2xl max-h-[80vh] overflow-hidden">';
+            html += '<div class="p-4 border-b border-dark-700"><h3 class="text-xl font-bold">Résultats</h3></div>';
+            html += '<div class="p-4 overflow-y-auto max-h-[70vh]">';
             
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            if (results.users.length > 0) {
+                html += '<h4 class="font-bold mb-3">Utilisateurs</h4>';
+                html += results.users.map(user => `
+                    <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-dark-700 cursor-pointer mb-2"
+                         onclick="showUserProfile('${user.id}'); closeModal(this)">
+                        <img src="${user.avatar_url}" class="w-12 h-12 rounded-full">
+                        <div class="flex-1">
+                            <div class="font-semibold">${user.username}</div>
+                            <div class="text-sm text-dark-400">${user.followers_count} abonnés</div>
+                        </div>
+                        <button class="px-4 py-1 rounded-lg ${user.is_following ? 'bg-dark-700' : 'bg-primary'}">
+                            ${user.is_following ? 'Suivi' : 'Suivre'}
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            if (results.videos.length > 0) {
+                html += '<h4 class="font-bold mb-3 mt-6">Vidéos</h4>';
+                html += results.videos.map(video => `
+                    <div class="flex gap-3 p-3 rounded-lg hover:bg-dark-700 cursor-pointer mb-2"
+                         onclick="openVideo('${video.id}'); closeModal(this)">
+                        <img src="${video.thumbnail_url}" class="w-24 h-24 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <div class="font-semibold">${video.description?.substring(0, 100) || 'Vidéo'}</div>
+                            <div class="text-sm text-dark-400">@${video.username}</div>
+                            <div class="flex items-center gap-4 mt-2 text-sm">
+                                <span><i class="fas fa-heart mr-1"></i> ${video.likes_count}</span>
+                                <span><i class="fas fa-comment mr-1"></i> ${video.comments_count}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            if (results.users.length === 0 && results.videos.length === 0) {
+                html += '<p class="text-center text-dark-400 py-8">Aucun résultat</p>';
+            }
+            
+            html += '</div></div>';
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
         }
 
+        // User menu
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Page navigation
+        function showPage(page) {
+            state.currentPage = page;
+            
+            // Hide all pages
+            document.getElementById('feedContainer').classList.add('hidden');
+            document.getElementById('explorePage').classList.add('hidden');
+            document.getElementById('messagesPage').classList.add('hidden');
+            document.getElementById('profilePage').classList.add('hidden');
+            
+            // Update title
+            const titles = {
+                'home': 'Pour toi',
+                'explore': 'Explorer',
+                'messages': 'Messages',
+                'profile': 'Profil'
+            };
+            document.getElementById('pageTitle').textContent = titles[page] || 'M&J';
+            
+            // Show selected page
+            switch (page) {
+                case 'home':
+                    document.getElementById('feedContainer').classList.remove('hidden');
+                    break;
+                case 'explore':
+                    document.getElementById('explorePage').classList.remove('hidden');
+                    loadExplorePage();
+                    break;
+                case 'messages':
+                    document.getElementById('messagesPage').classList.remove('hidden');
+                    loadMessagesPage();
+                    break;
+                case 'profile':
+                    document.getElementById('profilePage').classList.remove('hidden');
+                    loadProfilePage();
+                    break;
+            }
+        }
+
+        // Utility functions
         function formatCount(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
@@ -1273,52 +1720,49 @@
             const diffHour = Math.floor(diffMin / 60);
             const diffDay = Math.floor(diffHour / 24);
             
-            if (diffDay > 0) return `Il y a ${diffDay}j`;
-            if (diffHour > 0) return `Il y a ${diffHour}h`;
-            if (diffMin > 0) return `Il y a ${diffMin}min`;
+            if (diffDay > 0) return `il y a ${diffDay}j`;
+            if (diffHour > 0) return `il y a ${diffHour}h`;
+            if (diffMin > 0) return `il y a ${diffMin}min`;
             return 'À l\'instant';
         }
 
-        function extractHashtags(text) {
-            const hashtags = text.match(/#\w+/g) || [];
-            return hashtags.slice(0, 5); // Limit to 5 hashtags
+        function formatDuration(seconds) {
+            if (!seconds) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        function showLoadingSkeleton(containerId, count = 3) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = Array(count).fill(0).map(() => `
-                <div class="border-b border-dark-800">
-                    <div class="container mx-auto px-4 py-6">
-                        <!-- Skeleton Header -->
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full skeleton"></div>
-                                <div>
-                                    <div class="w-24 h-4 skeleton rounded mb-2"></div>
-                                    <div class="w-16 h-3 skeleton rounded"></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Skeleton Video -->
-                        <div class="mb-4 rounded-xl overflow-hidden">
-                            <div class="w-full h-[400px] skeleton"></div>
-                        </div>
-                        
-                        <!-- Skeleton Actions -->
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-16 h-4 skeleton rounded"></div>
-                                <div class="w-16 h-4 skeleton rounded"></div>
-                                <div class="w-16 h-4 skeleton rounded"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg font-semibold z-50 ${
+                type === 'error' ? 'bg-red-500' :
+                type === 'success' ? 'bg-green-500' :
+                'bg-primary'
+            } text-white`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        // Event Listeners
+        function closeModal(button) {
+            button.closest('.fixed').remove();
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.fixed').forEach(modal => modal.remove());
+        }
+
+        function logout() {
+            localStorage.removeItem('mj_token');
+            location.reload();
+        }
+
+        // Event listeners
         document.getElementById('globalSearch').addEventListener('input', (e) => {
             const query = e.target.value.trim();
             if (query.length >= 2) {
@@ -1326,11 +1770,15 @@
             }
         });
 
-        // Add more event listeners as needed...
+        // Close user menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#userMenuBtn') && !e.target.closest('#userMenu')) {
+                document.getElementById('userMenu').classList.add('hidden');
+            }
+        });
 
-        // Initialize when page loads
-        console.log('M&J Social Platform ready!');
-        console.log('Server URL:', API_BASE_URL);
+        // Initialize
+        console.log('M&J Social Platform initialized');
     </script>
 </body>
 </html>
