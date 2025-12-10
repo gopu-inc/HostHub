@@ -2,432 +2,746 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M&J Social</title>
-    <!-- MINIMAL CSS INLINE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M&J Social - HoostHubs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #000; color: white; height: 100vh; 
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; -webkit-tap-highlight-color: transparent; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .video-snap { scroll-snap-type: y mandatory; }
+        .snap-item { scroll-snap-align: start; height: 100vh; }
         
-        /* LOADING - disappears quickly */
-        #loading { 
-            position: fixed; inset: 0; background: #000; 
-            display: flex; justify-content: center; align-items: center; 
-            z-index: 9999; transition: opacity 0.3s;
-        }
-        .loader { width: 40px; height: 40px; border: 3px solid #333; border-top-color: #FF0055; border-radius: 50%; animation: spin 1s linear infinite; }
+        /* Animations */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        .slide-up { animation: slideUp 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
-        /* AUTH SCREEN - minimal */
-        #auth { position: fixed; inset: 0; background: linear-gradient(135deg, #000 0%, #1a1a2e 100%); display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .auth-box { max-width: 320px; width: 100%; }
-        .logo { font-size: 42px; font-weight: 900; background: linear-gradient(45deg, #FF0055, #00E5FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 30px; }
-        .input { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; color: white; margin-bottom: 12px; font-size: 16px; }
-        .btn { width: 100%; background: #FF0055; border: none; padding: 12px; border-radius: 8px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
-        
-        /* APP - minimal */
-        #app { display: none; height: 100vh; }
-        .header { position: fixed; top: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.95); display: flex; align-items: center; padding: 0 15px; z-index: 100; }
-        .page-title { font-size: 18px; font-weight: bold; margin-left: 10px; }
-        
-        /* FEED - optimized */
-        .feed { padding-top: 50px; padding-bottom: 60px; }
-        .video-card { margin-bottom: 1px; }
-        video { width: 100%; height: 80vh; background: #000; display: block; }
-        .video-info { padding: 12px; background: #111; }
-        .user-info { display: flex; align-items: center; margin-bottom: 8px; }
-        .avatar { width: 36px; height: 36px; border-radius: 50%; margin-right: 10px; }
-        
-        /* NAV - minimal */
-        .nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: rgba(0,0,0,0.95); display: flex; justify-content: space-around; align-items: center; }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #888; font-size: 11px; }
-        .nav-btn.active { color: #FF0055; }
-        
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        /* Loader */
+        .loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #FF0055; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
-    <!-- FONT AWESOME CDN (async) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 </head>
-<body>
-    <!-- LOADING (disappears in 0.5s) -->
-    <div id="loading">
-        <div class="loader"></div>
+<body class="h-screen w-screen overflow-hidden bg-black text-white">
+
+    <!-- ================= AUTH VIEW ================= -->
+    <div id="auth-view" class="fixed inset-0 z-50 bg-black flex flex-col justify-center items-center p-6">
+        <h1 class="text-5xl font-bold mb-2 text-[#FF0055] tracking-tighter">M&J</h1>
+        <p class="text-gray-400 mb-10 text-sm">Social Media Revolution</p>
+        
+        <form id="login-form" class="w-full max-w-sm flex flex-col gap-3">
+            <input type="text" id="login-user" placeholder="Nom d'utilisateur" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#FF0055]">
+            <input type="password" id="login-pass" placeholder="Mot de passe" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#FF0055]">
+            <button type="submit" class="bg-[#FF0055] py-4 rounded-xl font-bold mt-2 shadow-lg shadow-pink-500/20">Se connecter</button>
+        </form>
+
+        <p class="mt-6 text-sm text-gray-500">Pas de compte ? <span onclick="toggleAuth()" class="text-[#FF0055] font-bold cursor-pointer">S'inscrire</span></p>
+        
+        <!-- Register (Hidden) -->
+        <form id="register-form" class="w-full max-w-sm flex flex-col gap-3 hidden mt-4">
+            <input type="text" id="reg-user" placeholder="Nom d'utilisateur" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none">
+            <input type="password" id="reg-pass" placeholder="Mot de passe" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none">
+            <input type="text" id="reg-name" placeholder="Nom complet" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none">
+            <button type="submit" class="bg-white text-black py-4 rounded-xl font-bold mt-2">Créer compte</button>
+        </form>
+        <div id="auth-msg" class="text-red-500 mt-4 text-sm text-center"></div>
     </div>
 
-    <!-- AUTH (hidden by default) -->
-    <div id="auth" style="display: none;">
-        <div class="auth-box">
-            <div class="logo">M&J</div>
-            <input type="text" id="username" class="input" placeholder="Username" value="test">
-            <input type="password" id="password" class="input" placeholder="Password" value="test123">
-            <button class="btn" onclick="login()">Connexion</button>
-            <div style="text-align: center; margin-top: 15px; color: #888; font-size: 14px;">
-                Pas de compte ? <span onclick="showRegister()" style="color: #FF0055; cursor: pointer;">S'inscrire</span>
+    <!-- ================= APP VIEW ================= -->
+    <div id="app-view" class="h-full w-full flex flex-col hidden relative">
+        
+        <!-- HEADER (Overlay) -->
+        <header class="absolute top-0 w-full z-20 flex justify-between items-center p-4 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
+            <div class="pointer-events-auto font-bold text-lg drop-shadow-md">M&J Social</div>
+            <button onclick="logout()" class="pointer-events-auto text-white/80 hover:text-white"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main id="main" class="flex-1 bg-black overflow-hidden relative">
+            
+            <!-- 1. FEED -->
+            <div id="view-feed" class="h-full w-full overflow-y-scroll video-snap no-scrollbar bg-black">
+                <!-- Videos injected here -->
+            </div>
+
+            <!-- 2. EXPLORE -->
+            <div id="view-explore" class="h-full w-full bg-black hidden flex flex-col pt-4">
+                <div class="px-4 pb-2">
+                    <div class="bg-[#1e1e1e] rounded-xl flex items-center px-3 py-2">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                        <input type="text" id="search-input" placeholder="Rechercher utilisateurs ou vidéos..." 
+                               class="bg-transparent border-none outline-none text-white ml-2 w-full placeholder-gray-500"
+                               onkeyup="handleSearch(event)">
+                    </div>
+                    <!-- Tabs -->
+                    <div class="flex gap-4 mt-4 text-sm border-b border-gray-800 pb-2">
+                        <button onclick="searchType='users'; doSearch()" class="font-bold text-white">Comptes</button>
+                        <button onclick="searchType='videos'; doSearch()" class="text-gray-400 hover:text-white">Vidéos</button>
+                        <button onclick="searchType='hashtags'; doSearch()" class="text-gray-400 hover:text-white">Hashtags</button>
+                    </div>
+                </div>
+                <div id="search-results" class="flex-1 overflow-y-auto p-4 grid grid-cols-3 gap-1 content-start">
+                    <!-- Results -->
+                    <p class="col-span-3 text-center text-gray-500 mt-10">Tapez quelque chose pour chercher...</p>
+                </div>
+            </div>
+
+            <!-- 3. UPLOAD -->
+            <div id="view-upload" class="h-full w-full bg-[#121212] hidden flex flex-col p-6 overflow-y-auto">
+                <h2 class="text-2xl font-bold mb-6">Nouvelle publication</h2>
+                <div id="upload-area" class="border-2 border-dashed border-gray-700 rounded-2xl h-64 flex flex-col justify-center items-center cursor-pointer bg-[#1e1e1e] hover:border-[#FF0055] transition" onclick="document.getElementById('video-file').click()">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-500 mb-2"></i>
+                    <p class="text-gray-400 text-sm">Toucher pour choisir une vidéo</p>
+                    <p id="file-name" class="text-[#FF0055] mt-2 text-xs font-bold"></p>
+                </div>
+                <input type="file" id="video-file" accept="video/*" class="hidden">
+                
+                <textarea id="video-desc" placeholder="Écrivez une légende... #hashtag" class="mt-4 bg-[#1e1e1e] p-4 rounded-xl text-white outline-none h-32 resize-none"></textarea>
+                
+                <button onclick="uploadVideo()" id="btn-upload" class="bg-[#FF0055] text-white py-4 rounded-xl font-bold mt-4 shadow-lg shadow-pink-500/20">Publier maintenant</button>
+                <div id="upload-status" class="mt-4 text-center text-sm font-medium"></div>
+            </div>
+
+            <!-- 4. MESSAGES -->
+            <div id="view-messages" class="h-full w-full bg-black hidden flex flex-col">
+                <div class="p-4 border-b border-gray-800 font-bold text-lg">Messages</div>
+                <div id="conversations-list" class="flex-1 overflow-y-auto">
+                    <!-- Convos -->
+                </div>
+            </div>
+            
+            <!-- CHAT DETAIL (Overlay inside messages) -->
+            <div id="chat-detail" class="absolute inset-0 bg-black z-40 hidden flex flex-col slide-up">
+                <div class="p-3 border-b border-gray-800 flex items-center bg-[#121212]">
+                    <button onclick="closeChat()" class="mr-4 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="flex items-center gap-2">
+                        <img id="chat-avatar" src="" class="w-8 h-8 rounded-full bg-gray-700">
+                        <span id="chat-username" class="font-bold">Username</span>
+                    </div>
+                </div>
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2"></div>
+                <div class="p-3 bg-[#121212] flex gap-2">
+                    <input type="text" id="msg-input" placeholder="Message..." class="flex-1 bg-[#2a2a2a] rounded-full px-4 py-2 outline-none">
+                    <button onclick="sendMessage()" class="bg-[#FF0055] w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+                </div>
+            </div>
+
+            <!-- 5. PROFILE -->
+            <div id="view-profile" class="h-full w-full bg-[#121212] hidden overflow-y-auto">
+                <div id="profile-content" class="pb-20"></div>
+            </div>
+
+        </main>
+
+        <!-- COMMENT MODAL (Bottom Sheet) -->
+        <div id="comment-modal" class="fixed inset-0 z-50 hidden flex flex-col justify-end">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeComments()"></div>
+            <div class="bg-[#121212] w-full h-[70vh] rounded-t-3xl relative z-10 flex flex-col slide-up border-t border-gray-800">
+                <div class="w-12 h-1 bg-gray-700 rounded-full mx-auto mt-3 mb-2"></div>
+                <div class="text-center font-bold text-sm border-b border-gray-800 pb-2">Commentaires</div>
+                
+                <div id="comments-list" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+                
+                <div class="p-3 border-t border-gray-800 flex gap-2 bg-[#121212]">
+                    <input type="text" id="comment-input" placeholder="Ajouter un commentaire..." class="flex-1 bg-[#2a2a2a] rounded-full px-4 py-2 text-sm outline-none">
+                    <button onclick="postComment()" class="text-[#FF0055] font-bold text-sm px-2">Publier</button>
+                </div>
             </div>
         </div>
+
+        <!-- EDIT PROFILE MODAL -->
+        <div id="edit-profile-modal" class="fixed inset-0 z-50 hidden bg-[#121212] flex flex-col p-4 slide-up">
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="toggleEditProfile(false)" class="text-gray-400">Annuler</button>
+                <span class="font-bold">Modifier profil</span>
+                <button onclick="saveProfile()" class="text-[#FF0055] font-bold">Enregistrer</button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col items-center mb-4">
+                    <div class="relative w-24 h-24">
+                        <img id="edit-avatar-preview" src="" class="w-full h-full rounded-full object-cover border border-gray-700">
+                        <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
+                            <i class="fa-solid fa-camera text-xl"></i>
+                        </div>
+                    </div>
+                    <input type="file" id="avatar-upload" class="hidden" accept="image/*">
+                </div>
+                
+                <div class="bg-[#1e1e1e] p-3 rounded-lg">
+                    <label class="text-xs text-gray-500">Bio</label>
+                    <textarea id="edit-bio" class="w-full bg-transparent outline-none text-white h-20 resize-none"></textarea>
+                </div>
+                <div class="bg-[#1e1e1e] p-3 rounded-lg flex justify-between items-center">
+                    <span class="text-sm">Compte Privé</span>
+                    <input type="checkbox" id="edit-private" class="accent-[#FF0055] w-5 h-5">
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVBAR -->
+        <nav class="h-[65px] bg-black border-t border-gray-900 flex justify-around items-center z-30 pb-2">
+            <button onclick="navTo('feed')" class="nav-btn text-[#FF0055]" data-target="feed"><i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[10px] block">Accueil</span></button>
+            <button onclick="navTo('explore')" class="nav-btn text-gray-500" data-target="explore"><i class="fa-solid fa-compass text-xl mb-1"></i><span class="text-[10px] block">Explorer</span></button>
+            <button onclick="navTo('upload')" class="bg-gradient-to-r from-[#00f2ea] to-[#ff0050] w-12 h-8 rounded-lg flex justify-center items-center text-black shadow-lg transform active:scale-95 transition"><i class="fa-solid fa-plus text-lg font-bold"></i></button>
+            <button onclick="navTo('messages')" class="nav-btn text-gray-500" data-target="messages"><i class="fa-regular fa-message text-xl mb-1"></i><span class="text-[10px] block">Boîte</span></button>
+            <button onclick="navTo('profile')" class="nav-btn text-gray-500" data-target="profile"><i class="fa-regular fa-user text-xl mb-1"></i><span class="text-[10px] block">Profil</span></button>
+        </nav>
     </div>
 
-    <!-- APP (hidden by default) -->
-    <div id="app">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="logo" style="font-size: 22px;">M&J</div>
-            <div class="page-title" id="pageTitle">Pour toi</div>
-        </div>
-
-        <!-- FEED -->
-        <div class="feed" id="feed">
-            <!-- Videos loaded here -->
-        </div>
-
-        <!-- NAVIGATION -->
-        <div class="nav">
-            <div class="nav-btn active" onclick="showPage('home')">
-                <i class="fas fa-home"></i>
-                <span>Accueil</span>
-            </div>
-            <div class="nav-btn" onclick="showPage('explore')">
-                <i class="fas fa-compass"></i>
-                <span>Explorer</span>
-            </div>
-            <div class="nav-btn" onclick="uploadVideo()">
-                <i class="fas fa-plus" style="color: #FF0055;"></i>
-                <span>Créer</span>
-            </div>
-            <div class="nav-btn" onclick="showPage('messages')">
-                <i class="fas fa-comment"></i>
-                <span>Messages</span>
-            </div>
-            <div class="nav-btn" onclick="showPage('profile')">
-                <i class="fas fa-user"></i>
-                <span>Profil</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- HIDDEN FILE INPUT -->
-    <input type="file" id="videoInput" accept="video/*" style="display: none;">
-
-    <!-- ULTRA-OPTIMIZED JAVASCRIPT -->
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // CONFIG
-        const API_URL = 'https://hoosthubs-g.onrender.com';
-        let token = localStorage.getItem('mj_token');
-        let user = null;
-        let currentPage = 'home';
+        const API_URL = "https://hoosthubs-g.onrender.com";
+        let CURRENT_USER = null;
+        let CURRENT_VIDEO_ID = null;
+        let CURRENT_CHAT_USER = null;
+        let searchType = 'users';
 
-        // INIT - FAST LOAD
-        setTimeout(() => {
-            document.getElementById('loading').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-                
-                if (token) {
-                    checkAuth();
-                } else {
-                    showAuth();
-                }
-            }, 300);
-        }, 500); // Show loading for only 0.5s
-
-        // CHECK AUTH QUICKLY
-        async function checkAuth() {
-            try {
-                const res = await fetch(`${API_URL}/api/users/me`, {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                if (res.ok) {
-                    user = await res.json();
-                    showApp();
-                    loadFeedFast();
-                } else {
-                    showAuth();
-                }
-            } catch {
-                showAuth();
-            }
-        }
-
-        // SHOW AUTH SCREEN
-        function showAuth() {
-            document.getElementById('auth').style.display = 'flex';
-        }
-
-        // LOGIN
-        async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        /* --- API HELPER --- */
+        async function api(endpoint, method = "GET", body = null, isFile = false) {
+            const token = localStorage.getItem('token');
+            const headers = {};
+            if(token) headers['Authorization'] = `Bearer ${token}`;
             
-            const formData = new FormData();
-            formData.append('username', username);
-            formData.append('password', password);
-            
-            try {
-                const res = await fetch(`${API_URL}/token`, {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await res.json();
-                
-                if (res.ok) {
-                    token = data.access_token;
-                    localStorage.setItem('mj_token', token);
-                    location.reload(); // Fast reload
-                } else {
-                    alert(data.detail || 'Erreur');
-                }
-            } catch {
-                alert('Erreur réseau');
-            }
-        }
+            // IMPORTANT: Pour les fichiers, NE PAS mettre Content-Type, le navigateur le fait
+            if (!isFile && body) headers['Content-Type'] = 'application/json';
 
-        // SHOW APP
-        function showApp() {
-            document.getElementById('auth').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
-        }
+            const opts = { method, headers };
+            if (body) opts.body = isFile ? body : JSON.stringify(body);
 
-        // LOAD FEED FAST
-        async function loadFeedFast() {
             try {
-                const res = await fetch(`${API_URL}/api/videos/feed`, {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                const videos = await res.json();
-                renderFeed(videos);
+                const res = await fetch(API_URL + endpoint, opts);
+                if (res.status === 401) return logout();
+                if (!res.ok) throw await res.json();
+                return await res.json();
             } catch (e) {
-                document.getElementById('feed').innerHTML = '<div style="padding: 50px; text-align: center; color: #888;">Erreur de chargement</div>';
+                console.error("API Error", e);
+                throw e;
             }
         }
 
-        // RENDER FEED EFFICIENTLY
-        function renderFeed(videos) {
-            const feed = document.getElementById('feed');
-            
-            if (!videos || videos.length === 0) {
-                feed.innerHTML = '<div style="padding: 50px; text-align: center; color: #888;">Aucune vidéo</div>';
-                return;
-            }
-            
-            let html = '';
-            for (let video of videos.slice(0, 10)) { // Limit to 10 videos for speed
-                html += `
-                    <div class="video-card">
-                        <video controls poster="${video.thumbnail_url || ''}">
-                            <source src="${video.video_url}" type="video/mp4">
-                        </video>
-                        <div class="video-info">
-                            <div class="user-info">
-                                <img src="${video.avatar_url}" class="avatar">
-                                <div>
-                                    <div style="font-weight: bold;">@${video.username}</div>
-                                    <div style="font-size: 12px; color: #888;">${formatTime(video.created_at)}</div>
-                                </div>
-                            </div>
-                            <p style="margin-bottom: 10px; font-size: 14px;">${video.description?.substring(0, 100) || ''}</p>
-                            <div style="display: flex; gap: 20px;">
-                                <button onclick="likeVideo('${video.id}')" style="background: none; border: none; color: ${video.liked_by_me ? '#FF0055' : 'white'};">
-                                    <i class="fas fa-heart"></i> ${video.likes_count}
-                                </button>
-                                <button onclick="commentVideo('${video.id}')" style="background: none; border: none; color: white;">
-                                    <i class="fas fa-comment"></i> ${video.comments_count}
-                                </button>
-                                <button onclick="shareVideo('${video.id}')" style="background: none; border: none; color: white;">
-                                    <i class="fas fa-share"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            feed.innerHTML = html;
-        }
-
-        // VIDEO ACTIONS
-        async function likeVideo(videoId) {
-            try {
-                await fetch(`${API_URL}/api/videos/${videoId}/like`, {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                // Update UI immediately
-                const btn = event.target.closest('button');
-                const icon = btn.querySelector('i');
-                const count = btn.querySelector('span');
-                
-                if (icon.style.color === 'rgb(255, 0, 85)') {
-                    icon.style.color = 'white';
-                    count.textContent = parseInt(count.textContent) - 1;
-                } else {
-                    icon.style.color = '#FF0055';
-                    count.textContent = parseInt(count.textContent) + 1;
-                }
-            } catch (e) {
-                console.error('Like error:', e);
-            }
-        }
-
-        function commentVideo(videoId) {
-            const text = prompt('Votre commentaire:');
-            if (!text) return;
-            
-            fetch(`${API_URL}/api/videos/${videoId}/comments`, {
-                method: 'POST',
-                headers: { 
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text })
-            }).then(() => {
-                alert('Commentaire ajouté!');
-            }).catch(() => {
-                alert('Erreur');
-            });
-        }
-
-        function shareVideo(videoId) {
-            const url = `${window.location.origin}/video/${videoId}`;
-            navigator.clipboard.writeText(url);
-            alert('Lien copié!');
-        }
-
-        // PAGE NAVIGATION
-        function showPage(page) {
-            currentPage = page;
-            document.getElementById('pageTitle').textContent = 
-                page === 'home' ? 'Pour toi' :
-                page === 'explore' ? 'Explorer' :
-                page === 'messages' ? 'Messages' : 'Profil';
-            
-            // Simple page switching
-            if (page === 'home') {
-                loadFeedFast();
-            } else if (page === 'explore') {
-                document.getElementById('feed').innerHTML = '<div style="padding: 50px; text-align: center;">Explorer - À venir</div>';
-            } else if (page === 'messages') {
-                document.getElementById('feed').innerHTML = '<div style="padding: 50px; text-align: center;">Messages - À venir</div>';
-            } else if (page === 'profile') {
+        /* --- AUTH --- */
+        function checkAuth() {
+            if(localStorage.getItem('token')) {
+                document.getElementById('auth-view').classList.add('hidden');
+                document.getElementById('app-view').classList.remove('hidden');
+                loadFeed();
                 loadProfile();
+            } else {
+                document.getElementById('auth-view').classList.remove('hidden');
             }
-            
-            // Update nav
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.nav-btn').classList.add('active');
         }
 
-        // LOAD PROFILE
-        async function loadProfile() {
-            if (!user) return;
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const msg = document.getElementById('auth-msg');
+            
+            btn.innerHTML = '<div class="loader mx-auto"></div>';
+            msg.innerText = "";
+
+            const formData = new FormData();
+            formData.append('username', document.getElementById('login-user').value);
+            formData.append('password', document.getElementById('login-pass').value);
+
+            try {
+                const res = await fetch(`${API_URL}/token`, { method: 'POST', body: formData });
+                if(!res.ok) throw new Error("Identifiants incorrects");
+                const data = await res.json();
+                localStorage.setItem('token', data.access_token);
+                checkAuth();
+            } catch(err) {
+                msg.innerText = err.message || "Erreur connexion";
+            } finally {
+                btn.innerText = "Se connecter";
+            }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                username: document.getElementById('reg-user').value,
+                password: document.getElementById('reg-pass').value,
+                full_name: document.getElementById('reg-name').value
+            };
+            try {
+                const res = await api('/api/users/register', 'POST', payload);
+                localStorage.setItem('token', res.access_token);
+                checkAuth();
+            } catch(err) {
+                alert(err.detail || "Erreur inscription");
+            }
+        });
+
+        function toggleAuth() {
+            document.getElementById('login-form').classList.toggle('hidden');
+            document.getElementById('register-form').classList.toggle('hidden');
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            location.reload();
+        }
+
+        /* --- NAVIGATION --- */
+        function navTo(view) {
+            document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
+            document.getElementById('view-' + view).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-[#FF0055]');
+                btn.classList.add('text-gray-500');
+            });
+            const activeBtn = document.querySelector(`.nav-btn[data-target="${view}"]`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-[#FF0055]');
+            }
+
+            if(view === 'feed') loadFeed();
+            if(view === 'explore') document.getElementById('search-input').focus();
+            if(view === 'messages') loadConversations();
+            if(view === 'profile') loadProfile();
+        }
+
+        /* --- FEED & VIDEOS --- */
+        async function loadFeed() {
+            const container = document.getElementById('view-feed');
+            if(container.children.length > 0) return; // Don't reload if populated
+            
+            container.innerHTML = '<div class="flex h-full items-center justify-center"><div class="loader"></div></div>';
             
             try {
-                const res = await fetch(`${API_URL}/api/users/${user.id}`, {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                const profile = await res.json();
+                const videos = await api('/api/videos/feed?limit=10');
+                container.innerHTML = '';
                 
-                const html = `
-                    <div style="padding: 20px;">
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <img src="${profile.avatar_url}" style="width: 80px; height: 80px; border-radius: 50%;">
-                            <h2 style="margin-top: 10px;">@${profile.username}</h2>
-                            <p style="color: #888; margin: 10px 0;">${profile.bio || ''}</p>
-                            <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
-                                <div>
-                                    <div style="font-weight: bold;">${profile.videos_count || 0}</div>
-                                    <div style="font-size: 12px; color: #888;">Vidéos</div>
-                                </div>
-                                <div>
-                                    <div style="font-weight: bold;">${profile.followers_count || 0}</div>
-                                    <div style="font-size: 12px; color: #888;">Abonnés</div>
-                                </div>
-                                <div>
-                                    <div style="font-weight: bold;">${profile.following_count || 0}</div>
-                                    <div style="font-size: 12px; color: #888;">Abonnements</div>
-                                </div>
+                if(videos.length === 0) {
+                    container.innerHTML = '<div class="flex flex-col h-full items-center justify-center text-gray-500"><i class="fa-solid fa-film text-4xl mb-2"></i><p>Aucune vidéo. Suivez des gens !</p></div>';
+                    return;
+                }
+
+                videos.forEach(v => {
+                    const div = document.createElement('div');
+                    div.className = 'snap-item w-full relative bg-black';
+                    div.innerHTML = `
+                        <video src="${v.video_url}" class="w-full h-full object-cover" loop playsinline onclick="togglePlay(this)"></video>
+                        
+                        <!-- Side Bar -->
+                        <div class="absolute right-2 bottom-24 flex flex-col items-center gap-5 z-10">
+                            <div class="relative cursor-pointer" onclick="openUserProfile('${v.user_id}')">
+                                <img src="${v.avatar_url}" class="w-12 h-12 rounded-full border-2 border-white">
+                                <i class="fa-solid fa-plus-circle absolute -bottom-1 left-1/2 -translate-x-1/2 text-[#FF0055] bg-white rounded-full text-lg"></i>
+                            </div>
+                            <button onclick="likeVideo('${v.id}', this)" class="flex flex-col items-center">
+                                <i class="fa-solid fa-heart text-3xl drop-shadow-md transition ${v.liked_by_me ? 'text-[#FF0055]' : 'text-white'}"></i>
+                                <span class="text-xs font-bold drop-shadow-md mt-1">${v.likes_count}</span>
+                            </button>
+                            <button onclick="openComments('${v.id}')" class="flex flex-col items-center">
+                                <i class="fa-solid fa-comment-dots text-3xl text-white drop-shadow-md"></i>
+                                <span class="text-xs font-bold drop-shadow-md mt-1">${v.comments_count}</span>
+                            </button>
+                            <button class="flex flex-col items-center">
+                                <i class="fa-solid fa-share text-3xl text-white drop-shadow-md"></i>
+                                <span class="text-xs font-bold drop-shadow-md mt-1">${v.shares_count || 0}</span>
+                            </button>
+                        </div>
+
+                        <!-- Bottom Info -->
+                        <div class="absolute bottom-4 left-4 right-16 z-10 text-white pointer-events-none">
+                            <h3 class="font-bold text-shadow text-lg mb-1">@${v.username}</h3>
+                            <p class="text-sm text-shadow line-clamp-2 mb-2">${v.description || ''}</p>
+                            <div class="flex items-center gap-2 opacity-80">
+                                <i class="fa-solid fa-music text-xs"></i>
+                                <span class="text-xs marquee">${v.music || 'Son original'}</span>
                             </div>
                         </div>
-                        <div style="color: #888; text-align: center;">Vidéos à venir...</div>
-                    </div>
-                `;
-                document.getElementById('feed').innerHTML = html;
-            } catch (e) {
-                document.getElementById('feed').innerHTML = '<div style="padding: 50px; text-align: center; color: #888;">Erreur profil</div>';
-            }
-        }
-
-        // UPLOAD VIDEO
-        function uploadVideo() {
-            document.getElementById('videoInput').click();
-        }
-
-        document.getElementById('videoInput').onchange = async function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const description = prompt('Description:') || '';
-            
-            const formData = new FormData();
-            formData.append('video', file);
-            formData.append('description', description);
-            
-            try {
-                const res = await fetch(`${API_URL}/api/videos/upload`, {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token },
-                    body: formData
+                    `;
+                    container.appendChild(div);
                 });
                 
-                if (res.ok) {
-                    alert('Vidéo publiée!');
-                    loadFeedFast();
-                } else {
-                    alert('Erreur upload');
-                }
-            } catch {
-                alert('Erreur réseau');
+                // Intersection Observer for Auto Play
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const vid = entry.target.querySelector('video');
+                        if(entry.isIntersecting) vid.play();
+                        else { vid.pause(); vid.currentTime = 0; }
+                    });
+                }, { threshold: 0.6 });
+                
+                document.querySelectorAll('.snap-item').forEach(el => observer.observe(el));
+
+            } catch(e) { console.error(e); }
+        }
+
+        function togglePlay(vid) {
+            vid.paused ? vid.play() : vid.pause();
+        }
+
+        async function likeVideo(id, btn) {
+            const icon = btn.querySelector('i');
+            const span = btn.querySelector('span');
+            let count = parseInt(span.innerText);
+            
+            // Optimistic Update
+            const isLiked = icon.classList.contains('text-[#FF0055]');
+            icon.classList.toggle('text-[#FF0055]');
+            icon.classList.toggle('text-white');
+            span.innerText = isLiked ? count - 1 : count + 1;
+
+            try {
+                await api(`/api/videos/${id}/like`, 'POST');
+            } catch(e) {
+                // Revert if fail
+                icon.classList.toggle('text-[#FF0055]');
+                icon.classList.toggle('text-white');
+                span.innerText = count;
             }
-        };
-
-        // UTILITY FUNCTIONS
-        function formatTime(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diff = now - date;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            
-            if (days > 0) return `${days}j`;
-            
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            if (hours > 0) return `${hours}h`;
-            
-            const mins = Math.floor(diff / (1000 * 60));
-            return mins > 0 ? `${mins}min` : 'Maintenant';
         }
 
-        function showRegister() {
-            const username = prompt('Nouveau username:');
-            const password = prompt('Nouveau password:');
+        /* --- COMMENTS --- */
+        async function openComments(videoId) {
+            CURRENT_VIDEO_ID = videoId;
+            document.getElementById('comment-modal').classList.remove('hidden');
+            const list = document.getElementById('comments-list');
+            list.innerHTML = '<div class="loader mx-auto"></div>';
             
-            if (!username || !password) return;
-            
-            fetch(`${API_URL}/api/users/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            }).then(res => res.json())
-              .then(data => {
-                  if (data.access_token) {
-                      localStorage.setItem('mj_token', data.access_token);
-                      location.reload();
-                  } else {
-                      alert('Erreur inscription');
-                  }
-              }).catch(() => {
-                  alert('Erreur réseau');
-              });
+            try {
+                const comments = await api(`/api/videos/${videoId}/comments`);
+                list.innerHTML = '';
+                if(comments.length === 0) list.innerHTML = '<p class="text-center text-gray-500 text-sm">Soyez le premier à commenter !</p>';
+                
+                comments.forEach(c => {
+                    list.innerHTML += `
+                        <div class="flex gap-3 mb-4 animate-in fade-in">
+                            <img src="${c.avatar_url}" class="w-8 h-8 rounded-full bg-gray-700">
+                            <div>
+                                <p class="text-xs font-bold text-gray-400">@${c.username}</p>
+                                <p class="text-sm text-white">${c.text}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) { list.innerHTML = 'Erreur chargement.'; }
         }
+
+        function closeComments() {
+            document.getElementById('comment-modal').classList.add('hidden');
+            CURRENT_VIDEO_ID = null;
+        }
+
+        async function postComment() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if(!text || !CURRENT_VIDEO_ID) return;
+
+            input.value = '';
+            // Add visibly immediately (Fake it)
+            const list = document.getElementById('comments-list');
+            const tempId = Date.now();
+            const div = document.createElement('div');
+            div.className = 'flex gap-3 mb-4 opacity-50'; // Opacity until confirmed
+            div.innerHTML = `
+                <img src="${CURRENT_USER.avatar_url}" class="w-8 h-8 rounded-full">
+                <div><p class="text-xs font-bold text-gray-400">@${CURRENT_USER.username}</p><p class="text-sm">${text}</p></div>
+            `;
+            list.prepend(div);
+
+            try {
+                await api(`/api/videos/${CURRENT_VIDEO_ID}/comments`, 'POST', { text });
+                div.classList.remove('opacity-50'); // Confirm
+            } catch(e) {
+                div.remove();
+                alert("Échec envoi commentaire");
+            }
+        }
+
+        /* --- UPLOAD (FIXED) --- */
+        async function uploadVideo() {
+            const fileInput = document.getElementById('video-file');
+            const desc = document.getElementById('video-desc').value;
+            const btn = document.getElementById('btn-upload');
+            const status = document.getElementById('upload-status');
+
+            if(!fileInput.files[0]) return alert("Sélectionnez une vidéo");
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours...';
+            status.innerHTML = '<span class="text-yellow-500">Ne fermez pas cette page, upload vers le serveur...</span>';
+
+            const formData = new FormData();
+            formData.append('video', fileInput.files[0]);
+            formData.append('description', desc);
+            formData.append('is_public', 'true');
+
+            try {
+                // isFile = true -> API function will NOT set Content-Type header
+                await api('/api/videos/upload', 'POST', formData, true); 
+                status.innerHTML = '<span class="text-green-500">Vidéo publiée avec succès !</span>';
+                setTimeout(() => {
+                    document.getElementById('video-desc').value = "";
+                    fileInput.value = "";
+                    document.getElementById('file-name').innerText = "";
+                    navTo('feed');
+                    location.reload(); // Reload to see new video
+                }, 1500);
+            } catch(e) {
+                status.innerText = "Erreur: " + (e.detail || e.message);
+                btn.disabled = false;
+                btn.innerText = "Réessayer";
+            }
+        }
+
+        document.getElementById('video-file').addEventListener('change', function() {
+            if(this.files[0]) document.getElementById('file-name').innerText = this.files[0].name;
+        });
+
+        /* --- SEARCH --- */
+        let searchTimeout;
+        function handleSearch(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => doSearch(), 500);
+        }
+
+        async function doSearch() {
+            const q = document.getElementById('search-input').value;
+            const container = document.getElementById('search-results');
+            if(q.length < 1) return;
+
+            container.innerHTML = '<div class="loader col-span-3 mx-auto mt-4"></div>';
+            
+            try {
+                const res = await api(`/api/search?q=${q}&type=${searchType}`);
+                container.innerHTML = '';
+                
+                const data = res[searchType] || [];
+                
+                if(data.length === 0) {
+                    container.innerHTML = '<p class="col-span-3 text-center text-gray-500">Aucun résultat</p>';
+                    return;
+                }
+
+                if(searchType === 'users') {
+                    container.classList.remove('grid-cols-3');
+                    container.classList.add('flex', 'flex-col');
+                    data.forEach(u => {
+                        container.innerHTML += `
+                            <div class="flex items-center gap-3 p-3 bg-[#1e1e1e] rounded-lg mb-2" onclick="openUserProfile('${u.id}')">
+                                <img src="${u.avatar_url}" class="w-12 h-12 rounded-full object-cover">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">@${u.username}</h4>
+                                    <p class="text-xs text-gray-400">${u.full_name || ''}</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-600"></i>
+                            </div>
+                        `;
+                    });
+                } else if(searchType === 'videos') {
+                    container.classList.remove('flex', 'flex-col');
+                    container.classList.add('grid', 'grid-cols-3');
+                    data.forEach(v => {
+                        container.innerHTML += `
+                            <div class="aspect-[3/4] bg-gray-800 relative">
+                                <img src="${v.thumbnail_url || v.video_url.replace('.mp4','.jpg')}" class="w-full h-full object-cover">
+                                <div class="absolute bottom-1 left-1 text-xs font-bold"><i class="fa-regular fa-play-circle"></i> ${v.view_count}</div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        /* --- MESSAGES --- */
+        async function loadConversations() {
+            const list = document.getElementById('conversations-list');
+            list.innerHTML = '<div class="loader mx-auto mt-4"></div>';
+            
+            try {
+                const convos = await api('/api/messages/conversations');
+                list.innerHTML = '';
+                if(convos.length === 0) list.innerHTML = '<p class="text-center mt-10 text-gray-500">Aucune conversation</p>';
+                
+                convos.forEach(c => {
+                    list.innerHTML += `
+                        <div onclick="openChat('${c.user_id}', '${c.username}', '${c.avatar_url}')" class="flex items-center gap-3 p-4 hover:bg-[#121212] cursor-pointer">
+                            <div class="relative">
+                                <img src="${c.avatar_url}" class="w-14 h-14 rounded-full object-cover">
+                                ${c.unread_count > 0 ? `<div class="absolute top-0 right-0 bg-[#FF0055] w-4 h-4 rounded-full border border-black"></div>` : ''}
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-white">${c.username}</h4>
+                                <p class="text-sm text-gray-400 truncate ${c.is_read ? '' : 'font-bold text-white'}">${c.last_message}</p>
+                            </div>
+                            <span class="text-xs text-gray-600">Now</span>
+                        </div>
+                    `;
+                });
+            } catch(e) { console.error(e); }
+        }
+
+        async function openChat(userId, username, avatar) {
+            CURRENT_CHAT_USER = userId;
+            document.getElementById('chat-detail').classList.remove('hidden');
+            document.getElementById('chat-username').innerText = username;
+            document.getElementById('chat-avatar').src = avatar;
+            
+            const box = document.getElementById('chat-messages');
+            box.innerHTML = '<div class="loader mx-auto"></div>';
+            
+            try {
+                const msgs = await api(`/api/messages/${userId}`);
+                box.innerHTML = '';
+                msgs.forEach(m => renderMessage(m));
+                box.scrollTop = box.scrollHeight;
+            } catch(e) { console.error(e); }
+        }
+
+        function renderMessage(m) {
+            const box = document.getElementById('chat-messages');
+            const isMe = m.sender_id === CURRENT_USER.id;
+            const div = document.createElement('div');
+            div.className = `max-w-[80%] p-3 rounded-2xl text-sm mb-2 ${isMe ? 'bg-[#FF0055] self-end rounded-br-none' : 'bg-[#2a2a2a] self-start rounded-bl-none'}`;
+            div.innerText = m.content;
+            box.appendChild(div);
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if(!text) return;
+            
+            // Optimistic UI
+            renderMessage({ sender_id: CURRENT_USER.id, content: text });
+            input.value = '';
+            document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+
+            try {
+                await api('/api/messages', 'POST', { receiver_id: CURRENT_CHAT_USER, content: text });
+            } catch(e) { alert("Erreur envoi"); }
+        }
+
+        function closeChat() {
+            document.getElementById('chat-detail').classList.add('hidden');
+            CURRENT_CHAT_USER = null;
+            loadConversations(); // refresh
+        }
+
+        /* --- PROFILE --- */
+        async function loadProfile(userId = null) {
+            const container = document.getElementById(userId ? 'main' : 'profile-content'); // Dirty hack for displaying profile
+            
+            // If viewing another user, we might want a modal or replace view-profile content. 
+            // For simplicity in single file, we update "view-profile" and switch to it.
+            
+            const isMe = !userId;
+            const endpoint = isMe ? '/api/users/me' : `/api/users/${userId}`;
+            
+            try {
+                const user = await api(endpoint);
+                if(isMe) CURRENT_USER = user;
+
+                // Build HTML
+                let html = `
+                    <div class="flex flex-col items-center pt-8 px-4 bg-[#121212]">
+                        <img src="${user.avatar_url}" class="w-24 h-24 rounded-full border-2 border-[#FF0055] p-1 object-cover">
+                        <h2 class="text-xl font-bold mt-2">@${user.username}</h2>
+                        <p class="text-sm text-gray-400 mb-4">${user.full_name || ''}</p>
+                        
+                        <div class="flex w-full justify-around py-4 border-y border-gray-800 mb-4">
+                            <div class="text-center"><span class="block font-bold text-lg">${user.following_count}</span><span class="text-xs text-gray-500">Abonnements</span></div>
+                            <div class="text-center"><span class="block font-bold text-lg">${user.followers_count}</span><span class="text-xs text-gray-500">Abonnés</span></div>
+                            <div class="text-center"><span class="block font-bold text-lg">${user.videos_count}</span><span class="text-xs text-gray-500">J'aime</span></div>
+                        </div>
+
+                        <p class="text-center text-sm mb-6 px-6">${user.bio || 'Aucune biographie.'}</p>
+
+                        <div class="flex gap-2 mb-8">
+                            ${isMe ? 
+                                `<button onclick="toggleEditProfile(true)" class="bg-[#2a2a2a] px-6 py-2 rounded font-bold text-sm">Modifier le profil</button>` 
+                                : 
+                                `<button onclick="followUser('${user.id}')" class="bg-[#FF0055] px-8 py-2 rounded font-bold text-sm">S'abonner</button>
+                                 <button onclick="openChat('${user.id}', '${user.username}', '${user.avatar_url}')" class="bg-[#2a2a2a] px-4 py-2 rounded"><i class="fa-regular fa-message"></i></button>`
+                            }
+                        </div>
+                    </div>
+                    
+                    <!-- Videos Grid -->
+                    <div class="grid grid-cols-3 gap-0.5 bg-black">
+                        ${user.videos_count === 0 ? '<p class="col-span-3 text-center py-10 text-gray-500">Pas de vidéos</p>' : ''}
+                        <!-- Videos loaded separately or we map here if returned -->
+                    </div>
+                    <div id="profile-grid-${user.id}" class="grid grid-cols-3 gap-0.5"></div>
+                `;
+
+                document.getElementById('profile-content').innerHTML = html;
+                
+                // Load User Videos
+                const videos = await api(`/api/users/${user.id}/videos`);
+                const grid = document.getElementById(`profile-grid-${user.id}`);
+                videos.forEach(v => {
+                    grid.innerHTML += `
+                        <div class="aspect-[3/4] bg-gray-800 relative">
+                            <img src="${v.thumbnail_url || v.video_url.replace('.mp4','.jpg')}" class="w-full h-full object-cover">
+                            <div class="absolute bottom-1 left-1 flex items-center gap-1 text-[10px] drop-shadow">
+                                <i class="fa-solid fa-play"></i> ${v.view_count}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if(!isMe) {
+                    navTo('profile'); // Force switch to profile view
+                }
+
+            } catch(e) { console.error(e); }
+        }
+
+        /* --- EDIT PROFILE --- */
+        function toggleEditProfile(show) {
+            const modal = document.getElementById('edit-profile-modal');
+            if(show) {
+                modal.classList.remove('hidden');
+                document.getElementById('edit-bio').value = CURRENT_USER.bio || '';
+                document.getElementById('edit-avatar-preview').src = CURRENT_USER.avatar_url;
+                document.getElementById('edit-private').checked = CURRENT_USER.is_private;
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        async function saveProfile() {
+            const bio = document.getElementById('edit-bio').value;
+            const isPrivate = document.getElementById('edit-private').checked;
+            const avatarFile = document.getElementById('avatar-upload').files[0];
+
+            try {
+                // Update Text Data
+                await api('/api/users/me', 'PUT', { bio, is_private: isPrivate });
+
+                // Update Avatar if changed
+                if(avatarFile) {
+                    const fd = new FormData();
+                    fd.append('file', avatarFile);
+                    await api('/api/users/me/avatar', 'POST', fd, true);
+                }
+
+                toggleEditProfile(false);
+                loadProfile(); // Refresh
+            } catch(e) { alert("Erreur mise à jour"); }
+        }
+
+        function openUserProfile(id) {
+            if(id === CURRENT_USER.id) navTo('profile');
+            else loadProfile(id);
+        }
+
+        /* --- INIT --- */
+        window.addEventListener('load', () => {
+            checkAuth();
+        });
+
     </script>
 </body>
 </html>
