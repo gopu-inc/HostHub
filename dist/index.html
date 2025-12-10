@@ -2,746 +2,1965 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M&J Social - HoostHubs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; -webkit-tap-highlight-color: transparent; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .video-snap { scroll-snap-type: y mandatory; }
-        .snap-item { scroll-snap-align: start; height: 100vh; }
-        
-        /* Animations */
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        .slide-up { animation: slideUp 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        /* Loader */
-        .loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #FF0055; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        :root {
+            --primary: #FF0055;
+            --primary-dark: #cc0044;
+            --secondary: #1a1a2e;
+            --background: #0f0f1e;
+            --card-bg: #1e1e2e;
+            --text: #ffffff;
+            --text-secondary: #a0a0c0;
+            --border: #2d2d4d;
+            --success: #00cc88;
+            --danger: #ff4444;
+            --warning: #ffbb00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 0, 85, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .user-profile {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .upload-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Feed */
+        .feed {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .story-item {
+            flex: 0 0 auto;
+            width: 100px;
+            text-align: center;
+        }
+
+        .story-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            padding: 2px;
+            margin-bottom: 8px;
+        }
+
+        .story-username {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Video Cards */
+        .video-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .video-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+        }
+
+        .video-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .video-user-info {
+            flex: 1;
+        }
+
+        .video-username {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .video-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background-color: #000;
+            position: relative;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-actions {
+            padding: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn i {
+            transition: transform 0.2s ease;
+        }
+
+        .action-btn:hover i {
+            transform: scale(1.1);
+        }
+
+        .action-btn.liked {
+            color: var(--primary);
+        }
+
+        .action-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .video-description {
+            padding: 0 15px 15px;
+            font-size: 14px;
+        }
+
+        .video-hashtags {
+            color: var(--primary);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background) 0%, #1a1a2e 100%);
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 15px 10px;
+            }
+
+            .logo span, .nav-link span, .user-info {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-bar {
+                max-width: 100%;
+            }
+        }
+
+        /* Messages */
+        .messages-container {
+            display: flex;
+            height: calc(100vh - 100px);
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .conversations-list {
+            width: 300px;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+        }
+
+        .conversation-item {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .conversation-item:hover, .conversation-item.active {
+            background-color: rgba(255, 0, 85, 0.1);
+        }
+
+        .conversation-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .conversation-info {
+            flex: 1;
+        }
+
+        .conversation-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .conversation-last {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .unread-badge {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: var(--primary);
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: var(--border);
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text);
+        }
+
+        .send-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Profile */
+        .profile-header {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-cover {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, #6a11cb 100%);
+            border-radius: 15px;
+            margin-bottom: -60px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: flex-end;
+            gap: 30px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--card-bg);
+        }
+
+        .profile-details {
+            flex: 1;
+            padding-bottom: 20px;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-username {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .profile-bio {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading i {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notifications */
+        .notification-item {
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(255, 0, 85, 0.1);
+        }
     </style>
 </head>
-<body class="h-screen w-screen overflow-hidden bg-black text-white">
-
-    <!-- ================= AUTH VIEW ================= -->
-    <div id="auth-view" class="fixed inset-0 z-50 bg-black flex flex-col justify-center items-center p-6">
-        <h1 class="text-5xl font-bold mb-2 text-[#FF0055] tracking-tighter">M&J</h1>
-        <p class="text-gray-400 mb-10 text-sm">Social Media Revolution</p>
-        
-        <form id="login-form" class="w-full max-w-sm flex flex-col gap-3">
-            <input type="text" id="login-user" placeholder="Nom d'utilisateur" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#FF0055]">
-            <input type="password" id="login-pass" placeholder="Mot de passe" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#FF0055]">
-            <button type="submit" class="bg-[#FF0055] py-4 rounded-xl font-bold mt-2 shadow-lg shadow-pink-500/20">Se connecter</button>
-        </form>
-
-        <p class="mt-6 text-sm text-gray-500">Pas de compte ? <span onclick="toggleAuth()" class="text-[#FF0055] font-bold cursor-pointer">S'inscrire</span></p>
-        
-        <!-- Register (Hidden) -->
-        <form id="register-form" class="w-full max-w-sm flex flex-col gap-3 hidden mt-4">
-            <input type="text" id="reg-user" placeholder="Nom d'utilisateur" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none">
-            <input type="password" id="reg-pass" placeholder="Mot de passe" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none">
-            <input type="text" id="reg-name" placeholder="Nom complet" class="bg-[#1e1e1e] p-4 rounded-xl text-white outline-none">
-            <button type="submit" class="bg-white text-black py-4 rounded-xl font-bold mt-2">Créer compte</button>
-        </form>
-        <div id="auth-msg" class="text-red-500 mt-4 text-sm text-center"></div>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <i class="fas fa-video"></i> M&J Social
+            </div>
+            
+            <div class="tab-container">
+                <button class="tab active" onclick="showLoginTab('login')">Connexion</button>
+                <button class="tab" onclick="showLoginTab('register')">Inscription</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="loginUsername">Nom d'utilisateur</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="Votre nom d'utilisateur">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Votre mot de passe">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="registerForm" class="login-form" style="display: none;">
+                <div class="form-group">
+                    <label for="regUsername">Nom d'utilisateur</label>
+                    <input type="text" id="regUsername" class="form-control" placeholder="Choisissez un nom d'utilisateur">
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="Votre email">
+                </div>
+                <div class="form-group">
+                    <label for="regFullName">Nom complet</label>
+                    <input type="text" id="regFullName" class="form-control" placeholder="Votre nom complet">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Mot de passe</label>
+                    <input type="password" id="regPassword" class="form-control" placeholder="Choisissez un mot de passe">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="register()">
+                    <i class="fas fa-user-plus"></i> Créer un compte
+                </button>
+            </div>
+            
+            <div id="loginMessage" style="margin-top: 20px; color: var(--danger); text-align: center;"></div>
+        </div>
     </div>
-
-    <!-- ================= APP VIEW ================= -->
-    <div id="app-view" class="h-full w-full flex flex-col hidden relative">
-        
-        <!-- HEADER (Overlay) -->
-        <header class="absolute top-0 w-full z-20 flex justify-between items-center p-4 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
-            <div class="pointer-events-auto font-bold text-lg drop-shadow-md">M&J Social</div>
-            <button onclick="logout()" class="pointer-events-auto text-white/80 hover:text-white"><i class="fa-solid fa-right-from-bracket"></i></button>
-        </header>
-
-        <!-- MAIN CONTENT AREA -->
-        <main id="main" class="flex-1 bg-black overflow-hidden relative">
-            
-            <!-- 1. FEED -->
-            <div id="view-feed" class="h-full w-full overflow-y-scroll video-snap no-scrollbar bg-black">
-                <!-- Videos injected here -->
-            </div>
-
-            <!-- 2. EXPLORE -->
-            <div id="view-explore" class="h-full w-full bg-black hidden flex flex-col pt-4">
-                <div class="px-4 pb-2">
-                    <div class="bg-[#1e1e1e] rounded-xl flex items-center px-3 py-2">
-                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
-                        <input type="text" id="search-input" placeholder="Rechercher utilisateurs ou vidéos..." 
-                               class="bg-transparent border-none outline-none text-white ml-2 w-full placeholder-gray-500"
-                               onkeyup="handleSearch(event)">
-                    </div>
-                    <!-- Tabs -->
-                    <div class="flex gap-4 mt-4 text-sm border-b border-gray-800 pb-2">
-                        <button onclick="searchType='users'; doSearch()" class="font-bold text-white">Comptes</button>
-                        <button onclick="searchType='videos'; doSearch()" class="text-gray-400 hover:text-white">Vidéos</button>
-                        <button onclick="searchType='hashtags'; doSearch()" class="text-gray-400 hover:text-white">Hashtags</button>
-                    </div>
-                </div>
-                <div id="search-results" class="flex-1 overflow-y-auto p-4 grid grid-cols-3 gap-1 content-start">
-                    <!-- Results -->
-                    <p class="col-span-3 text-center text-gray-500 mt-10">Tapez quelque chose pour chercher...</p>
-                </div>
-            </div>
-
-            <!-- 3. UPLOAD -->
-            <div id="view-upload" class="h-full w-full bg-[#121212] hidden flex flex-col p-6 overflow-y-auto">
-                <h2 class="text-2xl font-bold mb-6">Nouvelle publication</h2>
-                <div id="upload-area" class="border-2 border-dashed border-gray-700 rounded-2xl h-64 flex flex-col justify-center items-center cursor-pointer bg-[#1e1e1e] hover:border-[#FF0055] transition" onclick="document.getElementById('video-file').click()">
-                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-500 mb-2"></i>
-                    <p class="text-gray-400 text-sm">Toucher pour choisir une vidéo</p>
-                    <p id="file-name" class="text-[#FF0055] mt-2 text-xs font-bold"></p>
-                </div>
-                <input type="file" id="video-file" accept="video/*" class="hidden">
-                
-                <textarea id="video-desc" placeholder="Écrivez une légende... #hashtag" class="mt-4 bg-[#1e1e1e] p-4 rounded-xl text-white outline-none h-32 resize-none"></textarea>
-                
-                <button onclick="uploadVideo()" id="btn-upload" class="bg-[#FF0055] text-white py-4 rounded-xl font-bold mt-4 shadow-lg shadow-pink-500/20">Publier maintenant</button>
-                <div id="upload-status" class="mt-4 text-center text-sm font-medium"></div>
-            </div>
-
-            <!-- 4. MESSAGES -->
-            <div id="view-messages" class="h-full w-full bg-black hidden flex flex-col">
-                <div class="p-4 border-b border-gray-800 font-bold text-lg">Messages</div>
-                <div id="conversations-list" class="flex-1 overflow-y-auto">
-                    <!-- Convos -->
-                </div>
+    
+    <!-- Main App -->
+    <div id="appContainer" class="app-container" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-video"></i>
+                <span>M&J Social</span>
             </div>
             
-            <!-- CHAT DETAIL (Overlay inside messages) -->
-            <div id="chat-detail" class="absolute inset-0 bg-black z-40 hidden flex flex-col slide-up">
-                <div class="p-3 border-b border-gray-800 flex items-center bg-[#121212]">
-                    <button onclick="closeChat()" class="mr-4 text-xl"><i class="fa-solid fa-arrow-left"></i></button>
-                    <div class="flex items-center gap-2">
-                        <img id="chat-avatar" src="" class="w-8 h-8 rounded-full bg-gray-700">
-                        <span id="chat-username" class="font-bold">Username</span>
-                    </div>
-                </div>
-                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col gap-2"></div>
-                <div class="p-3 bg-[#121212] flex gap-2">
-                    <input type="text" id="msg-input" placeholder="Message..." class="flex-1 bg-[#2a2a2a] rounded-full px-4 py-2 outline-none">
-                    <button onclick="sendMessage()" class="bg-[#FF0055] w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-paper-plane text-sm"></i></button>
-                </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-section="feed">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </a>
+                <a href="#" class="nav-link" data-section="explore">
+                    <i class="fas fa-compass"></i>
+                    <span>Explorer</span>
+                </a>
+                <a href="#" class="nav-link" data-section="messages">
+                    <i class="fas fa-comments"></i>
+                    <span>Messages</span>
+                    <span id="unreadMessages" class="unread-badge" style="display: none;">0</span>
+                </a>
+                <a href="#" class="nav-link" data-section="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span id="unreadNotifications" class="unread-badge" style="display: none;">0</span>
+                </a>
+                <a href="#" class="nav-link" data-section="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Profil</span>
+                </a>
+                <a href="#" class="nav-link" id="uploadVideoBtn">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload</span>
+                </a>
             </div>
-
-            <!-- 5. PROFILE -->
-            <div id="view-profile" class="h-full w-full bg-[#121212] hidden overflow-y-auto">
-                <div id="profile-content" class="pb-20"></div>
-            </div>
-
-        </main>
-
-        <!-- COMMENT MODAL (Bottom Sheet) -->
-        <div id="comment-modal" class="fixed inset-0 z-50 hidden flex flex-col justify-end">
-            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeComments()"></div>
-            <div class="bg-[#121212] w-full h-[70vh] rounded-t-3xl relative z-10 flex flex-col slide-up border-t border-gray-800">
-                <div class="w-12 h-1 bg-gray-700 rounded-full mx-auto mt-3 mb-2"></div>
-                <div class="text-center font-bold text-sm border-b border-gray-800 pb-2">Commentaires</div>
-                
-                <div id="comments-list" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
-                
-                <div class="p-3 border-t border-gray-800 flex gap-2 bg-[#121212]">
-                    <input type="text" id="comment-input" placeholder="Ajouter un commentaire..." class="flex-1 bg-[#2a2a2a] rounded-full px-4 py-2 text-sm outline-none">
-                    <button onclick="postComment()" class="text-[#FF0055] font-bold text-sm px-2">Publier</button>
+            
+            <div class="user-profile">
+                <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=FF0055&color=fff" alt="Avatar" class="user-avatar">
+                <div class="user-info">
+                    <div id="userName" class="username">Utilisateur</div>
+                    <div id="userEmail" class="user-email" style="font-size: 12px; color: var(--text-secondary);"></div>
                 </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </div>
         </div>
-
-        <!-- EDIT PROFILE MODAL -->
-        <div id="edit-profile-modal" class="fixed inset-0 z-50 hidden bg-[#121212] flex flex-col p-4 slide-up">
-            <div class="flex justify-between items-center mb-6">
-                <button onclick="toggleEditProfile(false)" class="text-gray-400">Annuler</button>
-                <span class="font-bold">Modifier profil</span>
-                <button onclick="saveProfile()" class="text-[#FF0055] font-bold">Enregistrer</button>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher des utilisateurs, vidéos, hashtags...">
+                </div>
+                <button class="upload-btn" id="uploadVideoBtn2">
+                    <i class="fas fa-plus"></i> Upload vidéo
+                </button>
             </div>
-            <div class="flex flex-col gap-4">
-                <div class="flex flex-col items-center mb-4">
-                    <div class="relative w-24 h-24">
-                        <img id="edit-avatar-preview" src="" class="w-full h-full rounded-full object-cover border border-gray-700">
-                        <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
-                            <i class="fa-solid fa-camera text-xl"></i>
+            
+            <!-- Content Sections -->
+            <div id="feedSection" class="content-section active">
+                <div class="stories-container" id="storiesContainer">
+                    <!-- Stories will be loaded here -->
+                </div>
+                <div class="feed" id="videoFeed">
+                    <!-- Videos will be loaded here -->
+                </div>
+            </div>
+            
+            <div id="exploreSection" class="content-section">
+                <h2 style="margin-bottom: 20px;">Explorer</h2>
+                <div id="exploreVideos">
+                    <!-- Explore videos will be loaded here -->
+                </div>
+            </div>
+            
+            <div id="messagesSection" class="content-section">
+                <div class="messages-container">
+                    <div class="conversations-list" id="conversationsList">
+                        <!-- Conversations will be loaded here -->
+                    </div>
+                    <div class="chat-container" id="chatContainer" style="display: none;">
+                        <div class="chat-header" id="chatHeader">
+                            <!-- Chat header will be loaded here -->
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be loaded here -->
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="messageInput" placeholder="Écrivez votre message...">
+                            <button class="send-btn" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
                         </div>
                     </div>
-                    <input type="file" id="avatar-upload" class="hidden" accept="image/*">
                 </div>
-                
-                <div class="bg-[#1e1e1e] p-3 rounded-lg">
-                    <label class="text-xs text-gray-500">Bio</label>
-                    <textarea id="edit-bio" class="w-full bg-transparent outline-none text-white h-20 resize-none"></textarea>
+            </div>
+            
+            <div id="notificationsSection" class="content-section">
+                <h2 style="margin-bottom: 20px;">Notifications</h2>
+                <div id="notificationsList">
+                    <!-- Notifications will be loaded here -->
                 </div>
-                <div class="bg-[#1e1e1e] p-3 rounded-lg flex justify-between items-center">
-                    <span class="text-sm">Compte Privé</span>
-                    <input type="checkbox" id="edit-private" class="accent-[#FF0055] w-5 h-5">
+            </div>
+            
+            <div id="profileSection" class="content-section">
+                <div id="profileContent">
+                    <!-- Profile will be loaded here -->
                 </div>
             </div>
         </div>
-
-        <!-- NAVBAR -->
-        <nav class="h-[65px] bg-black border-t border-gray-900 flex justify-around items-center z-30 pb-2">
-            <button onclick="navTo('feed')" class="nav-btn text-[#FF0055]" data-target="feed"><i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[10px] block">Accueil</span></button>
-            <button onclick="navTo('explore')" class="nav-btn text-gray-500" data-target="explore"><i class="fa-solid fa-compass text-xl mb-1"></i><span class="text-[10px] block">Explorer</span></button>
-            <button onclick="navTo('upload')" class="bg-gradient-to-r from-[#00f2ea] to-[#ff0050] w-12 h-8 rounded-lg flex justify-center items-center text-black shadow-lg transform active:scale-95 transition"><i class="fa-solid fa-plus text-lg font-bold"></i></button>
-            <button onclick="navTo('messages')" class="nav-btn text-gray-500" data-target="messages"><i class="fa-regular fa-message text-xl mb-1"></i><span class="text-[10px] block">Boîte</span></button>
-            <button onclick="navTo('profile')" class="nav-btn text-gray-500" data-target="profile"><i class="fa-regular fa-user text-xl mb-1"></i><span class="text-[10px] block">Profil</span></button>
-        </nav>
+    </div>
+    
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-cloud-upload-alt"></i> Upload vidéo</h2>
+                <button class="close-modal" onclick="closeModal('uploadModal')">&times;</button>
+            </div>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="videoFile">Sélectionnez une vidéo</label>
+                    <input type="file" id="videoFile" accept="video/*" class="form-control" required>
+                    <small style="color: var(--text-secondary);">Taille max: 100MB</small>
+                </div>
+                <div class="form-group">
+                    <label for="videoDescription">Description</label>
+                    <textarea id="videoDescription" class="form-control" rows="3" placeholder="Décrivez votre vidéo... #hashtags"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="videoMusic">Musique</label>
+                    <input type="text" id="videoMusic" class="form-control" placeholder="Musique de la vidéo">
+                </div>
+                <div class="form-group">
+                    <label for="videoLocation">Lieu</label>
+                    <input type="text" id="videoLocation" class="form-control" placeholder="Où avez-vous filmé?">
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="videoPublic" checked>
+                        <span>Rendre la vidéo publique</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Story View Modal -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; padding: 0;">
+            <div style="position: relative; width: 100%; aspect-ratio: 9/16;">
+                <video id="storyVideo" style="width: 100%; height: 100%; object-fit: cover;" controls></video>
+                <button onclick="closeModal('storyModal')" style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Modal -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-search"></i> Recherche</h2>
+                <button class="close-modal" onclick="closeModal('searchModal')">&times;</button>
+            </div>
+            <div id="searchResults">
+                <!-- Search results will be loaded here -->
+            </div>
+        </div>
     </div>
 
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        const API_URL = "https://hoosthubs-g.onrender.com";
-        let CURRENT_USER = null;
-        let CURRENT_VIDEO_ID = null;
-        let CURRENT_CHAT_USER = null;
-        let searchType = 'users';
-
-        /* --- API HELPER --- */
-        async function api(endpoint, method = "GET", body = null, isFile = false) {
-            const token = localStorage.getItem('token');
-            const headers = {};
-            if(token) headers['Authorization'] = `Bearer ${token}`;
-            
-            // IMPORTANT: Pour les fichiers, NE PAS mettre Content-Type, le navigateur le fait
-            if (!isFile && body) headers['Content-Type'] = 'application/json';
-
-            const opts = { method, headers };
-            if (body) opts.body = isFile ? body : JSON.stringify(body);
-
-            try {
-                const res = await fetch(API_URL + endpoint, opts);
-                if (res.status === 401) return logout();
-                if (!res.ok) throw await res.json();
-                return await res.json();
-            } catch (e) {
-                console.error("API Error", e);
-                throw e;
-            }
-        }
-
-        /* --- AUTH --- */
-        function checkAuth() {
-            if(localStorage.getItem('token')) {
-                document.getElementById('auth-view').classList.add('hidden');
-                document.getElementById('app-view').classList.remove('hidden');
-                loadFeed();
-                loadProfile();
+        // Configuration
+        const API_BASE_URL = 'https://serv-ynsd.onrender.com';
+        let currentUser = null;
+        let token = localStorage.getItem('token');
+        let currentConversation = null;
+        let ws = null;
+        
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            if (token) {
+                checkAuth();
             } else {
-                document.getElementById('auth-view').classList.remove('hidden');
+                showLoginPage();
             }
-        }
-
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const msg = document.getElementById('auth-msg');
             
-            btn.innerHTML = '<div class="loader mx-auto"></div>';
-            msg.innerText = "";
-
-            const formData = new FormData();
-            formData.append('username', document.getElementById('login-user').value);
-            formData.append('password', document.getElementById('login-pass').value);
-
-            try {
-                const res = await fetch(`${API_URL}/token`, { method: 'POST', body: formData });
-                if(!res.ok) throw new Error("Identifiants incorrects");
-                const data = await res.json();
-                localStorage.setItem('token', data.access_token);
-                checkAuth();
-            } catch(err) {
-                msg.innerText = err.message || "Erreur connexion";
-            } finally {
-                btn.innerText = "Se connecter";
-            }
+            setupEventListeners();
         });
-
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                username: document.getElementById('reg-user').value,
-                password: document.getElementById('reg-pass').value,
-                full_name: document.getElementById('reg-name').value
-            };
-            try {
-                const res = await api('/api/users/register', 'POST', payload);
-                localStorage.setItem('token', res.access_token);
-                checkAuth();
-            } catch(err) {
-                alert(err.detail || "Erreur inscription");
-            }
-        });
-
-        function toggleAuth() {
-            document.getElementById('login-form').classList.toggle('hidden');
-            document.getElementById('register-form').classList.toggle('hidden');
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showSection(this.dataset.section);
+                });
+            });
+            
+            // Upload buttons
+            document.getElementById('uploadVideoBtn').addEventListener('click', showUploadModal);
+            document.getElementById('uploadVideoBtn2').addEventListener('click', showUploadModal);
+            
+            // Upload form
+            document.getElementById('uploadForm').addEventListener('submit', uploadVideo);
+            
+            // Search
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value);
+                }
+            });
         }
-
+        
+        // Authentication
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    currentUser = await response.json();
+                    showApp();
+                    loadFeed();
+                    loadStories();
+                    connectWebSocket();
+                } else {
+                    showLoginPage();
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                showLoginPage();
+            }
+        }
+        
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/token`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    token = data.access_token;
+                    localStorage.setItem('token', token);
+                    checkAuth();
+                } else {
+                    showMessage('Identifiants incorrects', 'danger');
+                }
+            } catch (error) {
+                showMessage('Erreur de connexion', 'danger');
+            }
+        }
+        
+        async function register() {
+            const userData = {
+                username: document.getElementById('regUsername').value,
+                password: document.getElementById('regPassword').value,
+                email: document.getElementById('regEmail').value,
+                full_name: document.getElementById('regFullName').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    token = data.access_token;
+                    localStorage.setItem('token', token);
+                    checkAuth();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.detail || 'Erreur d\'inscription', 'danger');
+                }
+            } catch (error) {
+                showMessage('Erreur de connexion', 'danger');
+            }
+        }
+        
         function logout() {
             localStorage.removeItem('token');
-            location.reload();
+            token = null;
+            currentUser = null;
+            if (ws) ws.close();
+            showLoginPage();
         }
-
-        /* --- NAVIGATION --- */
-        function navTo(view) {
-            document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
-            document.getElementById('view-' + view).classList.remove('hidden');
+        
+        // UI Management
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('appContainer').style.display = 'none';
+        }
+        
+        function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'flex';
             
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-[#FF0055]');
-                btn.classList.add('text-gray-500');
+            // Update user info
+            document.getElementById('userName').textContent = currentUser.username;
+            document.getElementById('userEmail').textContent = currentUser.email || '';
+            document.getElementById('userAvatar').src = currentUser.avatar_url;
+        }
+        
+        function showLoginTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+            document.querySelector(`.tab[onclick="showLoginTab('${tab}')"]`).classList.add('active');
+            document.getElementById('loginMessage').textContent = '';
+        }
+        
+        function showMessage(message, type) {
+            const messageEl = document.getElementById('loginMessage');
+            messageEl.textContent = message;
+            messageEl.style.color = type === 'danger' ? 'var(--danger)' : 'var(--success)';
+        }
+        
+        function showSection(sectionId) {
+            // Update nav
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
             });
-            const activeBtn = document.querySelector(`.nav-btn[data-target="${view}"]`);
-            if(activeBtn) {
-                activeBtn.classList.remove('text-gray-500');
-                activeBtn.classList.add('text-[#FF0055]');
+            document.querySelector(`.nav-link[data-section="${sectionId}"]`).classList.add('active');
+            
+            // Show section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${sectionId}Section`).classList.add('active');
+            
+            // Load section content
+            switch(sectionId) {
+                case 'feed':
+                    loadFeed();
+                    break;
+                case 'explore':
+                    loadExplore();
+                    break;
+                case 'messages':
+                    loadConversations();
+                    break;
+                case 'notifications':
+                    loadNotifications();
+                    break;
+                case 'profile':
+                    loadProfile();
+                    break;
             }
-
-            if(view === 'feed') loadFeed();
-            if(view === 'explore') document.getElementById('search-input').focus();
-            if(view === 'messages') loadConversations();
-            if(view === 'profile') loadProfile();
         }
-
-        /* --- FEED & VIDEOS --- */
+        
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function showUploadModal() {
+            showModal('uploadModal');
+        }
+        
+        // Feed
         async function loadFeed() {
-            const container = document.getElementById('view-feed');
-            if(container.children.length > 0) return; // Don't reload if populated
-            
-            container.innerHTML = '<div class="flex h-full items-center justify-center"><div class="loader"></div></div>';
+            const feedEl = document.getElementById('videoFeed');
+            feedEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement du feed...</p></div>';
             
             try {
-                const videos = await api('/api/videos/feed?limit=10');
-                container.innerHTML = '';
+                const response = await fetch(`${API_BASE_URL}/api/videos/feed`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 
-                if(videos.length === 0) {
-                    container.innerHTML = '<div class="flex flex-col h-full items-center justify-center text-gray-500"><i class="fa-solid fa-film text-4xl mb-2"></i><p>Aucune vidéo. Suivez des gens !</p></div>';
-                    return;
+                if (response.ok) {
+                    const videos = await response.json();
+                    displayVideos(videos, feedEl);
                 }
-
-                videos.forEach(v => {
-                    const div = document.createElement('div');
-                    div.className = 'snap-item w-full relative bg-black';
-                    div.innerHTML = `
-                        <video src="${v.video_url}" class="w-full h-full object-cover" loop playsinline onclick="togglePlay(this)"></video>
-                        
-                        <!-- Side Bar -->
-                        <div class="absolute right-2 bottom-24 flex flex-col items-center gap-5 z-10">
-                            <div class="relative cursor-pointer" onclick="openUserProfile('${v.user_id}')">
-                                <img src="${v.avatar_url}" class="w-12 h-12 rounded-full border-2 border-white">
-                                <i class="fa-solid fa-plus-circle absolute -bottom-1 left-1/2 -translate-x-1/2 text-[#FF0055] bg-white rounded-full text-lg"></i>
-                            </div>
-                            <button onclick="likeVideo('${v.id}', this)" class="flex flex-col items-center">
-                                <i class="fa-solid fa-heart text-3xl drop-shadow-md transition ${v.liked_by_me ? 'text-[#FF0055]' : 'text-white'}"></i>
-                                <span class="text-xs font-bold drop-shadow-md mt-1">${v.likes_count}</span>
-                            </button>
-                            <button onclick="openComments('${v.id}')" class="flex flex-col items-center">
-                                <i class="fa-solid fa-comment-dots text-3xl text-white drop-shadow-md"></i>
-                                <span class="text-xs font-bold drop-shadow-md mt-1">${v.comments_count}</span>
-                            </button>
-                            <button class="flex flex-col items-center">
-                                <i class="fa-solid fa-share text-3xl text-white drop-shadow-md"></i>
-                                <span class="text-xs font-bold drop-shadow-md mt-1">${v.shares_count || 0}</span>
-                            </button>
-                        </div>
-
-                        <!-- Bottom Info -->
-                        <div class="absolute bottom-4 left-4 right-16 z-10 text-white pointer-events-none">
-                            <h3 class="font-bold text-shadow text-lg mb-1">@${v.username}</h3>
-                            <p class="text-sm text-shadow line-clamp-2 mb-2">${v.description || ''}</p>
-                            <div class="flex items-center gap-2 opacity-80">
-                                <i class="fa-solid fa-music text-xs"></i>
-                                <span class="text-xs marquee">${v.music || 'Son original'}</span>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-                
-                // Intersection Observer for Auto Play
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        const vid = entry.target.querySelector('video');
-                        if(entry.isIntersecting) vid.play();
-                        else { vid.pause(); vid.currentTime = 0; }
-                    });
-                }, { threshold: 0.6 });
-                
-                document.querySelectorAll('.snap-item').forEach(el => observer.observe(el));
-
-            } catch(e) { console.error(e); }
-        }
-
-        function togglePlay(vid) {
-            vid.paused ? vid.play() : vid.pause();
-        }
-
-        async function likeVideo(id, btn) {
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
-            let count = parseInt(span.innerText);
-            
-            // Optimistic Update
-            const isLiked = icon.classList.contains('text-[#FF0055]');
-            icon.classList.toggle('text-[#FF0055]');
-            icon.classList.toggle('text-white');
-            span.innerText = isLiked ? count - 1 : count + 1;
-
-            try {
-                await api(`/api/videos/${id}/like`, 'POST');
-            } catch(e) {
-                // Revert if fail
-                icon.classList.toggle('text-[#FF0055]');
-                icon.classList.toggle('text-white');
-                span.innerText = count;
+            } catch (error) {
+                console.error('Error loading feed:', error);
+                feedEl.innerHTML = '<p>Erreur de chargement du feed</p>';
             }
         }
-
-        /* --- COMMENTS --- */
-        async function openComments(videoId) {
-            CURRENT_VIDEO_ID = videoId;
-            document.getElementById('comment-modal').classList.remove('hidden');
-            const list = document.getElementById('comments-list');
-            list.innerHTML = '<div class="loader mx-auto"></div>';
+        
+        async function loadExplore() {
+            const exploreEl = document.getElementById('exploreVideos');
+            exploreEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement des vidéos...</p></div>';
             
             try {
-                const comments = await api(`/api/videos/${videoId}/comments`);
-                list.innerHTML = '';
-                if(comments.length === 0) list.innerHTML = '<p class="text-center text-gray-500 text-sm">Soyez le premier à commenter !</p>';
-                
-                comments.forEach(c => {
-                    list.innerHTML += `
-                        <div class="flex gap-3 mb-4 animate-in fade-in">
-                            <img src="${c.avatar_url}" class="w-8 h-8 rounded-full bg-gray-700">
-                            <div>
-                                <p class="text-xs font-bold text-gray-400">@${c.username}</p>
-                                <p class="text-sm text-white">${c.text}</p>
-                            </div>
-                        </div>
-                    `;
+                const response = await fetch(`${API_BASE_URL}/api/explore`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
-            } catch(e) { list.innerHTML = 'Erreur chargement.'; }
+                
+                if (response.ok) {
+                    const videos = await response.json();
+                    displayVideos(videos, exploreEl);
+                }
+            } catch (error) {
+                console.error('Error loading explore:', error);
+                exploreEl.innerHTML = '<p>Erreur de chargement</p>';
+            }
         }
-
-        function closeComments() {
-            document.getElementById('comment-modal').classList.add('hidden');
-            CURRENT_VIDEO_ID = null;
+        
+        async function loadStories() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/stories/feed`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const stories = await response.json();
+                    displayStories(stories);
+                }
+            } catch (error) {
+                console.error('Error loading stories:', error);
+            }
         }
-
-        async function postComment() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if(!text || !CURRENT_VIDEO_ID) return;
-
-            input.value = '';
-            // Add visibly immediately (Fake it)
-            const list = document.getElementById('comments-list');
-            const tempId = Date.now();
-            const div = document.createElement('div');
-            div.className = 'flex gap-3 mb-4 opacity-50'; // Opacity until confirmed
-            div.innerHTML = `
-                <img src="${CURRENT_USER.avatar_url}" class="w-8 h-8 rounded-full">
-                <div><p class="text-xs font-bold text-gray-400">@${CURRENT_USER.username}</p><p class="text-sm">${text}</p></div>
+        
+        function displayStories(stories) {
+            const container = document.getElementById('storiesContainer');
+            container.innerHTML = '';
+            
+            // Add your story
+            container.innerHTML += `
+                <div class="story-item" onclick="createStory()">
+                    <div style="position: relative;">
+                        <img src="${currentUser.avatar_url}" class="story-avatar">
+                        <div style="position: absolute; bottom: 10px; right: 10px; background: var(--primary); color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="story-username">Votre story</div>
+                </div>
             `;
-            list.prepend(div);
-
+            
+            // Add other stories
+            stories.forEach(storyGroup => {
+                const story = storyGroup.stories[0];
+                container.innerHTML += `
+                    <div class="story-item" onclick="viewStory('${story.id}')">
+                        <img src="${storyGroup.user.avatar_url}" class="story-avatar" style="${story.viewed ? '' : 'border-color: var(--primary)'}">
+                        <div class="story-username">${storyGroup.user.username}</div>
+                    </div>
+                `;
+            });
+        }
+        
+        function displayVideos(videos, containerEl) {
+            if (videos.length === 0) {
+                containerEl.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 40px;">Aucune vidéo disponible</p>';
+                return;
+            }
+            
+            containerEl.innerHTML = '';
+            
+            videos.forEach(video => {
+                const videoEl = document.createElement('div');
+                videoEl.className = 'video-card';
+                videoEl.innerHTML = `
+                    <div class="video-header">
+                        <img src="${video.avatar_url}" class="video-avatar">
+                        <div class="video-user-info">
+                            <div class="video-username">
+                                ${video.username}
+                                ${video.is_verified ? '<i class="fas fa-check-circle" style="color: var(--primary); font-size: 12px;"></i>' : ''}
+                            </div>
+                            <div class="video-time">${formatTime(video.created_at)}</div>
+                        </div>
+                    </div>
+                    <div class="video-container">
+                        <video src="${video.video_url}" poster="${video.thumbnail_url}" controls></video>
+                    </div>
+                    <div class="video-actions">
+                        <div class="action-buttons">
+                            <div>
+                                <button class="action-btn ${video.liked_by_me ? 'liked' : ''}" onclick="likeVideo('${video.id}')">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="action-count">${video.likes_count}</span>
+                                </button>
+                            </div>
+                            <div>
+                                <button class="action-btn" onclick="showComments('${video.id}')">
+                                    <i class="fas fa-comment"></i>
+                                    <span class="action-count">${video.comments_count}</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="fas fa-share"></i>
+                                    <span class="action-count">${video.shares_count || 0}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="video-description">
+                            ${formatDescription(video.description)}
+                            <div class="video-hashtags">${extractHashtags(video.description)}</div>
+                        </div>
+                    </div>
+                `;
+                containerEl.appendChild(videoEl);
+            });
+        }
+        
+        async function likeVideo(videoId) {
             try {
-                await api(`/api/videos/${CURRENT_VIDEO_ID}/comments`, 'POST', { text });
-                div.classList.remove('opacity-50'); // Confirm
-            } catch(e) {
-                div.remove();
-                alert("Échec envoi commentaire");
+                const response = await fetch(`${API_BASE_URL}/api/videos/${videoId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    loadFeed(); // Reload feed
+                }
+            } catch (error) {
+                console.error('Error liking video:', error);
             }
         }
-
-        /* --- UPLOAD (FIXED) --- */
-        async function uploadVideo() {
-            const fileInput = document.getElementById('video-file');
-            const desc = document.getElementById('video-desc').value;
-            const btn = document.getElementById('btn-upload');
-            const status = document.getElementById('upload-status');
-
-            if(!fileInput.files[0]) return alert("Sélectionnez une vidéo");
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours...';
-            status.innerHTML = '<span class="text-yellow-500">Ne fermez pas cette page, upload vers le serveur...</span>';
-
+        
+        // Upload
+        async function uploadVideo(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('videoFile');
+            const description = document.getElementById('videoDescription').value;
+            const music = document.getElementById('videoMusic').value;
+            const location = document.getElementById('videoLocation').value;
+            const isPublic = document.getElementById('videoPublic').checked;
+            
+            if (!fileInput.files.length) {
+                alert('Veuillez sélectionner une vidéo');
+                return;
+            }
+            
             const formData = new FormData();
             formData.append('video', fileInput.files[0]);
-            formData.append('description', desc);
-            formData.append('is_public', 'true');
-
+            formData.append('description', description);
+            formData.append('music', music);
+            formData.append('location', location);
+            formData.append('is_public', isPublic);
+            
             try {
-                // isFile = true -> API function will NOT set Content-Type header
-                await api('/api/videos/upload', 'POST', formData, true); 
-                status.innerHTML = '<span class="text-green-500">Vidéo publiée avec succès !</span>';
-                setTimeout(() => {
-                    document.getElementById('video-desc').value = "";
-                    fileInput.value = "";
-                    document.getElementById('file-name').innerText = "";
-                    navTo('feed');
-                    location.reload(); // Reload to see new video
-                }, 1500);
-            } catch(e) {
-                status.innerText = "Erreur: " + (e.detail || e.message);
-                btn.disabled = false;
-                btn.innerText = "Réessayer";
+                const response = await fetch(`${API_BASE_URL}/api/videos/upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    closeModal('uploadModal');
+                    loadFeed();
+                    alert('Vidéo uploadée avec succès!');
+                } else {
+                    const error = await response.json();
+                    alert(error.detail || 'Erreur lors de l\'upload');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Erreur de connexion');
             }
         }
-
-        document.getElementById('video-file').addEventListener('change', function() {
-            if(this.files[0]) document.getElementById('file-name').innerText = this.files[0].name;
-        });
-
-        /* --- SEARCH --- */
-        let searchTimeout;
-        function handleSearch(e) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => doSearch(), 500);
-        }
-
-        async function doSearch() {
-            const q = document.getElementById('search-input').value;
-            const container = document.getElementById('search-results');
-            if(q.length < 1) return;
-
-            container.innerHTML = '<div class="loader col-span-3 mx-auto mt-4"></div>';
-            
-            try {
-                const res = await api(`/api/search?q=${q}&type=${searchType}`);
-                container.innerHTML = '';
+        
+        // Stories
+        async function createStory() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
                 
-                const data = res[searchType] || [];
+                const formData = new FormData();
+                formData.append('video', file);
                 
-                if(data.length === 0) {
-                    container.innerHTML = '<p class="col-span-3 text-center text-gray-500">Aucun résultat</p>';
-                    return;
-                }
-
-                if(searchType === 'users') {
-                    container.classList.remove('grid-cols-3');
-                    container.classList.add('flex', 'flex-col');
-                    data.forEach(u => {
-                        container.innerHTML += `
-                            <div class="flex items-center gap-3 p-3 bg-[#1e1e1e] rounded-lg mb-2" onclick="openUserProfile('${u.id}')">
-                                <img src="${u.avatar_url}" class="w-12 h-12 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-bold">@${u.username}</h4>
-                                    <p class="text-xs text-gray-400">${u.full_name || ''}</p>
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-gray-600"></i>
-                            </div>
-                        `;
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/stories`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
                     });
-                } else if(searchType === 'videos') {
-                    container.classList.remove('flex', 'flex-col');
-                    container.classList.add('grid', 'grid-cols-3');
-                    data.forEach(v => {
-                        container.innerHTML += `
-                            <div class="aspect-[3/4] bg-gray-800 relative">
-                                <img src="${v.thumbnail_url || v.video_url.replace('.mp4','.jpg')}" class="w-full h-full object-cover">
-                                <div class="absolute bottom-1 left-1 text-xs font-bold"><i class="fa-regular fa-play-circle"></i> ${v.view_count}</div>
-                            </div>
-                        `;
-                    });
-                }
-            } catch(e) { console.error(e); }
-        }
-
-        /* --- MESSAGES --- */
-        async function loadConversations() {
-            const list = document.getElementById('conversations-list');
-            list.innerHTML = '<div class="loader mx-auto mt-4"></div>';
-            
-            try {
-                const convos = await api('/api/messages/conversations');
-                list.innerHTML = '';
-                if(convos.length === 0) list.innerHTML = '<p class="text-center mt-10 text-gray-500">Aucune conversation</p>';
-                
-                convos.forEach(c => {
-                    list.innerHTML += `
-                        <div onclick="openChat('${c.user_id}', '${c.username}', '${c.avatar_url}')" class="flex items-center gap-3 p-4 hover:bg-[#121212] cursor-pointer">
-                            <div class="relative">
-                                <img src="${c.avatar_url}" class="w-14 h-14 rounded-full object-cover">
-                                ${c.unread_count > 0 ? `<div class="absolute top-0 right-0 bg-[#FF0055] w-4 h-4 rounded-full border border-black"></div>` : ''}
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-bold text-white">${c.username}</h4>
-                                <p class="text-sm text-gray-400 truncate ${c.is_read ? '' : 'font-bold text-white'}">${c.last_message}</p>
-                            </div>
-                            <span class="text-xs text-gray-600">Now</span>
-                        </div>
-                    `;
-                });
-            } catch(e) { console.error(e); }
-        }
-
-        async function openChat(userId, username, avatar) {
-            CURRENT_CHAT_USER = userId;
-            document.getElementById('chat-detail').classList.remove('hidden');
-            document.getElementById('chat-username').innerText = username;
-            document.getElementById('chat-avatar').src = avatar;
-            
-            const box = document.getElementById('chat-messages');
-            box.innerHTML = '<div class="loader mx-auto"></div>';
-            
-            try {
-                const msgs = await api(`/api/messages/${userId}`);
-                box.innerHTML = '';
-                msgs.forEach(m => renderMessage(m));
-                box.scrollTop = box.scrollHeight;
-            } catch(e) { console.error(e); }
-        }
-
-        function renderMessage(m) {
-            const box = document.getElementById('chat-messages');
-            const isMe = m.sender_id === CURRENT_USER.id;
-            const div = document.createElement('div');
-            div.className = `max-w-[80%] p-3 rounded-2xl text-sm mb-2 ${isMe ? 'bg-[#FF0055] self-end rounded-br-none' : 'bg-[#2a2a2a] self-start rounded-bl-none'}`;
-            div.innerText = m.content;
-            box.appendChild(div);
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('msg-input');
-            const text = input.value.trim();
-            if(!text) return;
-            
-            // Optimistic UI
-            renderMessage({ sender_id: CURRENT_USER.id, content: text });
-            input.value = '';
-            document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
-
-            try {
-                await api('/api/messages', 'POST', { receiver_id: CURRENT_CHAT_USER, content: text });
-            } catch(e) { alert("Erreur envoi"); }
-        }
-
-        function closeChat() {
-            document.getElementById('chat-detail').classList.add('hidden');
-            CURRENT_CHAT_USER = null;
-            loadConversations(); // refresh
-        }
-
-        /* --- PROFILE --- */
-        async function loadProfile(userId = null) {
-            const container = document.getElementById(userId ? 'main' : 'profile-content'); // Dirty hack for displaying profile
-            
-            // If viewing another user, we might want a modal or replace view-profile content. 
-            // For simplicity in single file, we update "view-profile" and switch to it.
-            
-            const isMe = !userId;
-            const endpoint = isMe ? '/api/users/me' : `/api/users/${userId}`;
-            
-            try {
-                const user = await api(endpoint);
-                if(isMe) CURRENT_USER = user;
-
-                // Build HTML
-                let html = `
-                    <div class="flex flex-col items-center pt-8 px-4 bg-[#121212]">
-                        <img src="${user.avatar_url}" class="w-24 h-24 rounded-full border-2 border-[#FF0055] p-1 object-cover">
-                        <h2 class="text-xl font-bold mt-2">@${user.username}</h2>
-                        <p class="text-sm text-gray-400 mb-4">${user.full_name || ''}</p>
-                        
-                        <div class="flex w-full justify-around py-4 border-y border-gray-800 mb-4">
-                            <div class="text-center"><span class="block font-bold text-lg">${user.following_count}</span><span class="text-xs text-gray-500">Abonnements</span></div>
-                            <div class="text-center"><span class="block font-bold text-lg">${user.followers_count}</span><span class="text-xs text-gray-500">Abonnés</span></div>
-                            <div class="text-center"><span class="block font-bold text-lg">${user.videos_count}</span><span class="text-xs text-gray-500">J'aime</span></div>
-                        </div>
-
-                        <p class="text-center text-sm mb-6 px-6">${user.bio || 'Aucune biographie.'}</p>
-
-                        <div class="flex gap-2 mb-8">
-                            ${isMe ? 
-                                `<button onclick="toggleEditProfile(true)" class="bg-[#2a2a2a] px-6 py-2 rounded font-bold text-sm">Modifier le profil</button>` 
-                                : 
-                                `<button onclick="followUser('${user.id}')" class="bg-[#FF0055] px-8 py-2 rounded font-bold text-sm">S'abonner</button>
-                                 <button onclick="openChat('${user.id}', '${user.username}', '${user.avatar_url}')" class="bg-[#2a2a2a] px-4 py-2 rounded"><i class="fa-regular fa-message"></i></button>`
-                            }
-                        </div>
-                    </div>
                     
-                    <!-- Videos Grid -->
-                    <div class="grid grid-cols-3 gap-0.5 bg-black">
-                        ${user.videos_count === 0 ? '<p class="col-span-3 text-center py-10 text-gray-500">Pas de vidéos</p>' : ''}
-                        <!-- Videos loaded separately or we map here if returned -->
-                    </div>
-                    <div id="profile-grid-${user.id}" class="grid grid-cols-3 gap-0.5"></div>
-                `;
-
-                document.getElementById('profile-content').innerHTML = html;
+                    if (response.ok) {
+                        loadStories();
+                    }
+                } catch (error) {
+                    console.error('Error creating story:', error);
+                }
+            };
+            input.click();
+        }
+        
+        async function viewStory(storyId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/stories/${storyId}/view`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 
-                // Load User Videos
-                const videos = await api(`/api/users/${user.id}/videos`);
-                const grid = document.getElementById(`profile-grid-${user.id}`);
-                videos.forEach(v => {
-                    grid.innerHTML += `
-                        <div class="aspect-[3/4] bg-gray-800 relative">
-                            <img src="${v.thumbnail_url || v.video_url.replace('.mp4','.jpg')}" class="w-full h-full object-cover">
-                            <div class="absolute bottom-1 left-1 flex items-center gap-1 text-[10px] drop-shadow">
-                                <i class="fa-solid fa-play"></i> ${v.view_count}
+                if (response.ok) {
+                    // In a real app, you would get the story URL and play it
+                    showModal('storyModal');
+                }
+            } catch (error) {
+                console.error('Error viewing story:', error);
+            }
+        }
+        
+        // Messages
+        async function loadConversations() {
+            const listEl = document.getElementById('conversationsList');
+            listEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement des conversations...</p></div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/messages/conversations`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const conversations = await response.json();
+                    displayConversations(conversations);
+                }
+            } catch (error) {
+                console.error('Error loading conversations:', error);
+                listEl.innerHTML = '<p>Erreur de chargement</p>';
+            }
+        }
+        
+        function displayConversations(conversations) {
+            const listEl = document.getElementById('conversationsList');
+            listEl.innerHTML = '';
+            
+            if (conversations.length === 0) {
+                listEl.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">Aucune conversation</p>';
+                return;
+            }
+            
+            conversations.forEach(conv => {
+                const convEl = document.createElement('div');
+                convEl.className = 'conversation-item';
+                convEl.onclick = () => openConversation(conv.user_id);
+                convEl.innerHTML = `
+                    <img src="${conv.avatar_url}" class="conversation-avatar">
+                    <div class="conversation-info">
+                        <div class="conversation-name">${conv.username}</div>
+                        <div class="conversation-last">${conv.last_message}</div>
+                    </div>
+                    ${conv.unread_count > 0 ? `<div class="unread-badge">${conv.unread_count}</div>` : ''}
+                `;
+                listEl.appendChild(convEl);
+            });
+        }
+        
+        async function openConversation(userId) {
+            currentConversation = userId;
+            document.getElementById('chatContainer').style.display = 'flex';
+            
+            // Load conversation header
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    document.getElementById('chatHeader').innerHTML = `
+                        <img src="${user.avatar_url}" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: bold;">${user.username}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">En ligne</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+            
+            // Load messages
+            loadMessages(userId);
+        }
+        
+        async function loadMessages(userId) {
+            const messagesEl = document.getElementById('chatMessages');
+            messagesEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement des messages...</p></div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/messages/${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const messages = await response.json();
+                    displayMessages(messages);
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                messagesEl.innerHTML = '<p>Erreur de chargement</p>';
+            }
+        }
+        
+        function displayMessages(messages) {
+            const messagesEl = document.getElementById('chatMessages');
+            messagesEl.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const msgEl = document.createElement('div');
+                msgEl.className = `message ${msg.sender_id === currentUser.id ? 'sent' : 'received'}`;
+                msgEl.innerHTML = `
+                    <div>${msg.content}</div>
+                    <div style="font-size: 10px; text-align: right; margin-top: 5px;">${formatTime(msg.created_at)}</div>
+                `;
+                messagesEl.appendChild(msgEl);
+            });
+            
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const content = input.value.trim();
+            
+            if (!content || !currentConversation) return;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/messages`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        receiver_id: currentConversation,
+                        content: content
+                    })
+                });
+                
+                if (response.ok) {
+                    input.value = '';
+                    loadMessages(currentConversation);
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+        }
+        
+        // Notifications
+        async function loadNotifications() {
+            const listEl = document.getElementById('notificationsList');
+            listEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement des notifications...</p></div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const notifications = await response.json();
+                    displayNotifications(notifications);
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                listEl.innerHTML = '<p>Erreur de chargement</p>';
+            }
+        }
+        
+        function displayNotifications(notifications) {
+            const listEl = document.getElementById('notificationsList');
+            listEl.innerHTML = '';
+            
+            if (notifications.length === 0) {
+                listEl.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">Aucune notification</p>';
+                return;
+            }
+            
+            notifications.forEach(notif => {
+                const notifEl = document.createElement('div');
+                notifEl.className = `notification-item ${notif.is_read ? '' : 'unread'}`;
+                
+                let message = '';
+                switch(notif.type) {
+                    case 'like':
+                        message = `${notif.from_username} a aimé votre vidéo`;
+                        break;
+                    case 'comment':
+                        message = `${notif.from_username} a commenté votre vidéo`;
+                        break;
+                    case 'follow':
+                        message = `${notif.from_username} vous suit maintenant`;
+                        break;
+                    case 'message':
+                        message = `${notif.from_username} vous a envoyé un message`;
+                        break;
+                    default:
+                        message = `Nouvelle notification de ${notif.from_username}`;
+                }
+                
+                notifEl.innerHTML = `
+                    <img src="${notif.from_avatar}" style="width: 50px; height: 50px; border-radius: 50%;">
+                    <div style="flex: 1;">
+                        <div>${message}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${formatTime(notif.created_at)}</div>
+                    </div>
+                `;
+                listEl.appendChild(notifEl);
+            });
+        }
+        
+        // Profile
+        async function loadProfile() {
+            const profileEl = document.getElementById('profileContent');
+            profileEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement du profil...</p></div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    displayProfile(user);
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                profileEl.innerHTML = '<p>Erreur de chargement</p>';
+            }
+        }
+        
+        function displayProfile(user) {
+            const profileEl = document.getElementById('profileContent');
+            profileEl.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-cover" style="${user.cover_url ? `background: url('${user.cover_url}') center/cover;` : ''}"></div>
+                    <div class="profile-info">
+                        <img src="${user.avatar_url}" class="profile-avatar">
+                        <div class="profile-details">
+                            <div class="profile-name">${user.full_name || user.username}</div>
+                            <div class="profile-username">@${user.username}</div>
+                            <div class="profile-bio">${user.bio || 'Pas de bio'}</div>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-count">${user.videos_count || 0}</div>
+                                    <div class="stat-label">Vidéos</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">${user.followers_count || 0}</div>
+                                    <div class="stat-label">Abonnés</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">${user.following_count || 0}</div>
+                                    <div class="stat-label">Abonnements</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="editProfile()" style="background: rgba(255,255,255,0.1); color: white;">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                    </div>
+                </div>
+                <div id="profileVideos">
+                    <h3 style="margin-bottom: 20px;">Mes vidéos</h3>
+                    <div id="userVideosList"></div>
+                </div>
+            `;
+            
+            loadUserVideos(user.id);
+        }
+        
+        async function loadUserVideos(userId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/${userId}/videos`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const videos = await response.json();
+                    displayUserVideos(videos);
+                }
+            } catch (error) {
+                console.error('Error loading user videos:', error);
+            }
+        }
+        
+        function displayUserVideos(videos) {
+            const listEl = document.getElementById('userVideosList');
+            
+            if (videos.length === 0) {
+                listEl.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 40px;">Aucune vidéo</p>';
+                return;
+            }
+            
+            listEl.innerHTML = '';
+            videos.forEach(video => {
+                const videoEl = document.createElement('div');
+                videoEl.className = 'video-card';
+                videoEl.style.maxWidth = '400px';
+                videoEl.innerHTML = `
+                    <div class="video-container">
+                        <video src="${video.video_url}" poster="${video.thumbnail_url}" controls></video>
+                    </div>
+                    <div class="video-description" style="padding: 15px;">
+                        ${formatDescription(video.description)}
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+                            <span><i class="fas fa-heart"></i> ${video.likes_count}</span>
+                            <span><i class="fas fa-comment"></i> ${video.comments_count}</span>
+                            <span><i class="fas fa-eye"></i> ${video.view_count}</span>
+                        </div>
+                    </div>
+                `;
+                listEl.appendChild(videoEl);
+            });
+        }
+        
+        function editProfile() {
+            // In a real app, you would show an edit form
+            alert('Fonctionnalité d\'édition du profil à venir!');
+        }
+        
+        // Search
+        async function performSearch(query) {
+            showModal('searchModal');
+            const resultsEl = document.getElementById('searchResults');
+            resultsEl.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Recherche en cours...</p></div>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/search?q=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const results = await response.json();
+                    displaySearchResults(results);
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                resultsEl.innerHTML = '<p>Erreur de recherche</p>';
+            }
+        }
+        
+        function displaySearchResults(results) {
+            const resultsEl = document.getElementById('searchResults');
+            resultsEl.innerHTML = '';
+            
+            // Users
+            if (results.users.length > 0) {
+                resultsEl.innerHTML += '<h3 style="margin: 20px 0 10px;">Utilisateurs</h3>';
+                results.users.forEach(user => {
+                    resultsEl.innerHTML += `
+                        <div class="notification-item" onclick="viewProfile('${user.id}')" style="cursor: pointer;">
+                            <img src="${user.avatar_url}" style="width: 50px; height: 50px; border-radius: 50%;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold;">${user.username}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">${user.full_name || ''}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">${user.followers_count || 0} abonnés</div>
+                            </div>
+                            ${user.is_following ? '<span style="color: var(--text-secondary);">Déjà suivi</span>' : 
+                            '<button class="btn" style="padding: 5px 10px; font-size: 12px;">Suivre</button>'}
+                        </div>
+                    `;
+                });
+            }
+            
+            // Videos
+            if (results.videos.length > 0) {
+                resultsEl.innerHTML += '<h3 style="margin: 20px 0 10px;">Vidéos</h3>';
+                results.videos.forEach(video => {
+                    resultsEl.innerHTML += `
+                        <div class="video-card" style="margin-bottom: 15px;">
+                            <div class="video-container">
+                                <video src="${video.video_url}" poster="${video.thumbnail_url}" controls></video>
+                            </div>
+                            <div class="video-description" style="padding: 15px;">
+                                ${formatDescription(video.description)}
                             </div>
                         </div>
                     `;
                 });
-
-                if(!isMe) {
-                    navTo('profile'); // Force switch to profile view
-                }
-
-            } catch(e) { console.error(e); }
-        }
-
-        /* --- EDIT PROFILE --- */
-        function toggleEditProfile(show) {
-            const modal = document.getElementById('edit-profile-modal');
-            if(show) {
-                modal.classList.remove('hidden');
-                document.getElementById('edit-bio').value = CURRENT_USER.bio || '';
-                document.getElementById('edit-avatar-preview').src = CURRENT_USER.avatar_url;
-                document.getElementById('edit-private').checked = CURRENT_USER.is_private;
-            } else {
-                modal.classList.add('hidden');
+            }
+            
+            // Hashtags
+            if (results.hashtags.length > 0) {
+                resultsEl.innerHTML += '<h3 style="margin: 20px 0 10px;">Hashtags</h3>';
+                results.hashtags.forEach(tag => {
+                    resultsEl.innerHTML += `
+                        <div class="notification-item" onclick="viewHashtag('${tag.name}')" style="cursor: pointer;">
+                            <div style="font-size: 24px; color: var(--primary);">#</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold;">${tag.name}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">${tag.video_count} vidéos</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (results.users.length === 0 && results.videos.length === 0 && results.hashtags.length === 0) {
+                resultsEl.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 40px;">Aucun résultat</p>';
             }
         }
-
-        async function saveProfile() {
-            const bio = document.getElementById('edit-bio').value;
-            const isPrivate = document.getElementById('edit-private').checked;
-            const avatarFile = document.getElementById('avatar-upload').files[0];
-
+        
+        function viewProfile(userId) {
+            showSection('profile');
+            // You would load the specific user's profile here
+            closeModal('searchModal');
+        }
+        
+        function viewHashtag(hashtag) {
+            closeModal('searchModal');
+            alert(`Voir les vidéos avec #${hashtag} - Fonctionnalité à venir!`);
+        }
+        
+        // WebSocket
+        function connectWebSocket() {
+            if (!currentUser || !currentUser.id) return;
+            
+            ws = new WebSocket(`wss://serv-ynsd.onrender.com/ws/${currentUser.id}`);
+            
+            ws.onopen = () => {
+                console.log('WebSocket connecté');
+            };
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+            
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+            
+            ws.onclose = () => {
+                console.log('WebSocket déconnecté');
+                // Try to reconnect after 5 seconds
+                setTimeout(connectWebSocket, 5000);
+            };
+        }
+        
+        function handleWebSocketMessage(data) {
+            switch(data.type) {
+                case 'message':
+                    if (currentConversation === data.sender_id) {
+                        loadMessages(data.sender_id);
+                    } else {
+                        // Update unread count
+                        updateUnreadMessages();
+                    }
+                    break;
+                    
+                case 'notification':
+                    // Update unread count
+                    updateUnreadNotifications();
+                    break;
+            }
+        }
+        
+        async function updateUnreadMessages() {
             try {
-                // Update Text Data
-                await api('/api/users/me', 'PUT', { bio, is_private: isPrivate });
-
-                // Update Avatar if changed
-                if(avatarFile) {
-                    const fd = new FormData();
-                    fd.append('file', avatarFile);
-                    await api('/api/users/me/avatar', 'POST', fd, true);
+                const response = await fetch(`${API_BASE_URL}/api/messages/conversations`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const conversations = await response.json();
+                    const unread = conversations.reduce((sum, conv) => sum + (conv.unread_count || 0), 0);
+                    
+                    const badge = document.getElementById('unreadMessages');
+                    if (unread > 0) {
+                        badge.textContent = unread;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
                 }
-
-                toggleEditProfile(false);
-                loadProfile(); // Refresh
-            } catch(e) { alert("Erreur mise à jour"); }
+            } catch (error) {
+                console.error('Error updating unread messages:', error);
+            }
         }
-
-        function openUserProfile(id) {
-            if(id === CURRENT_USER.id) navTo('profile');
-            else loadProfile(id);
+        
+        async function updateUnreadNotifications() {
+            const badge = document.getElementById('unreadNotifications');
+            // In a real app, you would fetch the actual count
+            badge.style.display = 'inline-block';
         }
-
-        /* --- INIT --- */
-        window.addEventListener('load', () => {
-            checkAuth();
-        });
-
+        
+        // Utility functions
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 60) {
+                return `Il y a ${diffMins} min`;
+            } else if (diffHours < 24) {
+                return `Il y a ${diffHours} h`;
+            } else if (diffDays < 7) {
+                return `Il y a ${diffDays} j`;
+            } else {
+                return date.toLocaleDateString();
+            }
+        }
+        
+        function formatDescription(text) {
+            if (!text) return '';
+            return text.replace(/\n/g, '<br>');
+        }
+        
+        function extractHashtags(text) {
+            if (!text) return '';
+            const hashtags = text.match(/#\w+/g);
+            if (!hashtags) return '';
+            return hashtags.map(tag => `<span style="color: var(--primary); margin-right: 5px;">${tag}</span>`).join('');
+        }
+        
+        function showComments(videoId) {
+            alert(`Commentaires pour la vidéo ${videoId} - Fonctionnalité à venir!`);
+        }
     </script>
 </body>
 </html>
